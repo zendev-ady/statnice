@@ -1,21 +1,1335 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <title>DBS - Databázové systémy | SZZ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBS - Databázové systémy | SZZ Příprava</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
+                macros: { N: "\\mathbb{N}", R: "\\mathbb{R}", Z: "\\mathbb{Z}", Q: "\\mathbb{Q}", C: "\\mathbb{C}" }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-primary fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="fas fa-arrow-left me-2"></i>Dashboard</a>
             <span class="navbar-text mx-auto"><strong>DBS</strong> - Databázové systémy</span>
-            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')"><i class="fas fa-adjust"></i></button>
+            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')">
+                <i class="fas fa-adjust"></i>
+            </button>
         </div>
     </nav>
-    <div class="container"><h1>Databázové systémy</h1><div class="alert alert-info mt-4"><i class="fas fa-info-circle"></i> Ve výstavbě</div></div>
+
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar TOC -->
+            <div class="col-lg-3 d-none d-lg-block">
+                <nav class="topic-nav pt-4">
+                    <h6 class="text-muted text-uppercase fw-bold mb-3">Témata</h6>
+                    <ul class="nav flex-column">
+                        <li><a class="nav-link py-1" href="#topic-1">1. Transakce a ACID</a></li>
+                        <li><a class="nav-link py-1" href="#topic-2">2. SQL – základní příkazy</a></li>
+                        <li><a class="nav-link py-1" href="#topic-3">3. Normální formy</a></li>
+                        <li><a class="nav-link py-1" href="#topic-4">4. Typy JOINů</a></li>
+                        <li><a class="nav-link py-1" href="#topic-5">5. SELECT a agregace</a></li>
+                        <li><a class="nav-link py-1" href="#topic-6">6. Relační model a ER</a></li>
+                        <li><a class="nav-link py-1" href="#topic-7">7. Dirty read a konflikty</a></li>
+                        <li><a class="nav-link py-1" href="#topic-8">8. Zamykání a izolace</a></li>
+                        <li><a class="nav-link py-1" href="#topic-9">9. Funkční závislosti</a></li>
+                        <li><a class="nav-link py-1" href="#topic-10">10. ORM</a></li>
+                        <li><a class="nav-link py-1" href="#topic-11">11. Serializovatelnost</a></li>
+                        <li><a class="nav-link py-1" href="#topic-12">12. Armstrongovy axiomy</a></li>
+                        <li><a class="nav-link py-1" href="#topic-13">13. Postup návrhu DB</a></li>
+                        <li><a class="nav-link py-1" href="#topic-14">14. Integritní omezení</a></li>
+                        <li><a class="nav-link py-1" href="#topic-15">15. JPA a dědičnost</a></li>
+                        <li><a class="nav-link py-1" href="#topic-16">16. Vazby 1:1, 1:N, M:N</a></li>
+                        <li><a class="nav-link py-1" href="#topic-17">17. Typy uložišť</a></li>
+                        <li><a class="nav-link py-1" href="#topic-18">18. DML kategorie</a></li>
+                        <li><a class="nav-link py-1" href="#topic-19">19. Strict 2PL</a></li>
+                        <li><a class="nav-link py-1" href="#topic-20">20. Deadlock</a></li>
+                        <li><a class="nav-link py-1" href="#topic-21">21. Primární klíč vs. klíč</a></li>
+                        <li><a class="nav-link py-1" href="#topic-22">22. Pohledy (Views)</a></li>
+                        <li><a class="nav-link py-1" href="#topic-23">23. Indexy a B-stromy</a></li>
+                        <li><a class="nav-link py-1" href="#topic-24">24. OLTP databáze</a></li>
+                        <li><a class="nav-link py-1" href="#topic-25">25. Replikace a HA</a></li>
+                        <li><a class="nav-link py-1" href="#topic-26">26. SQL Injection</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Main content -->
+            <div class="col-lg-9">
+                <h1 class="mb-4">Databázové systémy</h1>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-1">
+                    <h3>1. Transakce – definice, ACID vlastnosti</h3>
+
+                    <p>Transakce je logická jednotka práce s databází – buď se provede celá, nebo vůbec. Je to jako bankovní převod: buď peníze odejdou z účtu A a přijdou na účet B, nebo se nestane nic.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <strong>Transakce</strong> je posloupnost databázových operací (čtení, zápis), která přechází databázi z jednoho konzistentního stavu do druhého. Transakce začíná příkazem <code>BEGIN</code> a končí buď <code>COMMIT</code> (potvrzení) nebo <code>ROLLBACK</code> (zrušení).
+                    </div>
+
+                    <h4>ACID vlastnosti</h4>
+                    <p>Každá správně implementovaná transakce musí splňovat čtyři vlastnosti:</p>
+
+                    <div class="def-box">
+                        <strong>A – Atomicita (Atomicity):</strong> Transakce je nedělitelná. Buď se provedou všechny operace, nebo žádná. Pokud dojde k chybě uprostřed transakce, databáze se vrátí do původního stavu (<em>rollback</em>).
+                    </div>
+
+                    <div class="def-box">
+                        <strong>C – Konzistence (Consistency):</strong> Transakce přechází databázi z jednoho konzistentního stavu do druhého. Nikdy nesmí porušit integritní omezení (cizí klíče, CHECK podmínky apod.).
+                    </div>
+
+                    <div class="def-box">
+                        <strong>I – Izolace (Isolation):</strong> Souběžně běžící transakce se navzájem neovlivňují — každá transakce "vidí" databázi, jako by běžela sama. V praxi se stupeň izolace nastavuje (viz téma 8).
+                    </div>
+
+                    <div class="def-box">
+                        <strong>D – Trvanlivost (Durability):</strong> Jednou potvrzená (<code>COMMIT</code>) transakce je trvale uložena — i při výpadku systému. Zajišťuje to WAL (Write-Ahead Log / transakční žurnál).
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Převod 1000 Kč z účtu A na účet B:
+                        <ol>
+                            <li><code>UPDATE ucty SET zustatek = zustatek - 1000 WHERE id = 'A'</code></li>
+                            <li><code>UPDATE ucty SET zustatek = zustatek + 1000 WHERE id = 'B'</code></li>
+                            <li><code>COMMIT</code></li>
+                        </ol>
+                        Pokud selže krok 2, atomicita zajistí, že se odroluje i krok 1. Peníze nezmizí.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> Konzistence v ACID <em>není</em> totéž co konzistence v CAP teorému (viz NoSQL). V ACID jde o konzistenci vůči integritním omezením databáze.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Transakce = nedělitelná jednotka práce, končí COMMIT nebo ROLLBACK.</li>
+                            <li><strong>A</strong>tomicita: vše nebo nic. <strong>C</strong>onzistence: zachování pravidel DB. <strong>I</strong>zolace: transakce se nevidí. <strong>D</strong>urability: potvrzená data přežijí pád.</li>
+                            <li>Implementuje se přes WAL (žurnál) a zamykací mechanismy.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-2">
+                    <h3>2. SQL – základní příkazy, struktura dotazu</h3>
+
+                    <p>SQL (Structured Query Language) je deklarativní jazyk pro práci s relačními databázemi — říkáme <em>co</em> chceme, ne <em>jak</em> to získat.</p>
+
+                    <h4>Kategorie příkazů</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Kategorie</th><th>Příkazy</th><th>Účel</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>DML</strong></td><td>SELECT, INSERT, UPDATE, DELETE</td><td>Manipulace s daty</td></tr>
+                            <tr><td><strong>DDL</strong></td><td>CREATE, ALTER, DROP, TRUNCATE</td><td>Definice struktury</td></tr>
+                            <tr><td><strong>DCL</strong></td><td>GRANT, REVOKE</td><td>Řízení přístupu</td></tr>
+                            <tr><td><strong>TCL</strong></td><td>BEGIN, COMMIT, ROLLBACK</td><td>Správa transakcí</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>SELECT – logické pořadí zpracování</h4>
+                    <div class="def-box">
+                        <strong>Pořadí zpracování</strong> (logické, ne pořadí psaní):
+                        <ol>
+                            <li><code>FROM</code> + <code>JOIN</code> — určení zdrojových tabulek</li>
+                            <li><code>WHERE</code> — filtrování řádků</li>
+                            <li><code>GROUP BY</code> — seskupení</li>
+                            <li><code>HAVING</code> — filtrování skupin</li>
+                            <li><code>SELECT</code> — výběr sloupců</li>
+                            <li><code>ORDER BY</code> — řazení výsledku</li>
+                            <li><code>LIMIT</code> / <code>OFFSET</code> — stránkování</li>
+                        </ol>
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad INSERT / UPDATE / DELETE:</strong>
+                        <pre><code>-- Vložení nového záznamu
+INSERT INTO studenti (jmeno, rocnik) VALUES ('Jana', 2);
+
+-- Aktualizace
+UPDATE studenti SET rocnik = 3 WHERE jmeno = 'Jana';
+
+-- Smazání
+DELETE FROM studenti WHERE rocnik = 1;</code></pre>
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> <code>DELETE FROM tabulka</code> bez <code>WHERE</code> smaže všechny řádky! <code>TRUNCATE</code> dělá totéž rychleji, ale nelze ho rolovat zpět v některých DB.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>SQL = deklarativní jazyk; říkáme CO, ne JAK.</li>
+                            <li>DML pracuje s daty, DDL definuje strukturu, TCL řídí transakce.</li>
+                            <li>Logické pořadí zpracování SELECT: FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-3">
+                    <h3>3. Normální formy (1NF, 2NF, 3NF, BCNF)</h3>
+
+                    <p>Normalizace je proces návrhu databáze tak, aby se minimalizovala redundance dat a předcházelo anomáliím při vkládání, aktualizaci a mazání.</p>
+
+                    <div class="def-box">
+                        <strong>1NF (První normální forma):</strong> Každý atribut obsahuje pouze <strong>atomické (nedělitelné) hodnoty</strong> a každý řádek je jednoznačně identifikovatelný. Žádné opakující se skupiny ani vícenásobné hodnoty v jednom sloupci (seznam telefonů v jednom poli).
+                    </div>
+
+                    <div class="def-box">
+                        <strong>2NF (Druhá normální forma):</strong> Je v 1NF a každý neklíčový atribut je <strong>plně funkčně závislý na celém primárním klíči</strong>. Problém nastává jen u složených klíčů — pokud atribut závisí jen na části klíče, tabulka není v 2NF.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>3NF (Třetí normální forma):</strong> Je v 2NF a neexistuje <strong>tranzitivní závislost</strong> neklíčového atributu na klíči (tj. A→B a B→C, kde B není klíč). Všechny neklíčové atributy závisí přímo na klíči, celém klíči a jen na klíči.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>BCNF (Boyce-Coddova normální forma):</strong> Přísnější verze 3NF. Pro každou netriviální funkční závislost $X \to Y$ musí být $X$ <strong>nadklíčem</strong>. BCNF řeší anomálie, které 3NF nestačí odstranit (nastává u relací s více překrývajícími se kandidátními klíči).
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad porušení 2NF:</strong><br>
+                        Tabulka: <code>(student_id, předmět_id, jméno_studenta, název_předmětu, hodnocení)</code><br>
+                        PK: <code>(student_id, předmět_id)</code><br>
+                        <strong>Problém:</strong> <code>jméno_studenta</code> závisí jen na <code>student_id</code>, ne na celém klíči.<br>
+                        <strong>Oprava:</strong> Rozdělit na <code>Studenti(student_id, jmeno)</code>, <code>Předměty(predmet_id, nazev)</code> a <code>Zápisy(student_id, predmet_id, hodnoceni)</code>.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad porušení 3NF:</strong><br>
+                        Tabulka: <code>(zamestnanec_id, oddeleni_id, nazev_oddeleni)</code><br>
+                        <strong>Problém:</strong> <code>zamestnanec_id → oddeleni_id → nazev_oddeleni</code> — tranzitivní závislost.<br>
+                        <strong>Oprava:</strong> Oddělit <code>Oddělení(oddeleni_id, nazev)</code>.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> Normalizace není vždy žádoucí — v analytických databázích (OLAP, datové sklady) se záměrně denormalizuje pro výkon čtení.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li><strong>1NF</strong>: atomické hodnoty, žádné opakující se skupiny.</li>
+                            <li><strong>2NF</strong>: žádná částečná závislost na části složeného klíče.</li>
+                            <li><strong>3NF</strong>: žádná tranzitivní závislost neklíčového atributu.</li>
+                            <li><strong>BCNF</strong>: každý determinant (levá strana FZ) musí být nadklíč.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-4">
+                    <h3>4. Typy JOINů a jejich optimalizace</h3>
+
+                    <p>JOIN spojuje řádky ze dvou nebo více tabulek na základě společné podmínky. Klíčový nástroj pro práci s normalizovanými daty.</p>
+
+                    <div class="def-box">
+                        <strong>INNER JOIN:</strong> Vrátí pouze řádky, kde existuje shoda v <em>obou</em> tabulkách. Nejčastější typ.
+                    </div>
+                    <div class="def-box">
+                        <strong>LEFT (OUTER) JOIN:</strong> Vrátí všechny řádky z levé tabulky + odpovídající z pravé. Kde shoda neexistuje, doplní NULL.
+                    </div>
+                    <div class="def-box">
+                        <strong>RIGHT (OUTER) JOIN:</strong> Symetricky — všechny řádky z pravé tabulky + NULL pro nespárované z levé.
+                    </div>
+                    <div class="def-box">
+                        <strong>FULL (OUTER) JOIN:</strong> Vrátí všechny řádky z obou tabulek. Nespárované doplní NULL.
+                    </div>
+                    <div class="def-box">
+                        <strong>CROSS JOIN:</strong> Kartézský součin — každý řádek levé tabulky s každým řádkem pravé. Výsledek má $m \times n$ řádků.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong>
+                        <pre><code>-- Studenti a jejich zápisy (jen kdo má zápis)
+SELECT s.jmeno, z.predmet
+FROM Studenti s INNER JOIN Zapisy z ON s.id = z.student_id;
+
+-- Všichni studenti, i bez zápisu
+SELECT s.jmeno, z.predmet
+FROM Studenti s LEFT JOIN Zapisy z ON s.id = z.student_id;</code></pre>
+                    </div>
+
+                    <h4>Optimalizace a paměťová náročnost</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Algoritmus</th><th>Složitost</th><th>Kdy se použije</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Nested Loop Join</strong></td><td>$O(n \cdot m)$</td><td>Malá tabulka + index na druhé</td></tr>
+                            <tr><td><strong>Hash Join</strong></td><td>$O(n + m)$</td><td>Velké tabulky bez vhodného indexu</td></tr>
+                            <tr><td><strong>Merge Join</strong></td><td>$O(n \log n + m \log m)$</td><td>Obě tabulky seřazeny / indexovány</td></tr>
+                        </tbody>
+                    </table>
+                    <p><strong>Paměťová náročnost Hash Joinu:</strong> Menší tabulka se načte do hash tabulky v RAM (build phase), větší se prochází (probe phase). Pokud se hash tabulka nevejde do paměti, dochází k <em>hash spill</em> na disk — výrazné zpomalení.</p>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>INNER = průnik; LEFT/RIGHT = vše z jedné strany + NULL; FULL = vše z obou.</li>
+                            <li>Optimalizátor volí Nested Loop (s indexem), Hash Join (velká data) nebo Merge Join (seřazená data).</li>
+                            <li>Hash Join je paměťově náročný — celá menší tabulka musí vejít do RAM.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-5">
+                    <h3>5. SELECT – detailní popis, agregační funkce</h3>
+
+                    <p>SELECT je nejpoužívanější SQL příkaz — slouží k výběru, filtrování, seskupení a agregaci dat.</p>
+
+                    <div class="def-box">
+                        <strong>Základní struktura SELECT:</strong>
+                        <pre><code>SELECT [DISTINCT] sloupce / výrazy / agregace
+FROM   tabulka
+[JOIN  ...]
+[WHERE podmínka]          -- filtruje řádky před seskupením
+[GROUP BY sloupce]        -- seskupí řádky do skupin
+[HAVING podmínka]         -- filtruje skupiny (po GROUP BY)
+[ORDER BY sloupce [ASC|DESC]]
+[LIMIT n OFFSET m];</code></pre>
+                    </div>
+
+                    <h4>Agregační funkce</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Funkce</th><th>Popis</th><th>Chování pro NULL</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>COUNT(*)</code></td><td>Počet řádků včetně NULL</td><td>Počítá všechny řádky</td></tr>
+                            <tr><td><code>COUNT(sloupec)</code></td><td>Počet nenullových hodnot</td><td>Ignoruje NULL</td></tr>
+                            <tr><td><code>SUM(sloupec)</code></td><td>Součet hodnot</td><td>Ignoruje NULL</td></tr>
+                            <tr><td><code>AVG(sloupec)</code></td><td>Průměr hodnot</td><td>Ignoruje NULL (nedělí jimi)</td></tr>
+                            <tr><td><code>MIN / MAX</code></td><td>Minimum / Maximum</td><td>Ignoruje NULL</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box">
+                        <strong>Příklad – průměrné hodnocení na předmět, jen lepší než 2.0:</strong>
+                        <pre><code>SELECT predmet, COUNT(*) AS pocet, AVG(hodnoceni) AS prumer
+FROM Zapisy
+WHERE hodnoceni IS NOT NULL
+GROUP BY predmet
+HAVING AVG(hodnoceni) > 2.0
+ORDER BY prumer ASC;</code></pre>
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>WHERE vs HAVING:</strong> <code>WHERE</code> filtruje <em>před</em> seskupením (pracuje s jednotlivými řádky), <code>HAVING</code> filtruje <em>po</em> seskupení (pracuje s agregáty). Agregační funkce <strong>nelze</strong> použít ve <code>WHERE</code>.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> Sloupce v <code>SELECT</code>, které nejsou v <code>GROUP BY</code>, musí být obaleny agregační funkcí — jinak dotaz selže (striktní DB) nebo vrátí nedefinovaný výsledek.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Pořadí zpracování: FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY.</li>
+                            <li>Agregační funkce (COUNT, SUM, AVG, MIN, MAX) ignorují NULL.</li>
+                            <li>HAVING = WHERE pro skupiny; WHERE = filtr pro jednotlivé řádky.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-6">
+                    <h3>6. Relační model – základy, ER diagramy (konceptuální model)</h3>
+
+                    <p>Relační model je způsob organizace dat do tabulek (relací) propojených klíči. ER diagram je vizuální nástroj pro konceptuální návrh — modeluje doménu <em>před</em> implementací v konkrétní DB.</p>
+
+                    <div class="def-box">
+                        <strong>Relace (tabulka):</strong> Množina n-tic (řádků) se stejnou strukturou. Každý sloupec je <strong>atribut</strong>, každý řádek je <strong>n-tice</strong>. Pořadí řádků i sloupců je matematicky nedefinované (jde o množinu).
+                    </div>
+
+                    <h4>ER Diagram – komponenty</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Symbol</th><th>Popis</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Obdélník</strong></td><td>Entita (věc/objekt, např. Student, Předmět)</td></tr>
+                            <tr><td><strong>Elipsa</strong></td><td>Atribut entity (jméno, rodné číslo...)</td></tr>
+                            <tr><td><strong>Podtržená elipsa</strong></td><td>Identifikující atribut (primární klíč)</td></tr>
+                            <tr><td><strong>Kosočtverec</strong></td><td>Vztah mezi entitami (Zapisuje se, Pracuje v...)</td></tr>
+                            <tr><td><strong>Čára s čísly / písmeny</strong></td><td>Kardinalita vztahu (1:1, 1:N, M:N)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Student <em>zapisuje se</em> na Předmět (M:N vztah).<br>
+                        ER: entita Student — kosočtverec „Zapise_se" — entita Předmět, kardinalita M:N.<br>
+                        Převod do relačního modelu: vznik vazební tabulky <code>Zapis(student_id FK, predmet_id FK, hodnoceni)</code>.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> Slovo „relace" v relačním modelu <strong>neznamená vztah</strong> — označuje tabulku (z lat. <em>relatio</em> = uspořádaná množina). Vztah v ER diagramu se anglicky jmenuje <em>relationship</em>.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Relace = tabulka; atribut = sloupec; n-tice = řádek.</li>
+                            <li>ER diagram modeluje entity, jejich atributy a vztahy (kardinalitu) — nezávisle na DB.</li>
+                            <li>M:N → vazební tabulka; 1:N → cizí klíč na straně N.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-7">
+                    <h3>7. Dirty read a problémy paralelního přístupu (RW, WR, WW konflikty)</h3>
+
+                    <p>Když více transakcí běží souběžně, mohou si vzájemně "šlapat na prsty" — vznikají anomálie v čtení a zápisu dat.</p>
+
+                    <h4>Tři čtecí anomálie</h4>
+
+                    <div class="def-box">
+                        <strong>Dirty Read (špinavé čtení):</strong> Transakce T2 přečte data, která T1 změnila, ale ještě <em>nepotvrdila</em> (COMMIT). Pokud T1 provede ROLLBACK, T2 pracuje s daty, která nikdy neexistovala.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Non-Repeatable Read (neopakovatelné čtení):</strong> T2 přečte stejný řádek dvakrát, ale dostane jiné výsledky, protože T1 mezitím řádek <em>změnila a potvrdila</em>.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Phantom Read (fantómové čtení):</strong> T2 provede stejný dotaz dvakrát, ale dostane jiný <em>počet řádků</em>, protože T1 mezitím řádky <em>vložila nebo smazala a potvrdila</em>.
+                    </div>
+
+                    <h4>Konflikty operací (WR, RW, WW)</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Konflikt</th><th>Popis</th><th>Anomálie</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>WR</strong></td><td>T1 zapíše (nepotvrzeno), T2 čte</td><td>Dirty Read</td></tr>
+                            <tr><td><strong>RW</strong></td><td>T1 čte, T2 zapíše a potvrdí, T1 čte znovu</td><td>Non-Repeatable Read</td></tr>
+                            <tr><td><strong>WW</strong></td><td>T1 zapíše, T2 přepíše, T1 odroluje → ztráta T2</td><td>Lost Update</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box">
+                        <strong>Příklad dirty read:</strong><br>
+                        T1: <code>UPDATE ucet SET zustatek = 0 WHERE id=1</code> (nepotvrzeno)<br>
+                        T2: <code>SELECT zustatek FROM ucet WHERE id=1</code> → vrátí 0<br>
+                        T1: <code>ROLLBACK</code> — zůstatek je zpět na původní hodnotě<br>
+                        T2 pracovala s hodnotou, která reálně nikdy neexistovala.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Dirty read: čtu nepotvrzená data (WR konflikt).</li>
+                            <li>Non-repeatable read: stejný řádek dá jiný výsledek (RW konflikt).</li>
+                            <li>Phantom read: stejný dotaz dá jiný počet řádků (nové vložení/smazání).</li>
+                            <li>WW konflikt → ztráta aktualizace (Lost Update).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-8">
+                    <h3>8. Zamykání, stupně izolovanosti</h3>
+
+                    <p>Zamykání je hlavní mechanismus, jak databáze zajišťuje izolaci transakcí. Stupně izolace jsou kompromis mezi bezpečností a výkonem.</p>
+
+                    <h4>Typy zámků</h4>
+                    <div class="def-box">
+                        <strong>Sdílený zámek (S-lock / Read lock):</strong> Více transakcí může současně číst. Nikdo nesmí psát, dokud jsou S-locky aktivní.
+                    </div>
+                    <div class="def-box">
+                        <strong>Exkluzivní zámek (X-lock / Write lock):</strong> Pouze jedna transakce může psát. Žádná jiná transakce nesmí ani číst, ani psát.
+                    </div>
+
+                    <h4>Stupně izolovanosti (SQL standard)</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Stupeň</th><th>Dirty Read</th><th>Non-Rep. Read</th><th>Phantom Read</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>READ UNCOMMITTED</strong></td><td>možný</td><td>možný</td><td>možný</td></tr>
+                            <tr><td><strong>READ COMMITTED</strong></td><td>✗ zamezeno</td><td>možný</td><td>možný</td></tr>
+                            <tr><td><strong>REPEATABLE READ</strong></td><td>✗</td><td>✗ zamezeno</td><td>možný</td></tr>
+                            <tr><td><strong>SERIALIZABLE</strong></td><td>✗</td><td>✗</td><td>✗ zamezeno</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box">
+                        <strong>Příklad READ COMMITTED (výchozí v PostgreSQL):</strong><br>
+                        Transakce vidí jen potvrzená data jiných transakcí. Řeší dirty read, ale ne non-repeatable read — dvě čtení ve stejné transakci mohou vrátit různé výsledky, pokud jiná transakce mezitím změnila data.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> Vyšší stupeň izolace = méně anomálií, ale <em>nižší výkon</em> (více uzamčení, více čekání, více deadlocků). READ UNCOMMITTED se v praxi téměř nepoužívá.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>S-lock: sdílené čtení; X-lock: exkluzivní zápis.</li>
+                            <li>READ COMMITTED (výchozí) zabrání dirty read.</li>
+                            <li>SERIALIZABLE zabrání všem anomáliím za cenu výkonu.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-9">
+                    <h3>9. Funkční závislosti – definice, klíč, nadklíč</h3>
+
+                    <p>Funkční závislosti popisují, jaké atributy "určují" jiné atributy — jsou matematickým základem normalizace databáze.</p>
+
+                    <div class="def-box">
+                        <strong>Funkční závislost (FZ):</strong> Říkáme, že $X \to Y$ (X funkčně určuje Y), pokud pro každé dvě n-tice $t_1, t_2$ v relaci platí: pokud $t_1[X] = t_2[X]$, pak $t_1[Y] = t_2[Y]$. Znalost hodnot atributů X jednoznačně určuje hodnotu atributů Y.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Nadklíč (Superkey):</strong> Množina atributů $K$, která funkčně určuje všechny ostatní atributy relace: $K \to \text{(všechny atributy)}$. Může obsahovat "nadbytečné" atributy.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Kandidátní klíč (Candidate Key):</strong> Minimální nadklíč — žádná vlastní podmnožina $K$ není nadklíčem. Relace může mít více kandidátních klíčů.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Primární klíč:</strong> Jeden zvolený kandidátní klíč, který slouží jako "oficiální" identifikátor řádků v tabulce.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Tabulka <code>Zamestnanec(rodne_cislo, email, jmeno, oddeleni)</code><br>
+                        FZ: <code>rodne_cislo → {email, jmeno, oddeleni}</code>, <code>email → {rodne_cislo, jmeno, oddeleni}</code><br>
+                        Kandidátní klíče: <code>{rodne_cislo}</code>, <code>{email}</code><br>
+                        Nadklíč: <code>{rodne_cislo, email}</code> (nadbytečný — samotné rodné číslo stačí)
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>$X \to Y$: znalost X jednoznačně určuje Y.</li>
+                            <li>Nadklíč: určuje vše; kandidátní klíč: minimální nadklíč; primární klíč: zvolený klíč.</li>
+                            <li>FZ jsou základem normalizace — pomáhají odhalit redundanci a závislosti.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-10">
+                    <h3>10. ORM (Object-Relational Mapping) – principy, mapování vztahů</h3>
+
+                    <p>ORM překlenuje propast mezi objektovým světem programu a relačním světem databáze — píšeme kód v objektech, ORM se stará o SQL automaticky.</p>
+
+                    <div class="def-box">
+                        <strong>ORM (Object-Relational Mapping):</strong> Vrstva, která automaticky mapuje objekty (třídy) v kódu na tabulky v databázi a naopak. Vývojář pracuje s objekty, ORM generuje SQL dotazy.
+                    </div>
+
+                    <h4>Principy mapování</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>OO svět</th><th>Relační svět</th></tr></thead>
+                        <tbody>
+                            <tr><td>Třída (<code>class Student</code>)</td><td>Tabulka (<code>studenti</code>)</td></tr>
+                            <tr><td>Atribut (<code>jmeno</code>)</td><td>Sloupec (<code>jmeno VARCHAR</code>)</td></tr>
+                            <tr><td>Objekt (instance)</td><td>Řádek v tabulce</td></tr>
+                            <tr><td>Reference (<code>@ManyToOne</code>)</td><td>Cizí klíč</td></tr>
+                            <tr><td>Kolekce (<code>@OneToMany</code>)</td><td>Vazební tabulka / FK</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box">
+                        <strong>Výhody ORM:</strong> Méně SQL kódu, přenositelnost mezi DB, práce s objekty je přirozenější.
+                    </div>
+                    <div class="warn-box">
+                        <strong>Problémy ORM:</strong>
+                        <ul>
+                            <li><strong>N+1 problém:</strong> Načtení kolekce provede 1 dotaz na seznam + N dotazů na každý prvek. Řeší se eager loading (<code>JOIN FETCH</code>).</li>
+                            <li><strong>Impedance mismatch:</strong> Objekty mají dědičnost, polymorfismus — tabulky ne. Mapování dědičnosti je složité.</li>
+                            <li><strong>Výkon:</strong> Generované SQL nemusí být optimální; pro složité dotazy je lepší vlastní SQL (JPQL, native query).</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>ORM = automatický překlad třída↔tabulka, objekt↔řádek.</li>
+                            <li>Zjednodušuje vývoj, ale může způsobit N+1 problém a nedostatečný výkon.</li>
+                            <li>Populární ORM: Hibernate (Java/JPA), SQLAlchemy (Python), Entity Framework (.NET).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-11">
+                    <h3>11. Serializovatelnost – konfliktní páry, konfliktní uspořádání</h3>
+
+                    <p>Serializovatelnost garantuje, že výsledek souběžného provádění transakcí je stejný, jako by se prováděly po jedné — je to formální základ korektnosti rozvrhu.</p>
+
+                    <div class="def-box">
+                        <strong>Rozvrh (Schedule):</strong> Prokládané pořadí operací více transakcí. <strong>Sériový rozvrh</strong>: transakce se neprolínají (T1 celá, pak T2 celá). <strong>Serializovatelný rozvrh</strong>: jeho výsledek je ekvivalentní nějakému sériovému rozvrhu.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Konfliktní operace:</strong> Dvě operace jsou v konfliktu, pokud:
+                        <ol>
+                            <li>Patří různým transakcím,</li>
+                            <li>Přistupují ke stejnému datovému objektu,</li>
+                            <li>Alespoň jedna z nich je zápis (W).</li>
+                        </ol>
+                        Typy: <strong>WR</strong> (write-read), <strong>RW</strong> (read-write), <strong>WW</strong> (write-write).
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Konfliktní serializovatelnost a precedenční graf:</strong> Rozvrh je konfliktně serializovatelný, pokud ho lze přeuspořádat přehazováním <em>nekonflikních</em> operací na sériový rozvrh. Test: sestav <strong>precedenční graf</strong> — uzel = transakce, hrana $T_i \to T_j$ = Ti má konfliktní operaci před Tj.<br>
+                        Rozvrh je serializovatelný $\Leftrightarrow$ precedenční graf je <strong>acyklický (DAG)</strong>.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Rozvrh S: R1(A), R2(A), W1(A), W2(A)<br>
+                        Konflikt: W1(A) vs. R2(A) — R2 proběhl před W1 → hrana T2 → T1? Ne: W1 je po R2 → T1 zapsal po čtení T2 → hrana T1 → T2 pro W1 vs W2 (W1 před W2).<br>
+                        Graf: T1 → T2 (acyklický) → rozvrh je serializovatelný (ekvivalentní T1, T2).
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Konflikt = různé transakce, stejný objekt, alespoň jeden zápis.</li>
+                            <li>Precedenční graf: acyklický ↔ konfliktně serializovatelný.</li>
+                            <li>2PL protokol garantuje serializovatelné rozvrhy.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-12">
+                    <h3>12. Armstrongovy axiomy, algoritmus nalezení všech klíčů</h3>
+
+                    <p>Armstrongovy axiomy jsou pravidla pro odvozování funkčních závislostí — umožňují z dané sady FZ odvodit všechny ostatní platné závislosti a najít klíče relace.</p>
+
+                    <div class="def-box">
+                        <strong>Tři základní axiomy (Armstrong, 1974):</strong>
+                        <ol>
+                            <li><strong>Reflexivita:</strong> Pokud $Y \subseteq X$, pak $X \to Y$. (Každá množina atributů určuje svou podmnožinu.)</li>
+                            <li><strong>Augmentace (rozšíření):</strong> Pokud $X \to Y$, pak $XZ \to YZ$ pro libovolné $Z$. (Přidáme-li atributy na obě strany, závislost platí dál.)</li>
+                            <li><strong>Tranzitivita:</strong> Pokud $X \to Y$ a $Y \to Z$, pak $X \to Z$.</li>
+                        </ol>
+                        Odvozená pravidla: sjednocení ($X \to Y, X \to Z \Rightarrow X \to YZ$) a dekompozice.
+                    </div>
+
+                    <h4>Uzávěr množiny atributů $X^+$</h4>
+                    <div class="def-box">
+                        <strong>Algoritmus výpočtu uzávěru $X^+$:</strong>
+                        <ol>
+                            <li>Začni s $X^+ = X$.</li>
+                            <li>Pro každou FZ $A \to B$ v množině F: pokud $A \subseteq X^+$, přidej $B$ do $X^+$.</li>
+                            <li>Opakuj krok 2, dokud se $X^+$ zvětšuje.</li>
+                        </ol>
+                        Pokud $X^+ = \text{všechny atributy}$, pak $X$ je nadklíč.
+                    </div>
+
+                    <h4>Algoritmus nalezení kandidátního klíče</h4>
+                    <div class="def-box">
+                        <ol>
+                            <li>Začni s $K = \text{všechny atributy}$.</li>
+                            <li>Pro každý atribut $A \in K$: pokud $(K \setminus \{A\})^+ = \text{všechny atributy}$, odstraň $A$ z $K$.</li>
+                            <li>Výsledné $K$ je kandidátní klíč (minimální nadklíč).</li>
+                        </ol>
+                        Pro nalezení <em>všech</em> klíčů: vyzkoušej všechny podmnožiny a ověřuj uzávěrem.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> FZ: $\{AB \to C,\; C \to D,\; D \to A\}$, atributy $\{A,B,C,D\}$.<br>
+                        Uzávěr $\{AB\}^+$: AB→C, C→D, D→A → $\{A,B,C,D\}$ → nadklíč.<br>
+                        Odebrání A: $\{B\}^+ = \{B\}$ ≠ vše → A nelze odebrat.<br>
+                        Odebrání B: $\{A\}^+ = \{A,D\}$ ≠ vše → B nelze odebrat.<br>
+                        Kandidátní klíč: $\{A, B\}$.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>3 axiomy: reflexivita, augmentace, tranzitivita — úplné a bezesporné.</li>
+                            <li>Uzávěr $X^+$: atributy, které X funkčně určuje (výpočet iterací).</li>
+                            <li>$X$ je kandidátní klíč ↔ $X^+ = $ vše a žádná vlastní podmnožina toto nesplňuje.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-13">
+                    <h3>13. Postup návrhu DB: konceptuální → relační model → ER</h3>
+
+                    <p>Návrh databáze probíhá ve třech fázích — od abstraktního popisu světa k fyzickému schématu tabulek.</p>
+
+                    <div class="def-box">
+                        <strong>1. Konceptuální model (ER diagram):</strong> Nezávislý na konkrétní DB. Modelujeme entity, jejich atributy a vztahy. Výstup: ER diagram s kardinalitami vztahů.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>2. Logický (relační) model:</strong> Převod ER do tabulek. Pravidla:
+                        <ul>
+                            <li>Každá entita → tabulka s primárním klíčem.</li>
+                            <li>Vztah 1:N → cizí klíč na straně N.</li>
+                            <li>Vztah M:N → vazební tabulka s FK na obě strany.</li>
+                            <li>Vztah 1:1 → FK v jedné z tabulek + UNIQUE, nebo sloučení.</li>
+                        </ul>
+                        V této fázi probíhá <strong>normalizace</strong> (1NF, 2NF, 3NF, BCNF).
+                    </div>
+
+                    <div class="def-box">
+                        <strong>3. Fyzický model:</strong> Volba datových typů, indexů, particionování. Závisí na konkrétním DBMS (PostgreSQL, MySQL, Oracle...).
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad celého procesu:</strong><br>
+                        <em>Konceptuální:</em> Entity <code>Student</code> a <code>Předmět</code> s M:N vztahem „Zapisuje se".<br>
+                        <em>Logický:</em> <code>Student(id PK, jmeno, email)</code>, <code>Predmet(id PK, nazev, kredity)</code>, <code>Zapis(student_id FK, predmet_id FK, rok, hodnoceni), PK(student_id, predmet_id)</code>.<br>
+                        <em>Fyzický:</em> Index na <code>email</code>, <code>VARCHAR(100)</code> pro jméno, <code>NUMERIC(3,1)</code> pro hodnocení.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Konceptuální (ER, nezávislý na DB) → Logický (relační schéma + normalizace) → Fyzický (implementace v konkrétní DB).</li>
+                            <li>M:N vždy → vazební tabulka; 1:N → FK na straně N.</li>
+                            <li>Normalizace se aplikuje v logické fázi před fyzickou implementací.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-14">
+                    <h3>14. Integritní omezení – typy v SQL, referenční integrita, referenční akce</h3>
+
+                    <p>Integritní omezení jsou pravidla vymáhající korektnost a konzistenci dat přímo v databázi — chrání data bez ohledu na to, jaká aplikace s nimi pracuje.</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Omezení</th><th>Popis</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>NOT NULL</code></td><td>Sloupec nesmí obsahovat NULL.</td></tr>
+                            <tr><td><code>UNIQUE</code></td><td>Hodnoty musí být unikátní (NULL je povoleno vícekrát).</td></tr>
+                            <tr><td><code>PRIMARY KEY</code></td><td>NOT NULL + UNIQUE; jedinečná identifikace řádku.</td></tr>
+                            <tr><td><code>FOREIGN KEY</code></td><td>Hodnota musí odpovídat existující hodnotě PK v jiné tabulce (nebo NULL).</td></tr>
+                            <tr><td><code>CHECK</code></td><td>Podmínka platná pro každý řádek (např. <code>vek &gt; 0</code>).</td></tr>
+                            <tr><td><code>DEFAULT</code></td><td>Výchozí hodnota při nevyplnění sloupce.</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="def-box">
+                        <strong>Referenční integrita:</strong> Cizí klíč (FK) musí vždy odkazovat na existující primární klíč v referencované tabulce — nebo být NULL. Zabraňuje "osiřelým" záznamům.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Referenční akce</strong> (co se stane při smazání/změně referencovaného PK):
+                        <ul>
+                            <li><code>CASCADE</code>: automaticky smaž/změň i závislé záznamy.</li>
+                            <li><code>SET NULL</code>: nastav FK na NULL.</li>
+                            <li><code>SET DEFAULT</code>: nastav FK na výchozí hodnotu.</li>
+                            <li><code>RESTRICT</code> / <code>NO ACTION</code>: zakáže operaci, pokud existují závislé záznamy.</li>
+                        </ul>
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong>
+                        <pre><code>CREATE TABLE Zapisy (
+  student_id INT REFERENCES Studenti(id) ON DELETE CASCADE,
+  predmet_id INT REFERENCES Predmety(id) ON DELETE RESTRICT,
+  hodnoceni  NUMERIC CHECK (hodnoceni BETWEEN 1 AND 4)
+);</code></pre>
+                        Smazání studenta → automaticky smaže jeho zápisy. Pokus o smazání předmětu, který má zápisy → zakázáno.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>NOT NULL, UNIQUE, PK, FK, CHECK, DEFAULT — 6 základních omezení SQL.</li>
+                            <li>FK + referenční akce (CASCADE, SET NULL, RESTRICT) zajišťují referenční integritu.</li>
+                            <li>Omezení se kontrolují při každé DML operaci automaticky.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-15">
+                    <h3>15. JPA – dědičnost objektů v DB, mapování vztahů, persistentní kontext, stavy entity</h3>
+
+                    <p>JPA (Jakarta Persistence API) je Java standard pro ORM. Definuje, jak mapovat objekty na tabulky, spravovat jejich životní cyklus a řešit dědičnost.</p>
+
+                    <h4>Stavy entity v JPA</h4>
+                    <div class="def-box">
+                        <strong>4 stavy entity (životní cyklus):</strong>
+                        <ol>
+                            <li><strong>New (Transient):</strong> Objekt existuje v paměti, není spojen s DB ani EntityManagerem. Volání <code>new Student()</code>.</li>
+                            <li><strong>Managed (Persistent):</strong> EntityManager ho sleduje; změny se automaticky synchronizují s DB při commitu (<em>dirty checking</em>).</li>
+                            <li><strong>Detached:</strong> Byl spravován, ale EntityManager byl uzavřen nebo se zavolalo <code>detach()</code>. Změny se nesynchronizují.</li>
+                            <li><strong>Removed:</strong> Označen ke smazání; při commitu bude smazán z DB.</li>
+                        </ol>
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Persistentní kontext:</strong> Cache 1. úrovně, kterou spravuje EntityManager. Obsahuje všechny spravované entity v rámci jedné transakce/session. Při commitu synchronizuje změny s DB (flush). Každý EntityManager má svůj vlastní kontext.
+                    </div>
+
+                    <h4>Strategie mapování dědičnosti</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Strategie</th><th>Popis</th><th>Výhody / Nevýhody</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>SINGLE_TABLE</strong></td><td>Celá hierarchie v jedné tabulce + diskriminátorový sloupec</td><td>Rychlé čtení, žádný JOIN; NULL hodnoty pro nepoužité atributy</td></tr>
+                            <tr><td><strong>TABLE_PER_CLASS</strong></td><td>Každá konkrétní třída má svou tabulku</td><td>Žádný JOIN pro konkrétní třídu; duplicita sloupců, obtížné polymorfní dotazy</td></tr>
+                            <tr><td><strong>JOINED</strong></td><td>Sdílené atributy v rodičovské tabulce, specifické ve vlastní</td><td>Normalizovaný návrh; JOIN při každém čtení</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box">
+                        <strong>Příklad SINGLE_TABLE:</strong>
+                        <pre><code>@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "typ")
+public class Vozidlo { int id; String znacka; }
+
+@Entity @DiscriminatorValue("AUTO")
+public class Auto extends Vozidlo { int pocetDveri; }
+
+@Entity @DiscriminatorValue("MOTO")
+public class Motorka extends Vozidlo { boolean sajdkara; }</code></pre>
+                        Výsledek: jedna tabulka <code>Vozidlo</code> se sloupci <code>id, znacka, typ, pocetDveri, sajdkara</code>.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Stavy entity: New → Managed (em.persist) → Detached/Removed.</li>
+                            <li>Persistentní kontext = cache EntityManageru; dirty checking auto-synchronizuje změny.</li>
+                            <li>Dědičnost: SINGLE_TABLE (výkon), JOINED (normalizace), TABLE_PER_CLASS (izolace tabulek).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-16">
+                    <h3>16. Vazby 1:1, 1:N, M:N – reprezentace v relačním a OO návrhu</h3>
+
+                    <p>Kardinalita vztahu určuje, kolik instancí jedné entity může být spojeno s instancemi druhé — a přímo ovlivňuje, jak vztah implementujeme v databázi.</p>
+
+                    <div class="def-box">
+                        <strong>1:1 (One-to-One):</strong> Každé instanci A odpovídá nejvýše jedna instance B a naopak.<br>
+                        Příklad: Osoba — Cestovní_pas (každý pas patří jedné osobě).<br>
+                        <em>Implementace:</em> FK v jedné z tabulek + UNIQUE constraint, nebo sloučení do jedné tabulky.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>1:N (One-to-Many):</strong> Jedna instance A odpovídá více instancím B.<br>
+                        Příklad: Oddělení — Zaměstnanci (jedno oddělení má více zaměstnanců).<br>
+                        <em>Implementace:</em> FK na straně N — <code>Zamestnanec.oddeleni_id → Oddeleni.id</code>.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>M:N (Many-to-Many):</strong> Více instancí A odpovídá více instancím B.<br>
+                        Příklad: Student — Předmět (student zapisuje více předmětů, předmět mají více studentů).<br>
+                        <em>Implementace:</em> Vazební (asociativní) tabulka s FK na obě strany. Může nést vlastní atributy (hodnocení, rok).
+                    </div>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Kardinalita</th><th>Relační model</th><th>Java/JPA</th></tr></thead>
+                        <tbody>
+                            <tr><td>1:1</td><td>FK + UNIQUE</td><td><code>@OneToOne</code></td></tr>
+                            <tr><td>1:N</td><td>FK na straně N</td><td><code>@OneToMany / @ManyToOne</code></td></tr>
+                            <tr><td>M:N</td><td>Vazební tabulka</td><td><code>@ManyToMany</code> nebo entita pro vazbu</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> M:N vztah s vlastními atributy (např. hodnocení v Zápisu) by měl být modelován jako plnohodnotná entita, ne jen <code>@ManyToMany</code> — jinak nelze atributy vztahu uložit.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>1:1 → FK + UNIQUE v jedné tabulce (nebo sloučit).</li>
+                            <li>1:N → FK na straně "mnoha".</li>
+                            <li>M:N → vazební tabulka (může mít vlastní atributy).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-17">
+                    <h3>17. Typy uložišť (relační DB, NoSQL) – výhody a nevýhody</h3>
+
+                    <p>Ne všechna data se hodí do relační tabulky — NoSQL databáze řeší scénáře, kde relační model naráží na svá omezení: flexibilita schématu, horizontální škálovatelnost.</p>
+
+                    <h4>Relační databáze (RDBMS)</h4>
+                    <div class="ex-box">
+                        <strong>Příklady:</strong> PostgreSQL, MySQL, Oracle, SQL Server.<br>
+                        <strong>Výhody:</strong> ACID transakce, silná konzistence, SQL standard, komplexní dotazy s JOINy.<br>
+                        <strong>Nevýhody:</strong> Obtížná horizontální škálovatelnost (sharding), fixní schéma, výkon při masivní zápisové zátěži na distribuovaném clusteru.
+                    </div>
+
+                    <h4>NoSQL databáze – kategorie</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Typ</th><th>Příklady</th><th>Vhodné pro</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Dokumentové</strong></td><td>MongoDB, CouchDB</td><td>Flexibilní schéma, JSON dokumenty, CMS, katalogy</td></tr>
+                            <tr><td><strong>Klíč-hodnota</strong></td><td>Redis, DynamoDB</td><td>Cache, session, jednoduché vyhledávání</td></tr>
+                            <tr><td><strong>Sloupcové</strong></td><td>Cassandra, HBase</td><td>Analytika, big data, časové řady</td></tr>
+                            <tr><td><strong>Grafové</strong></td><td>Neo4j, Neptune</td><td>Sociální sítě, doporučení, znalostní grafy</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="def-box">
+                        <strong>CAP teorém (Brewer, 2000):</strong> Distribuovaný systém nemůže současně garantovat všechny tři vlastnosti — může garantovat jen dvě ze tří:
+                        <ul>
+                            <li><strong>C</strong>onsistency: všechny uzly vidí stejná data ve stejný čas.</li>
+                            <li><strong>A</strong>vailability: každý dotaz dostane odpověď (ne nutně aktuální).</li>
+                            <li><strong>P</strong>artition tolerance: systém funguje i při výpadku části sítě.</li>
+                        </ul>
+                        NoSQL obvykle volí <strong>AP</strong> (dostupnost + partition tolerance) → <em>eventual consistency</em> — data se nakonec shodnou, ale ne okamžitě.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>RDBMS: ACID, SQL, silná konzistence; NoSQL: škálovatelnost, flexibilní schéma, eventual consistency.</li>
+                            <li>Typy NoSQL: dokumentové, klíč-hodnota, sloupcové, grafové.</li>
+                            <li>CAP teorém: v distribuovaném systému nelze mít C + A + P zároveň.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-18">
+                    <h3>18. DML – kategorie příkazů, příklady</h3>
+
+                    <p>DML (Data Manipulation Language) je podmnožina SQL pro práci s daty — čtení, vkládání, aktualizace a mazání.</p>
+
+                    <div class="def-box">
+                        <strong>Příkazy DML:</strong>
+                        <ul>
+                            <li><code>SELECT</code> — čtení dat (někdy vyčleňován do DQL)</li>
+                            <li><code>INSERT</code> — vkládání nových řádků</li>
+                            <li><code>UPDATE</code> — úprava existujících řádků</li>
+                            <li><code>DELETE</code> — mazání řádků</li>
+                            <li><code>MERGE</code> — kombinace INSERT + UPDATE (upsert)</li>
+                        </ul>
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklady:</strong>
+                        <pre><code>-- INSERT
+INSERT INTO produkty (nazev, cena) VALUES ('Notebook', 25000);
+
+-- UPDATE s podmínkou
+UPDATE produkty SET cena = cena * 0.9 WHERE cena > 10000;
+
+-- DELETE
+DELETE FROM produkty WHERE cena < 100;
+
+-- MERGE (upsert)
+MERGE INTO cile USING zdroj ON (cile.id = zdroj.id)
+WHEN MATCHED THEN UPDATE SET cile.hodnota = zdroj.hodnota
+WHEN NOT MATCHED THEN INSERT (id, hodnota) VALUES (zdroj.id, zdroj.hodnota);</code></pre>
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>DML vs DDL vs DCL:</strong> DML pracuje s <em>daty</em> (řádky), DDL definuje <em>strukturu</em> (tabulky), DCL řídí <em>přístupová práva</em>. DML příkazy jsou transakční (lze je rolovat zpět); DDL příkazy jsou v mnoha DB auto-commit.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>DML = SELECT, INSERT, UPDATE, DELETE, MERGE.</li>
+                            <li>DML operuje s řádky a je transakční (rollbackovatelný).</li>
+                            <li>MERGE kombinuje INSERT a UPDATE do jedné operace (upsert pattern).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-19">
+                    <h3>19. Strict 2PL (Two-Phase Locking)</h3>
+
+                    <p>Strict Two-Phase Locking je protokol zamykání, který garantuje serializovatelnost a zároveň předchází kaskádovým rollbackům — jde o nejpoužívanější variantu 2PL v praxi.</p>
+
+                    <div class="def-box">
+                        <strong>2PL (Two-Phase Locking):</strong> Transakce prochází dvěma fázemi:
+                        <ol>
+                            <li><strong>Rostoucí fáze (Growing):</strong> Transakce smí pouze <em>získávat</em> zámky, nesmí žádný uvolnit.</li>
+                            <li><strong>Klesající fáze (Shrinking):</strong> Transakce smí pouze <em>uvolňovat</em> zámky, nesmí žádný nový získat.</li>
+                        </ol>
+                        Tato podmínka garantuje acyklický precedenční graf → <strong>serializovatelnost</strong>.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Strict 2PL:</strong> Varianta 2PL, kde transakce drží <em>všechny exkluzivní zámky (X-locky)</em> až do COMMIT nebo ROLLBACK. Zabraňuje:
+                        <ul>
+                            <li>Kaskádovým rollbackům — jiná transakce nemůže přečíst nepotvrzená data.</li>
+                            <li>Dirty read.</li>
+                        </ul>
+                        Nevýhoda: zámky jsou drženy déle → více blokování → nižší paralelismus.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Rozdíl 2PL vs Strict 2PL:</strong><br>
+                        <em>2PL:</em> T1 může uvolnit X-lock na A uprostřed transakce, T2 může A přečíst — pokud T1 pak rollbackuje, T2 pracovala se špinavými daty (kaskádový rollback T2).<br>
+                        <em>Strict 2PL:</em> X-locky se drží do commitu → T2 musí čekat, ale data jsou vždy čistá.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>2PL: fáze získávání + fáze uvolňování → garantuje serializovatelnost.</li>
+                            <li>Strict 2PL: X-locky až do commitu → zabraňuje dirty read a kaskádovým rollbackům.</li>
+                            <li>Nevýhoda: vyšší počet deadlocků, nižší paralelismus.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-20">
+                    <h3>20. Deadlock – Coffmanovy podmínky, detekce, prevence, graf čekání</h3>
+
+                    <p>Deadlock (uváznutí) nastane, když dvě nebo více transakcí čekají každá na zdroj, který drží ta druhá — bez vnějšího zásahu by čekaly věčně.</p>
+
+                    <div class="def-box">
+                        <strong>Coffmanovy podmínky (1971):</strong> Deadlock nastane právě tehdy, platí-li všechny čtyři podmínky <em>současně</em>:
+                        <ol>
+                            <li><strong>Vzájemné vyloučení (Mutual Exclusion):</strong> Zdroj může v daný moment používat jen jedna transakce.</li>
+                            <li><strong>Drž a čekej (Hold and Wait):</strong> Transakce drží zdroje a přitom čeká na další.</li>
+                            <li><strong>Bez preempce (No Preemption):</strong> Zdroje nelze násilně odebrat — transakce je musí sama uvolnit.</li>
+                            <li><strong>Cyklické čekání (Circular Wait):</strong> Existuje cyklus T1 čeká na T2, T2 čeká na T3, ..., Tn čeká na T1.</li>
+                        </ol>
+                    </div>
+
+                    <h4>Graf čekání (Wait-For Graph)</h4>
+                    <div class="def-box">
+                        Uzly = transakce. Hrana $T_i \to T_j$ = $T_i$ čeká na zdroj, který drží $T_j$.<br>
+                        <strong>Deadlock ↔ cyklus ve wait-for grafu.</strong>
+                    </div>
+
+                    <h4>Detekce</h4>
+                    <p>Většina RDBMS (PostgreSQL, MySQL, Oracle) periodicky spouští algoritmus detekce cyklů ve wait-for grafu. Při nalezení cyklu je zvolena <strong>oběť (victim)</strong> — jedna transakce je ukončena (rollback), cyklus se přeruší a ostatní mohou pokračovat.</p>
+
+                    <h4>Prevence</h4>
+                    <div class="def-box">
+                        <ul>
+                            <li><strong>Timeout:</strong> Transakce čeká max. N sekund, pak se odroluje.</li>
+                            <li><strong>Seřazené zamykání:</strong> Všechny transakce zamykají zdroje ve stejném pořadí → cyklus nemůže vzniknout (porušuje podmínku cyklického čekání).</li>
+                            <li><strong>Wait-Die / Wound-Wait:</strong> Priority podle věku transakce — starší čeká nebo zabije mladší, aby se zabránilo cyklu.</li>
+                        </ul>
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad deadlocku:</strong><br>
+                        T1: LOCK(A) → čeká na LOCK(B)<br>
+                        T2: LOCK(B) → čeká na LOCK(A)<br>
+                        Wait-for graf: T1 → T2 → T1 (cyklus) → deadlock.<br>
+                        Řešení: DB zvolí oběť (např. T2), provede rollback, T1 získá B a dokončí se.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Deadlock = cyklické čekání na zámky; nutné jsou všechny 4 Coffmanovy podmínky.</li>
+                            <li>Detekce: cyklus ve wait-for grafu → rollback oběti.</li>
+                            <li>Prevence: timeout, seřazené zamykání, age-based priority (Wait-Die, Wound-Wait).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-21">
+                    <h3>21. Primární klíč vs. klíč, složené klíče</h3>
+
+                    <p>Správné rozlišení mezi kandidátním a primárním klíčem je základem normalizace a návrhu schématu.</p>
+
+                    <div class="def-box">
+                        <strong>Kandidátní klíč (Candidate Key):</strong> Minimální množina atributů, která jednoznačně identifikuje každý řádek relace. Relace může mít více kandidátních klíčů.
+                    </div>
+                    <div class="def-box">
+                        <strong>Primární klíč (Primary Key):</strong> Jeden vybraný kandidátní klíč — "oficiální" identifikátor. Automaticky dostává NOT NULL + UNIQUE constraint a je základem pro cizí klíče jiných tabulek.
+                    </div>
+                    <div class="def-box">
+                        <strong>Alternativní klíč (Alternate Key):</strong> Kandidátní klíče, které nebyly zvoleny jako primární. Implementovány jako UNIQUE NOT NULL.
+                    </div>
+                    <div class="def-box">
+                        <strong>Složený klíč (Composite Key):</strong> Klíč tvořený více atributy — žádný z nich sám nestačí k identifikaci, až jejich kombinace. Typický pro vazební tabulky.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Tabulka <code>Student(rc, email, jmeno)</code>.<br>
+                        Kandidátní klíče: <code>{rc}</code>, <code>{email}</code>.<br>
+                        Primární klíč: zvolíme <code>{rc}</code>.<br>
+                        Alternativní klíč: <code>{email}</code> → implementujeme jako UNIQUE NOT NULL.<br>
+                        Vazební tabulka <code>Zapis(student_id, predmet_id)</code>: složený PK <code>(student_id, predmet_id)</code>.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Surrogátní vs. přirozené klíče:</strong> Surrogátní klíče (umělé ID generované DB, např. SERIAL, UUID) jsou stabilnější — přirozené klíče (rodné číslo, email) se mohou "změnit". Surrogátní klíče nemají sémantiku; přirozené ano. Volba závisí na kontextu a stabilitě hodnot.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Kandidátní klíč: minimální unikátní identifikátor; může jich být více.</li>
+                            <li>Primární klíč: jeden zvolený kandidátní klíč (NOT NULL + UNIQUE).</li>
+                            <li>Složený klíč: více atributů dohromady tvoří identifikátor.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-22">
+                    <h3>22. Pohledy (Views) – k čemu slouží</h3>
+
+                    <p>View (pohled) je uložený SELECT dotaz, ke kterému lze přistupovat jako k tabulce. Zjednodušuje práci s daty, aniž by kopíroval data samotná.</p>
+
+                    <div class="def-box">
+                        <strong>Pohled (View):</strong> Virtuální tabulka definovaná SELECT dotazem. Data fyzicky neexistují v pohledu — jsou načítána dynamicky z podkladových tabulek při každém přístupu.
+                    </div>
+
+                    <h4>K čemu pohledy slouží</h4>
+                    <ul>
+                        <li><strong>Abstrakce a zjednodušení:</strong> Skryjeme složité JOINy za jednoduchou "tabulku".</li>
+                        <li><strong>Bezpečnost:</strong> Uživatel vidí jen povolené sloupce/řádky bez přístupu k základní tabulce.</li>
+                        <li><strong>Zpětná kompatibilita:</strong> Při změně struktury tabulky pohled zachová starý interface pro existující dotazy.</li>
+                        <li><strong>Opakované použití:</strong> Složitý dotaz definujeme jednou a používáme vícekrát.</li>
+                    </ul>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong>
+                        <pre><code>-- Vytvoření pohledu
+CREATE VIEW aktivni_studenti AS
+SELECT id, jmeno, email
+FROM studenti
+WHERE aktivni = TRUE;
+
+-- Použití jako tabulka
+SELECT * FROM aktivni_studenti WHERE jmeno LIKE 'Jan%';</code></pre>
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Materializovaný pohled (Materialized View):</strong> Výsledek dotazu je fyzicky uložen a aktualizován periodicky nebo explicitně (<code>REFRESH MATERIALIZED VIEW</code>). Rychlejší čtení, ale data mohou být zastaralá. Vhodné pro analytické dotazy.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> Standardní pohledy jsou obvykle <em>read-only</em>. INSERT/UPDATE přes pohled je možný jen u jednoduchých pohledů bez GROUP BY, DISTINCT nebo JOINů (závisí na DBMS).
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>View = uložený SELECT; neuchovává data, jen definici dotazu.</li>
+                            <li>Použití: abstrakce, bezpečnost, zpětná kompatibilita, zjednodušení.</li>
+                            <li>Materializovaný view ukládá fyzicky výsledek pro rychlejší čtení (stojí za refresh overhead).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-23">
+                    <h3>23. Indexy v DB, B-stromy – operace, vizualizace</h3>
+
+                    <p>Index je datová struktura, která dramaticky zrychluje vyhledávání v tabulce — jako rejstřík v knize. Nejpoužívanější implementací je B+-strom.</p>
+
+                    <div class="def-box">
+                        <strong>Index:</strong> Pomocná datová struktura udržovaná DB vedle tabulky. Umožňuje rychlé vyhledání řádků bez prohledávání celé tabulky (full table scan). Cena: overhead při INSERT/UPDATE/DELETE (nutnost aktualizace indexu).
+                    </div>
+
+                    <h4>B+-strom</h4>
+                    <div class="def-box">
+                        <strong>B+-strom (B+Tree):</strong> Vyvážený prohledávací strom pro databázové indexy. Vlastnosti:
+                        <ul>
+                            <li>Všechny datové záznamy jsou jen v <strong>listech</strong> (vnitřní uzly nesou jen navigační klíče).</li>
+                            <li>Listy jsou navzájem <strong>propojeny</strong> (linked list) → efektivní sekvenční / rozsahové skenování.</li>
+                            <li>Strom je vždy <strong>vyvážený</strong> — všechny listy jsou na stejné hloubce.</li>
+                            <li>Složitost hledání, vkládání, mazání: $O(\log n)$.</li>
+                        </ul>
+                    </div>
+
+                    <h4>Operace</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Operace</th><th>Postup</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Hledání</strong></td><td>Od kořene porovnávej klíče, jdi do správného podstromu, opakuj do listu. $O(\log n)$.</td></tr>
+                            <tr><td><strong>Vkládání</strong></td><td>Najdi správný list, vlož. Je-li plný → split (rozděl, prostřední klíč jde do rodiče). Split se propaguje až do kořene.</td></tr>
+                            <tr><td><strong>Mazání</strong></td><td>Najdi a smaž klíč v listu. Je-li uzel pod minimálním počtem klíčů → merge se sourozencem nebo rotace klíče.</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box">
+                        <strong>Vizualizace B+-stromu (řád 2, max 3 klíče na uzel):</strong>
+                        <pre>
+              [30 | 60]
+             /    |    \
+        [10|20] [40|50] [70|80|90]
+           ↕       ↕        ↕
+        listy propojeny pro range scan:
+        10 → 20 → 40 → 50 → 70 → 80 → 90
+                        </pre>
+                        Dotaz <code>WHERE age BETWEEN 20 AND 70</code>: najdi 20 v listu, pak sekvenčně procházej listy do 70.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Kdy index nepomáhá:</strong> Nízká selektivita (boolean, pohlaví), dotaz vrací velký procent tabulky, malé tabulky (full scan je rychlejší). Indexy také zpomalují zápisy.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Index = pomocná struktura pro rychlé vyhledávání; $O(\log n)$ místo $O(n)$.</li>
+                            <li>B+-strom: data jen v listech, listy propojeny → efektivní bodové i rozsahové dotazy.</li>
+                            <li>Split při vkládání, merge/rotace při mazání — strom zůstane vyvážený.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-24">
+                    <h3>24. OLTP databáze – klíčové požadavky</h3>
+
+                    <p>OLTP (Online Transaction Processing) je typ databázového provozu charakteristický pro provozní systémy — banky, e-shopy, rezervační systémy.</p>
+
+                    <div class="def-box">
+                        <strong>OLTP:</strong> Databázový provoz s mnoha krátkými, souběžnými transakcemi, které čtou a zapisují malé množství dat. Důraz na <strong>nízkou latenci, souběžnost a spolehlivost</strong>.
+                    </div>
+
+                    <h4>Klíčové požadavky</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Požadavek</th><th>Popis</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Nízká latence</strong></td><td>Transakce musí proběhnout v milisekundách.</td></tr>
+                            <tr><td><strong>Vysoká souběžnost</strong></td><td>Tisíce transakcí za sekundu; efektivní zamykání (2PL, MVCC).</td></tr>
+                            <tr><td><strong>ACID transakce</strong></td><td>Každá transakce musí být atomická, konzistentní, izolovaná, trvanlivá.</td></tr>
+                            <tr><td><strong>Normalizace</strong></td><td>Data normalizována (3NF) pro minimalizaci redundance a rychlé zápisy.</td></tr>
+                            <tr><td><strong>Dostupnost 24/7</strong></td><td>Replikace pro failover, žádná plánovaná odstávka.</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box">
+                        <strong>Příklady OLTP systémů:</strong> Bankovní převody, objednávkové systémy, rezervace letenek, POS terminály v obchodech.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>OLTP vs OLAP:</strong> OLAP (Online Analytical Processing) je opak — málo složitých analytických dotazů nad obrovskými daty (datové sklady, reporty). OLAP je denormalizovaný (hvězdicové schéma pro rychlé agregace), OLTP je normalizovaný (pro rychlé transakce).
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>OLTP: mnoho krátkých transakcí, nízká latence, vysoká souběžnost.</li>
+                            <li>Klíčové: ACID, normalizace, indexy, dostupnost 24/7.</li>
+                            <li>Opak je OLAP (analytika) — denormalizovaný, pro čtení velkých dat.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-25">
+                    <h3>25. Replikace, vysoká dostupnost</h3>
+
+                    <p>Replikace znamená udržování kopií dat na více serverech — základní nástroj pro vysokou dostupnost, odolnost proti výpadkům a škálovatelnost čtení.</p>
+
+                    <div class="def-box">
+                        <strong>Replikace:</strong> Automatické kopírování dat z primárního (master/primary) serveru na jeden nebo více sekundárních (replica/slave) serverů v reálném čase nebo se zpožděním.
+                    </div>
+
+                    <h4>Typy replikace</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Typ</th><th>Popis</th><th>Trade-off</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Synchronní</strong></td><td>Transakce potvrzena až po zápisu na primary i replice</td><td>Silná konzistence; vyšší latence zápisů</td></tr>
+                            <tr><td><strong>Asynchronní</strong></td><td>Primary potvrdí ihned, replika se aktualizuje se zpožděním</td><td>Nižší latence; riziko ztráty dat při výpadku primary</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="def-box">
+                        <strong>Failover:</strong> Automatické přepnutí na záložní server při výpadku primárního. S replikací lze failover provést v sekundách (PostgreSQL Patroni, MySQL Group Replication).
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Typická HA architektura:</strong><br>
+                        Primary DB → 1 synchronní replika (failover kandidát) + N asynchronních replik (pro čtecí zátěž).<br>
+                        Load balancer distribuuje SELECT dotazy na repliky; INSERT/UPDATE/DELETE vždy na primary.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Replikace ≠ záloha!</strong> Replikace chrání proti výpadku serveru, ne proti datové chybě — smazání tabulky se okamžitě replikuje na všechny repliky. Záloha (dump, point-in-time recovery) je nutná zvlášť.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Replikace = kopie dat na více serverech; synchronní (konzistence) vs. asynchronní (nižší latence).</li>
+                            <li>HA architektura: primary + repliky + automatický failover.</li>
+                            <li>Repliky škálují čtení; zápisy vždy přes primary. Replikace není záloha.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-26">
+                    <h3>26. Útoky na databáze (SQL injection)</h3>
+
+                    <p>SQL injection je jeden z nejzávažnějších bezpečnostních útoků — útočník "vpašuje" vlastní SQL kód do dotazu aplikace a získá neoprávněný přístup k datům nebo je poškodí.</p>
+
+                    <div class="def-box">
+                        <strong>SQL Injection:</strong> Útok, při němž útočník vloží škodlivý SQL kód do vstupu aplikace, který je následně vykonán databází. Vzniká, pokud aplikace přímou concatenací vkládá uživatelský vstup do SQL řetězce bez sanitizace.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad zranitelného kódu:</strong>
+                        <pre><code>// ŠPATNĚ — přímá concatenace
+String query = "SELECT * FROM users WHERE name='" + username + "'";
+
+// Útočník zadá: ' OR '1'='1
+// Výsledný dotaz: SELECT * FROM users WHERE name='' OR '1'='1'
+// Vrátí všechny uživatele!
+
+// Nebezpečnější vstup: '; DROP TABLE users; --
+// Dotaz: SELECT * FROM users WHERE name=''; DROP TABLE users; --'
+// Smaže celou tabulku users!</code></pre>
+                    </div>
+
+                    <h4>Obrana</h4>
+                    <div class="def-box">
+                        <strong>1. Parametrizované dotazy (Prepared Statements) — nejúčinnější obrana:</strong>
+                        <pre><code>// SPRÁVNĚ — vstup je vždy data, nikdy kód
+PreparedStatement ps = con.prepareStatement(
+    "SELECT * FROM users WHERE name = ?");
+ps.setString(1, username);</code></pre>
+                        Parametr je vždy zpracován jako datový řetězec, nikdy jako součást SQL příkazu.
+                    </div>
+                    <div class="def-box">
+                        <strong>2. ORM:</strong> Hibernate, JPA generují parametrizované dotazy automaticky — implicitní ochrana.
+                    </div>
+                    <div class="def-box">
+                        <strong>3. Minimální oprávnění (Principle of Least Privilege):</strong> DB uživatel aplikace by měl mít jen nutná práva (SELECT, INSERT) — žádný DROP, žádný TRUNCATE, žádný CREATE.
+                    </div>
+                    <div class="def-box">
+                        <strong>4. Validace vstupu:</strong> Whitelist povolených hodnot. Jako doplněk, nikoli jediná obrana.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> Escapování vstupu <em>nestačí</em> — různé DB mají různé escape konvence a útočníci nacházejí obcházení. <strong>Parametrizované dotazy jsou jedinou spolehlivou obranou.</strong>
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>SQL injection = vložení SQL kódu do vstupu → DB ho vykoná jako legitimní příkaz.</li>
+                            <li>Příčina: přímá concatenace uživatelského vstupu do SQL řetězce.</li>
+                            <li>Obrana: parametrizované dotazy (prepared statements) + minimální DB oprávnění.</li>
+                        </ul>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
     <script src="subjects-nav.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

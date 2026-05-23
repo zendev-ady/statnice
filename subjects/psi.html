@@ -1,22 +1,1050 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <title>PSI - Počítačové sítě | SZZ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSI - Počítačové sítě | SZZ Příprava</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
+                macros: { N: "\\mathbb{N}", R: "\\mathbb{R}", Z: "\\mathbb{Z}", Q: "\\mathbb{Q}", C: "\\mathbb{C}" }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-<body class="page-specialization">
-    <nav class="navbar navbar-dark bg-success fixed-top">
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="fas fa-arrow-left me-2"></i>Dashboard</a>
             <span class="navbar-text mx-auto"><strong>PSI</strong> - Počítačové sítě</span>
-            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')"><i class="fas fa-adjust"></i></button>
+            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')">
+                <i class="fas fa-adjust"></i>
+            </button>
         </div>
     </nav>
-    <div class="container"><h1>Počítačové sítě</h1><div class="alert alert-info mt-4"><i class="fas fa-info-circle"></i> Ve výstavbě</div></div>
-    <script src="subjects-nav.js"></script>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 d-none d-lg-block">
+                <nav class="topic-nav pt-4">
+                    <h6 class="text-muted text-uppercase fw-bold mb-3">Témata</h6>
+                    <ul class="nav flex-column">
+                        <li><a class="nav-link py-1" href="#topic-1">1. OSI/ISO model</a></li>
+                        <li><a class="nav-link py-1" href="#topic-2">2. Síťová vrstva a IP</a></li>
+                        <li><a class="nav-link py-1" href="#topic-3">3. Směrování (routing)</a></li>
+                        <li><a class="nav-link py-1" href="#topic-4">4. TCP/IP model</a></li>
+                        <li><a class="nav-link py-1" href="#topic-5">5. CSMA/CD a CSMA/CA</a></li>
+                        <li><a class="nav-link py-1" href="#topic-6">6. Spojová vrstva, MAC</a></li>
+                        <li><a class="nav-link py-1" href="#topic-7">7. Switch a přepínání</a></li>
+                        <li><a class="nav-link py-1" href="#topic-8">8. DHCP</a></li>
+                        <li><a class="nav-link py-1" href="#topic-9">9. TCP – handshake</a></li>
+                        <li><a class="nav-link py-1" href="#topic-10">10. Bezpečnost sítí, VPN</a></li>
+                        <li><a class="nav-link py-1" href="#topic-11">11. Fyzická vrstva – média</a></li>
+                        <li><a class="nav-link py-1" href="#topic-12">12. Fyzická vrstva – kódování</a></li>
+                        <li><a class="nav-link py-1" href="#topic-13">13. Kvalitativní parametry</a></li>
+                        <li><a class="nav-link py-1" href="#topic-14">14. Ethernet</a></li>
+                        <li><a class="nav-link py-1" href="#topic-15">15. Rozsahy IP adres</a></li>
+                        <li><a class="nav-link py-1" href="#topic-16">16. TCP vs. UDP</a></li>
+                        <li><a class="nav-link py-1" href="#topic-17">17. Síťová infrastruktura</a></li>
+                        <li><a class="nav-link py-1" href="#topic-18">18. Typy útoků a obrana</a></li>
+                        <li><a class="nav-link py-1" href="#topic-19">19. VLAN</a></li>
+                        <li><a class="nav-link py-1" href="#topic-20">20. IPv4 vs. IPv6</a></li>
+                        <li><a class="nav-link py-1" href="#topic-21">21. DNS</a></li>
+                        <li><a class="nav-link py-1" href="#topic-22">22. SMTP, ICMP, ARP</a></li>
+                        <li><a class="nav-link py-1" href="#topic-23">23. IPSec</a></li>
+                        <li><a class="nav-link py-1" href="#topic-24">24. TLS</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="col-lg-9">
+                <h1 class="mb-4">Počítačové sítě</h1>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-1">
+                    <h3>1. Referenční model OSI/ISO – vrstvy, jejich funkce, smysl zavedení</h3>
+
+                    <p>Počítačové sítě jsou komplexní systémy. Aby různí výrobci mohli navzájem komunikovat, potřebovali společný jazyk — standard, který říká, kdo se stará o co. Tím je referenční model OSI (Open System Interconnection), vydaný organizací ISO jako norma IS 7498 v roce 1984.</p>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> Představ si posílání dopisu. Nestaráš se o to, jak pošta třídi zásilky, jakou trasou letí letadlo nebo jak řidič najde tvou ulici. Každá "vrstva" systému dělá svou část a od ostatních abstrahuje. OSI přesně takto vrství síťovou komunikaci.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Referenční model OSI je sedmivrstvá architektura popisující, jak mají být funkce síťové komunikace rozděleny do logických vrstev. Každá vrstva poskytuje služby vrstvě nad ní a využívá služby vrstvy pod ní. Komunikace probíhá vždy mezi stejnými vrstvami na obou koncích (peer-to-peer).
+                    </div>
+
+                    <h4>Sedm vrstev (od nejnižší)</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>#</th><th>Vrstva</th><th>Funkce</th><th>Příklad protokolu/jednotky</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td>Fyzická</td><td>Přenos bitů po médiu (napětí, světlo, rádiové vlny)</td><td>Ethernet PHY, optika, WiFi (bity)</td></tr>
+                            <tr><td>2</td><td>Linková (spojová)</td><td>Přenos rámců na lokální síti, MAC adresace, detekce chyb</td><td>Ethernet, 802.11 (rámce)</td></tr>
+                            <tr><td>3</td><td>Síťová</td><td>Logické adresování, směrování mezi sítěmi</td><td>IP, ICMP (pakety/datagramy)</td></tr>
+                            <tr><td>4</td><td>Transportní</td><td>End-to-end přenos, spolehlivost, řízení toku, porty</td><td>TCP, UDP (segmenty)</td></tr>
+                            <tr><td>5</td><td>Relační</td><td>Správa sezení (session), synchronizace dialogu</td><td>NetBIOS, RPC</td></tr>
+                            <tr><td>6</td><td>Prezentační</td><td>Formát dat, šifrování, komprese</td><td>SSL/TLS, ASCII, JPEG</td></tr>
+                            <tr><td>7</td><td>Aplikační</td><td>Rozhraní pro aplikace uživatele</td><td>HTTP, SMTP, DNS, FTP</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Proč vrstvit?</h4>
+                    <p>Princip vrstvení přináší <strong>modulárnost</strong>: každá vrstva lze nahradit jinou implementací bez zásahu do ostatních. WiFi a Ethernet mohou coexistovat — obě přenáší IP pakety, přestože se fyzicky liší. Výrobce routeru se nemusí starat o kódování bitů, výrobce síťové karty nemusí implementovat HTTP.</p>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Když otevřeš webovou stránku: prohlížeč (vrstva 7) sestaví HTTP požadavek → TLS (vrstva 6) ho zašifruje → TCP (vrstva 4) ho rozdělí na segmenty → IP (vrstva 3) přidá adresy → Ethernet (vrstva 2) zabalí do rámce → fyzická vrstva pošle bity po kabelu. Na serveru se vše rozbalí v opačném pořadí.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>OSI má 7 vrstev; každá řeší jednu část problému síťové komunikace.</li>
+                            <li>Fyzická (bity) → Linková (rámce, MAC) → Síťová (IP) → Transportní (TCP/UDP) → Relační/Prez./Aplik.</li>
+                            <li>Smysl: modulárnost, interoperabilita výrobců, oddělení zodpovědností.</li>
+                            <li>V praxi TCP/IP model slučuje vrstvy 5–7 do jedné aplikační.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-2">
+                    <h3>2. Síťová vrstva – IP adresa, struktura, maska sítě, podsítě</h3>
+
+                    <p>Linková vrstva ví, jak doručit rámec na lokální síti. Ale jak poslat data přes celý internet — přes stovky různých sítí? Potřebujeme globální logické adresování a mechanismus, který rozhodne, kudy data pošleme. To zajišťuje síťová vrstva s protokolem IP.</p>
+
+                    <div class="def-box">
+                        <strong>Definice (IPv4 adresa):</strong> 32bitové číslo jednoznačně identifikující síťové rozhraní v internetu. Zapisuje se jako čtyři decimální oktetty oddělené tečkami (dotted-decimal notation), např. <code>192.168.1.10</code>. IP adresa se logicky skládá ze dvou částí: <strong>síťové části</strong> (identifikuje síť) a <strong>hostitelské části</strong> (identifikuje zařízení v síti).
+                    </div>
+
+                    <h4>Maska sítě (subnet mask)</h4>
+                    <p>Maska sítě je 32bitové číslo, kde jedničky označují síťovou část adresy a nuly hostitelskou část. Zapisuje se buď jako <code>255.255.255.0</code> nebo v CIDR notaci jako <code>/24</code> (počet jedničkových bitů).</p>
+
+                    <div class="ex-box">
+                        <strong>Příklad výpočtu:</strong> IP adresa <code>192.168.1.10</code>, maska <code>/24</code> (= <code>255.255.255.0</code>):
+                        <ul>
+                            <li>Adresa sítě (AND s maskou): <code>192.168.1.0</code></li>
+                            <li>Broadcast: <code>192.168.1.255</code> (všechny bity hostitele = 1)</li>
+                            <li>Rozsah hostů: <code>192.168.1.1</code> – <code>192.168.1.254</code> (254 zařízení)</li>
+                        </ul>
+                        Obecně: pro masku <code>/n</code> je počet hostů $2^{32-n} - 2$.
+                    </div>
+
+                    <h4>Podsítě (subnetting)</h4>
+                    <p>Velkou síť lze rozdělit na menší podsítě — prodloužíme masku a část hostitelských bitů "ukradneme" pro identifikaci podsítě. Důvody: bezpečnostní izolace, snížení broadcast domény, efektivnější využití adresního prostoru.</p>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Ze sítě <code>192.168.1.0/24</code> vytvoříme 4 podsítě (<code>/26</code>):
+                        <ul>
+                            <li><code>192.168.1.0/26</code> — hosté .1–.62</li>
+                            <li><code>192.168.1.64/26</code> — hosté .65–.126</li>
+                            <li><code>192.168.1.128/26</code> — hosté .129–.190</li>
+                            <li><code>192.168.1.192/26</code> — hosté .193–.254</li>
+                        </ul>
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> Adresa sítě (všechny hostitelské bity 0) a broadcast (všechny hostitelské bity 1) nejsou použitelné pro přidělení hostům — každá podsíť "ztrácí" 2 adresy.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>IPv4 adresa = 32 bitů = síťová část + hostitelská část.</li>
+                            <li>Maska sítě (AND s IP) určí adresu sítě; CIDR notace /n říká, kolik bitů je síťových.</li>
+                            <li>Podsítě = prodloužení masky = logické rozdělení jedné velké sítě na menší.</li>
+                            <li>Každá podsíť má 2 nepoužitelné adresy: adresa sítě a broadcast.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-3">
+                    <h3>3. Směrování (routing) – principy, routovací tabulka, default gateway</h3>
+
+                    <p>IP datagram putuje sítí od routeru k routeru. Každý router rozhoduje: "Kam pošlu tento paket dál?" Toto rozhodnutí se dělá na základě <strong>routovací tabulky</strong> — mapy cest, kterou si router udržuje.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Směrování (routing) je proces výběru cesty, po které putuje IP paket od zdroje k cíli přes sítě propojené routery. Router při přijetí paketu porovná cílovou IP adresu se záznamy v routovací tabulce a pošle paket na příslušné rozhraní (next-hop).
+                    </div>
+
+                    <h4>Routovací tabulka</h4>
+                    <p>Každý řádek tabulky obsahuje: <strong>cílovou síť</strong>, <strong>masku</strong>, <strong>next-hop IP</strong> (nebo rozhraní) a <strong>metriku</strong> (cenu cesty). Router hledá nejdelší shodu prefixu (longest prefix match) — specifičtější záznam má přednost.</p>
+
+                    <div class="ex-box">
+                        <strong>Příklad routovací tabulky:</strong>
+                        <table class="table table-bordered summary-table">
+                            <thead><tr><th>Cílová síť</th><th>Maska</th><th>Next-hop</th><th>Rozhraní</th></tr></thead>
+                            <tbody>
+                                <tr><td>192.168.1.0</td><td>/24</td><td>přímo připojená</td><td>eth0</td></tr>
+                                <tr><td>10.0.0.0</td><td>/8</td><td>192.168.1.1</td><td>eth0</td></tr>
+                                <tr><td>0.0.0.0</td><td>/0</td><td>192.168.1.254</td><td>eth0</td></tr>
+                            </tbody>
+                        </table>
+                        Paket pro <code>10.5.3.2</code> → druhý řádek (10.0.0.0/8). Paket pro cokoliv jiného → třetí řádek (default route).
+                    </div>
+
+                    <h4>Default gateway</h4>
+                    <p>Koncové zařízení nemá komplexní routovací tabulku — zná jen svou síť a <strong>default gateway</strong> (výchozí bránu). Pokud cílová adresa není ve stejné síti (AND s maskou dá jinou síťovou adresu), paket se pošle na default gateway, která se postará o zbytek.</p>
+
+                    <h4>Statické vs. dynamické směrování</h4>
+                    <p>Záznamy v tabulce mohou být <strong>statické</strong> (ručně nakonfigurované administrátorem) nebo <strong>dynamické</strong> (automaticky aktualizované směrovacími protokoly jako RIP, OSPF, BGP). Dynamické protokoly sdílejí informace o sítích mezi routery a adaptují se na výpadky.</p>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Router vybírá next-hop na základě longest prefix match v routovací tabulce.</li>
+                            <li>Default route (0.0.0.0/0) = záchytná síť pro pakety bez specifičtějšího záznamu.</li>
+                            <li>Default gateway = IP routeru, na který posílají pakety koncová zařízení v LAN.</li>
+                            <li>Dynamické protokoly (RIP, OSPF, BGP) automaticky udržují tabulky konzistentní.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-4">
+                    <h3>4. TCP/IP model – vztah k OSI, rozdíly</h3>
+
+                    <p>TCP/IP je praktická architektura, která vznikla dříve než OSI (ARPANET, 70. léta) a je základem dnešního internetu. OSI je teoretický referenční model; TCP/IP je to, co reálně běží na sítích.</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>OSI vrstva</th><th>TCP/IP vrstva</th><th>Příklady protokolů</th></tr></thead>
+                        <tbody>
+                            <tr><td>7 Aplikační</td><td rowspan="3">Aplikační</td><td rowspan="3">HTTP, SMTP, DNS, FTP, SSH</td></tr>
+                            <tr><td>6 Prezentační</td></tr>
+                            <tr><td>5 Relační</td></tr>
+                            <tr><td>4 Transportní</td><td>Transportní</td><td>TCP, UDP</td></tr>
+                            <tr><td>3 Síťová</td><td>Internetová (síťová)</td><td>IP, ICMP, ARP</td></tr>
+                            <tr><td>2 Linková</td><td rowspan="2">Vrstva síťového přístupu</td><td rowspan="2">Ethernet, WiFi, PPP</td></tr>
+                            <tr><td>1 Fyzická</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Klíčové rozdíly</h4>
+                    <ul>
+                        <li><strong>Počet vrstev:</strong> OSI má 7, TCP/IP má 4 (slučuje relační, prezentační a aplikační do jedné).</li>
+                        <li><strong>Vznik:</strong> OSI vznikl jako standard (top-down), TCP/IP empiricky z praxe ARPANETU (bottom-up).</li>
+                        <li><strong>Přísnost:</strong> OSI přesně definuje rozhraní mezi vrstvami; TCP/IP je volnější — protokoly mohou překrývat funkce.</li>
+                        <li><strong>Využití:</strong> OSI se používá jako pedagogický nástroj; TCP/IP je reálná implementace internetu.</li>
+                    </ul>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> OSI je jako ideální šablona architekta. TCP/IP je jako dům, který byl postaven pragmaticky — funguje skvěle, ale ne vždy dodržuje šablonu do písmene. Dnes se OSI a TCP/IP vzájemně doplňují: TCP/IP popisuje co, OSI vysvětluje proč.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>TCP/IP má 4 vrstvy: síťového přístupu, internetová, transportní, aplikační.</li>
+                            <li>OSI má 7 vrstev — vrstvy 5, 6, 7 jsou v TCP/IP sloučeny do aplikační.</li>
+                            <li>TCP/IP je praxe internetu; OSI je referenční model pro pochopení a srovnání.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-5">
+                    <h3>5. Přístup ke sdílenému médiu – CSMA/CD, CSMA/CA</h3>
+
+                    <p>Pokud více zařízení sdílí jedno přenosové médium (např. koaxiální kabel nebo vzduch u WiFi), nastává problém: co se stane, když vysílají dvě zařízení najednou? Potřebujeme protokol pro koordinaci přístupu k médiu (Medium Access Control).</p>
+
+                    <div class="def-box">
+                        <strong>Definice (CSMA):</strong> Carrier Sense Multiple Access — každá stanice před vysíláním naslouchá (carrier sense), zda je médium volné. Pokud je obsazené, čeká. Přesto mohou nastat kolize (dvě stanice začnou vysílat téměř současně).
+                    </div>
+
+                    <h4>CSMA/CD (Collision Detection) — Ethernet</h4>
+                    <p>Stanice vysílá a <strong>zároveň naslouchá</strong> médiu. Pokud detekuje kolizi (zachytí jiný signál překrývající její vysílání), okamžitě zastaví vysílání, vyšle JAM signál (32 bitů) upozorňující ostatní, a pak čeká náhodnou dobu (exponential backoff) před opakováním.</p>
+
+                    <div class="ex-box">
+                        <strong>Příklad CSMA/CD:</strong> Stanice A začne vysílat. Stanice B naslouchá, médium se jeví volné (signál od A ještě nedorazil — propagační zpoždění), B také začne vysílat. Obě detekují kolizi, vyšlou JAM, zastaví. Každá čeká náhodný násobek slot time (512 bitů na Ethernetu) před opakováním.
+                    </div>
+
+                    <h4>CSMA/CA (Collision Avoidance) — WiFi (802.11)</h4>
+                    <p>V bezdrátových sítích nelze detekovat kolize (zařízení nemůže zároveň vysílat a přijímat na stejné frekvenci). Proto se kolizím <strong>vyhýbáme předem</strong>: stanice čeká DIFS interval, pak čeká náhodný backoff (countdown), a teprve pak vysílá. Příjemce musí potvrdit ACK. Pokud ACK nedorazí, předpokládá se kolize a proces se opakuje.</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th></th><th>CSMA/CD</th><th>CSMA/CA</th></tr></thead>
+                        <tbody>
+                            <tr><td>Prostředí</td><td>Drátový Ethernet</td><td>Bezdrátové sítě (WiFi)</td></tr>
+                            <tr><td>Princip</td><td>Detekce kolize za běhu</td><td>Vyhýbání se kolizím předem</td></tr>
+                            <tr><td>Přenos při kolizi</td><td>Přerušen, JAM signál</td><td>Čeká na ACK, retransmit</td></tr>
+                            <tr><td>Efektivita</td><td>Vyšší (kolize krátce trvá)</td><td>Nižší (overhead ACK a backoff)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> CSMA/CD je dnes na Ethernetových sítích prakticky zaniklé — moderní switched Ethernet vytváří point-to-point spoje (full duplex), kde ke kolizím nedochází vůbec. CSMA/CD je relevantní jen pro historické (half-duplex) Ethernet nebo huby.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>CSMA = naslouchej před vysíláním; CD = detekce kolize za běhu (Ethernet); CA = vyhýbání se kolizím (WiFi).</li>
+                            <li>CSMA/CD: kolize detekována → JAM → exponential backoff → retransmit.</li>
+                            <li>CSMA/CA: backoff před vysíláním + ACK potvrzení příjmu.</li>
+                            <li>Switched Ethernet (full duplex) kolize eliminuje úplně.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-6">
+                    <h3>6. Spojová vrstva – rámec (frame), struktura, MAC adresace</h3>
+
+                    <p>Spojová vrstva (vrstva 2) přebírá pakety od IP a balí je do <strong>rámců</strong> — jednotek přenosu na lokální síti. Stará se o adresování v rámci LAN pomocí MAC adres a o detekci chyb přenosu.</p>
+
+                    <div class="def-box">
+                        <strong>Definice (MAC adresa):</strong> 48bitová (6 bajtů) fyzická adresa síťové karty, přidělená výrobcem a globálně unikátní. Zapisuje se jako šestice hexadecimálních dvojic, např. <code>AA:BB:CC:DD:EE:FF</code>. První 3 bajty = OUI (identifikátor výrobce), poslední 3 = sériové číslo.
+                    </div>
+
+                    <h4>Struktura Ethernet rámce (IEEE 802.3)</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Pole</th><th>Velikost</th><th>Funkce</th></tr></thead>
+                        <tbody>
+                            <tr><td>Preambule + SFD</td><td>8 B</td><td>Synchronizace hodin, označení začátku rámce</td></tr>
+                            <tr><td>Cílová MAC</td><td>6 B</td><td>MAC adresa příjemce (nebo FF:FF:FF:FF:FF:FF pro broadcast)</td></tr>
+                            <tr><td>Zdrojová MAC</td><td>6 B</td><td>MAC adresa odesílatele</td></tr>
+                            <tr><td>EtherType/délka</td><td>2 B</td><td>Typ payload (0x0800 = IPv4, 0x0806 = ARP, 0x86DD = IPv6)</td></tr>
+                            <tr><td>Data (payload)</td><td>46–1500 B</td><td>IP paket nebo jiná data</td></tr>
+                            <tr><td>FCS (CRC)</td><td>4 B</td><td>Frame Check Sequence — detekce chyb přenosu</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> IP adresa je jako PSČ a název ulice — globální adresování. MAC adresa je jako jméno na poštovní schránce — lokální identifikace. Při přenosu přes internet se IP adresa nemění, ale MAC adresa se mění na každém skoku (hop) mezi routery.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Tvůj PC (MAC: AA:BB) posílá paket routeru (MAC: CC:DD). Ethernet rámec: Src=AA:BB, Dst=CC:DD. Router rámec rozbalí, podívá se na IP, sestaví nový rámec s Src=CC:DD a Dst dalšího hoppu. IP adresy se přitom nemění.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Spojová vrstva zabalí IP paket do rámce s MAC adresami pro lokální doručení.</li>
+                            <li>MAC adresa = 48 bitů, přidělena výrobcem, globálně unikátní.</li>
+                            <li>Ethernet rámec: preambule | cíl MAC | zdroj MAC | EtherType | payload | FCS.</li>
+                            <li>FCS (CRC) detekuje chyby; poškozené rámce se zahazují (bez retransmisí — to je úkol TCP).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-7">
+                    <h3>7. Přepínač (switch) – princip, přepínací tabulka, flooding</h3>
+
+                    <p>Hub posílal každý rámec na všechny porty — zbytečné a bezpečnostně nevhodné. Switch se naučí, která zařízení jsou na kterém portu, a posílá rámce cíleně.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Přepínač (switch) je aktivní síťové zařízení pracující na vrstvě 2 (linkové). Udržuje <strong>CAM tabulku</strong> (Content Addressable Memory, také MAC tabulka nebo přepínací tabulka) mapující MAC adresy na porty, a na základě ní přeposílá rámce pouze na příslušný port.
+                    </div>
+
+                    <h4>Jak se switch učí?</h4>
+                    <ol>
+                        <li>Přijme rámec na portu P od stanice se zdrojovou MAC A.</li>
+                        <li>Zapíše do CAM tabulky: MAC A → port P (s TTL, typicky 5 minut).</li>
+                        <li>Podívá se na cílovou MAC B v tabulce.</li>
+                        <li>Pokud B nalezl → pošle rámec pouze na port B.</li>
+                        <li>Pokud B nenalezl → <strong>flooding</strong>: pošle rámec na všechny porty kromě příchozího.</li>
+                    </ol>
+
+                    <div class="ex-box">
+                        <strong>Příklad flooding:</strong> Switch se právě restartoval, CAM tabulka je prázdná. Stanice A pošle rámec stanici B. Switch nezná MAC B → flood na všechny porty. B odpoví → switch se dozví port B a zapíše. Příště rámec pro B pošle cíleně.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> Switch funguje jako chytrá recepce — pamatuje si, v které místnosti (portu) sedí kdo (MAC). Zpočátku rozeslat zprávu všem, ale po první odpovědi si zapamatuje. Hub je jako hlasité hlášení do celého patra bez ohledu na adresáta.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> Broadcast rámce (cílová MAC FF:FF:FF:FF:FF:FF) se vždy floodují na všechny porty — to nelze obejít bez VLAN. Velká broadcast doména = zbytečná zátěž sítě.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Switch udržuje CAM tabulku: MAC → port; učí se ze zdrojových adres příchozích rámců.</li>
+                            <li>Flooding = poslání na všechny porty, pokud cílová MAC není v tabulce.</li>
+                            <li>Broadcast se vždy flooduje; VLAN omezuje broadcast doménu.</li>
+                            <li>Na rozdíl od hubu switch nevytváří kolizní doménu — každý port je vlastní doménou.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-8">
+                    <h3>8. DHCP – dynamické přidělení IP adresy</h3>
+
+                    <p>Každé zařízení v síti potřebuje IP adresu, masku, bránu a DNS server. Ruční konfigurace tisíců zařízení je nepraktická. DHCP (Dynamic Host Configuration Protocol) tento proces automatizuje.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> DHCP je aplikační protokol (UDP, port 67/server, 68/klient), který umožňuje automatické přidělení IP adresy a dalších síťových parametrů klientům při připojení do sítě.
+                    </div>
+
+                    <h4>Průběh přidělení adresy (DORA)</h4>
+                    <ol>
+                        <li><strong>Discover</strong>: Klient (bez IP) vyšle broadcast: "Hledám DHCP server!" (Src: 0.0.0.0, Dst: 255.255.255.255)</li>
+                        <li><strong>Offer</strong>: DHCP server odpoví: "Nabízím ti adresu X.X.X.X na Y sekund."</li>
+                        <li><strong>Request</strong>: Klient (broadcast) říká: "Přijímám nabídku od serveru Z, chci adresu X.X.X.X."</li>
+                        <li><strong>Acknowledge</strong>: Server potvrdí: "Adresa je tvoje na Y sekund (lease time)."</li>
+                    </ol>
+
+                    <div class="ex-box">
+                        <strong>Co DHCP přiděluje:</strong> IP adresu, masku podsítě, default gateway, adresu DNS serveru, lease time (dobu platnosti), případně NTP server, domény apod.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> DHCP je jako hotelová recepce — přijdeš, řekneš, že potřebuješ pokoj, a recepce ti přidělí klíč od volného pokoje (IP adresu) na dobu tvého pobytu (lease time). Po odjezdu klíč vrátíš a pokoj dostane někdo jiný.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> Discover a Request jsou broadcast — DHCP server musí být ve stejné L2 síti nebo musí existovat <strong>DHCP relay agent</strong> (router přeposílá DHCP zprávy přes podsítě).
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>DHCP automatizuje přidělování IP adres, masek, brány a DNS serverů.</li>
+                            <li>Proces DORA: Discover → Offer → Request → Acknowledge.</li>
+                            <li>Používá UDP; Discover a Request jsou broadcast (před přidělením IP).</li>
+                            <li>Lease time = délka platnosti přidělené adresy; poté se musí obnovit.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-9">
+                    <h3>9. Transportní vrstva – TCP, navázání a ukončení spojení</h3>
+
+                    <p>IP doručuje pakety best-effort — bez záruky pořadí nebo doručení. Aplikace jako web nebo e-mail ale potřebují spolehlivý přenos. TCP (Transmission Control Protocol) buduje spolehlivý datový tok nad nespolehlivým IP.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> TCP je spojově orientovaný, spolehlivý, plně duplexní transportní protokol. Garantuje doručení dat ve správném pořadí bez ztrát a duplikát. Identifikuje komunikující procesy pomocí čísel portů.
+                    </div>
+
+                    <h4>Three-way handshake (navázání spojení)</h4>
+                    <div class="ex-box">
+                        <strong>Příklad:</strong>
+                        <ol>
+                            <li><strong>SYN</strong>: Klient → Server. "Chci se spojit, moje počáteční pořadové číslo (ISN) je X."</li>
+                            <li><strong>SYN-ACK</strong>: Server → Klient. "Přijato (ACK = X+1), moje ISN je Y."</li>
+                            <li><strong>ACK</strong>: Klient → Server. "Přijato (ACK = Y+1)." Spojení je navázáno.</li>
+                        </ol>
+                        Proč tři kroky? Potřebujeme ověřit, že obě strany mohou vysílat i přijímat — to vyžaduje výměnu a potvrzení obou počátečních pořadových čísel.
+                    </div>
+
+                    <h4>Ukončení spojení (four-way handshake)</h4>
+                    <ol>
+                        <li><strong>FIN</strong>: Jedna strana (A) oznamuje konec vysílání.</li>
+                        <li><strong>ACK</strong>: Druhá strana (B) potvrzuje.</li>
+                        <li><strong>FIN</strong>: B oznamuje, že i ona skončila.</li>
+                        <li><strong>ACK</strong>: A potvrzuje — spojení ukončeno.</li>
+                    </ol>
+                    <p>Čtyři kroky, protože ukončení každého směru je nezávislé (half-close). A může přestat posílat, ale B ještě může data posílat.</p>
+
+                    <h4>Klíčové mechanismy TCP</h4>
+                    <ul>
+                        <li><strong>Sekvenční čísla a ACK</strong>: každý bajt má číslo; příjemce potvrzuje přijatá data.</li>
+                        <li><strong>Retransmission</strong>: pokud ACK nepřijde v časovém limitu, data se pošlou znovu.</li>
+                        <li><strong>Flow control (okno)</strong>: příjemce říká, kolik dat může přijmout (receive window).</li>
+                        <li><strong>Congestion control</strong>: TCP zpomaluje při přetížení sítě (slow start, AIMD).</li>
+                    </ul>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>TCP = spolehlivý, spojově orientovaný protokol na vrstvě 4.</li>
+                            <li>Three-way handshake (SYN, SYN-ACK, ACK) pro navázání — ověří obousměrnou komunikaci.</li>
+                            <li>Ukončení: four-way (FIN, ACK, FIN, ACK) — každý směr zavírán nezávisle.</li>
+                            <li>Spolehlivost zajišťuje sekvenčními čísly, ACK a retransmisemi.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-10">
+                    <h3>10. Bezpečnost sítí – VPN, filtrování MAC/IP adres</h3>
+
+                    <p>Veřejné sítě jsou nebezpečné — data mohou být odposlechnuta, modifikována nebo falšována. Bezpečnost sítí se zaměřuje na důvěrnost (confidentiality), integritu (integrity) a dostupnost (availability) — tzv. triáda CIA.</p>
+
+                    <h4>VPN (Virtual Private Network)</h4>
+                    <p>VPN vytváří šifrovaný "tunel" přes veřejnou síť, takže komunikace vypadá jako by probíhala na soukromé síti. Používá se pro vzdálený přístup zaměstnanců, propojení poboček nebo anonymizaci provozu.</p>
+
+                    <div class="ex-box">
+                        <strong>IPSec VPN</strong>: Šifruje provoz na vrstvě 3. Vhodné pro site-to-site VPN (propojení poboček). Komplexnější konfigurace, ale lepší výkon pro velké objemy dat.
+                        <br>
+                        <strong>SSL/TLS VPN</strong>: Šifruje provoz na vrstvě 4–7. Funguje přes HTTPS (port 443) — prochází většinou firewallů. Vhodné pro remote-access VPN (přístup z internetu). Stačí webový prohlížeč nebo jednoduchý klient.
+                    </div>
+
+                    <h4>Filtrování MAC adres</h4>
+                    <p>Switch nebo WiFi access point může mít whitelist povolených MAC adres. Nepovoleným zařízením je přístup odepřen. Problém: MAC adresy lze snadno podvrhnout (MAC spoofing) — jde o slabou obranu, vhodnou jen jako doplněk.</p>
+
+                    <h4>Filtrování IP adres (ACL)</h4>
+                    <p>Router nebo firewall obsahuje Access Control Lists (ACL) — pravidla povolující nebo zakazující provoz na základě zdrojové/cílové IP adresy, portu a protokolu. ACL jsou základem paketových firewallů.</p>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> MAC filtrování i IP filtrování jsou reaktivní opatření — útočník, který odposlouchává síť, může legitímní adresy zjistit a podvrhnout. Spoléhat pouze na tyto mechanismy bez šifrování je nedostatečné.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>VPN = šifrovaný tunel přes veřejnou síť; IPSec (vrstva 3) nebo SSL/TLS (vrstva 4–7).</li>
+                            <li>MAC filtrování = whitelist na L2; slabé (spoofing), vhodné jen jako doplněk.</li>
+                            <li>ACL (firewally) filtrují provoz podle IP adres a portů na vrstvě 3–4.</li>
+                            <li>Bezpečnost = kombinace: šifrování + autentizace + filtrování + monitoring.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-11">
+                    <h3>11. Fyzická vrstva – přenosová média, mechanické a přenosové vlastnosti</h3>
+
+                    <p>Fyzická vrstva se stará o skutečný přenos bitů — jako elektromagnetický signál po kabelu, světelný pulz v optickém vlákně nebo rádiová vlna vzduchem. Volba média zásadně ovlivňuje rychlost, dosah a odolnost sítě.</p>
+
+                    <h4>Typy přenosových médií</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Médium</th><th>Typ signálu</th><th>Rychlost</th><th>Dosah</th><th>Vlastnosti</th></tr></thead>
+                        <tbody>
+                            <tr><td>UTP (kroucená dvojlinka)</td><td>Elektrický</td><td>10M–10G</td><td>100 m</td><td>Levné, snadná instalace; náchylné na EMI</td></tr>
+                            <tr><td>STP (stíněná dvojlinka)</td><td>Elektrický</td><td>10M–10G</td><td>100 m</td><td>Lepší odolnost vůči rušení; dražší</td></tr>
+                            <tr><td>Koaxiální kabel</td><td>Elektrický</td><td>10M (historicky)</td><td>500 m</td><td>Historický Ethernet; dnes TV/kabelový internet</td></tr>
+                            <tr><td>Optické vlákno (MM)</td><td>Světelný</td><td>1G–100G</td><td>2 km</td><td>Multi-mode; datacentra, krátké trasy</td></tr>
+                            <tr><td>Optické vlákno (SM)</td><td>Světelný</td><td>1G–100G+</td><td>80+ km</td><td>Single-mode; páteřní sítě, telekomunikace</td></tr>
+                            <tr><td>Bezdrátové (WiFi/5G)</td><td>Rádiový</td><td>variabilní</td><td>desítky m–km</td><td>Flexibilní; sdílené médium, rušení</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Klíčové přenosové vlastnosti</h4>
+                    <ul>
+                        <li><strong>Šířka pásma (bandwidth)</strong>: maximální přenosová kapacita [bps].</li>
+                        <li><strong>Útlum (attenuation)</strong>: zeslabení signálu s rostoucí vzdáleností — u UTP ~3 dB/100m.</li>
+                        <li><strong>Přeslechy (crosstalk)</strong>: rušení mezi sousedními páry vodičů v kabelu — proto kroucení.</li>
+                        <li><strong>Přenosové zpoždění (latency)</strong>: čas šíření signálu po médiu.</li>
+                        <li><strong>Imunita vůči EMI</strong>: optika je imunní (světlo, ne elektřina); UTP citlivé.</li>
+                    </ul>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>UTP: nejběžnější, levné, max 100 m, 10 Gbps; citlivé na EMI.</li>
+                            <li>Optika: imunní na EMI, velké vzdálenosti a rychlosti; dražší.</li>
+                            <li>Bezdrátové médium: sdílené, rušení, ale flexibilní nasazení.</li>
+                            <li>Klíčové parametry: šířka pásma, útlum, přeslechy, latency.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-12">
+                    <h3>12. Fyzická vrstva – realizace kanálu, kódování binárních dat</h3>
+
+                    <p>Fyzická vrstva musí zakódovat bity (0 a 1) do fyzikálního signálu, který přežije přenos po médiu. Různá kódovací schémata mají různé vlastnosti — synchronizace, šířka pásma, odolnost vůči chybám.</p>
+
+                    <h4>NRZ (Non-Return to Zero)</h4>
+                    <p>Jednoduchý princip: 1 = kladné napětí, 0 = záporné napětí. Signál se nevrací na nulu mezi bity. Problém: dlouhý řetěz stejných bitů → žádná změna signálu → ztráta synchronizace hodin.</p>
+
+                    <h4>Manchesterské kódování</h4>
+                    <p>Každý bit je zakódován jako <strong>přechod uprostřed bitového intervalu</strong>: 1 = přechod z nízké na vysokou úroveň, 0 = přechod z vysoké na nízkou. Přechod vždy existuje → samosynchornizace (receiver si synchronizuje hodiny ze signálu). Nevýhoda: potřebuje dvojnásobnou šířku pásma oproti NRZ.</p>
+
+                    <div class="ex-box">
+                        <strong>Příklad 0x01 0x05 v manchesterském kódování:</strong><br>
+                        0x01 = 0000 0001, 0x05 = 0000 0101<br>
+                        Každý bit generuje přechod uprostřed periody. Bit 0: přechod ↓ (high→low), bit 1: přechod ↑ (low→high).<br>
+                        Výsledkem je signál s přechody u každého bitu — žádná ambiguita, žádná potřeba externího hodinového signálu.
+                    </div>
+
+                    <h4>Další kódovací schémata</h4>
+                    <ul>
+                        <li><strong>NRZI</strong> (Non-Return to Zero Inverted): změna napětí = 1, beze změny = 0. USB, FDDI.</li>
+                        <li><strong>4B/5B</strong>: každé 4 bity dat kódovány do 5 bitů — garantuje dostatek přechodů. Používá se v 100BASE-TX (Fast Ethernet).</li>
+                        <li><strong>8B/10B</strong>: 8 bitů → 10 bitů; Gigabit Ethernet, Fibre Channel.</li>
+                        <li><strong>PAM4</strong>: 4 úrovně napětí → 2 bity na symbol; moderní 100G/400G Ethernet.</li>
+                    </ul>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> Kódovací schéma řeší problém "jak odlišit 000...0 od klidového stavu linky?" Manchesterské kódování to řeší elegantně — přechod vždy existuje, takže receiver vždy ví, kdy přišel nový bit.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>NRZ: jednoduché, ale ztráta synchronizace při dlouhých sériích stejných bitů.</li>
+                            <li>Manchester: přechod uprostřed každého bitu → samosynchronizace; 2× šířka pásma.</li>
+                            <li>4B/5B, 8B/10B: kompromis — overhead kódování, ale zaručené přechody.</li>
+                            <li>PAM4: víceúrovňové kódování pro vysoké rychlosti (100G+).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-13">
+                    <h3>13. Kvalitativní parametry přenosu</h3>
+
+                    <p>Jak poznáme, zda síť funguje dobře? Potřebujeme měřitelné parametry, které popisují kvalitu přenosu na různých vrstvách modelu OSI.</p>
+
+                    <h4>Fyzická vrstva (vrstva 1)</h4>
+                    <ul>
+                        <li><strong>BER (Bit Error Rate)</strong>: poměr chybně přijatých bitů k celkovému počtu; typicky 10⁻⁹ nebo lepší pro Ethernet.</li>
+                        <li><strong>Šířka pásma</strong>: maximální kapacita přenosového kanálu [bps].</li>
+                        <li><strong>Útlum</strong>: zeslabení signálu [dB]; měří se na optice OTDR.</li>
+                        <li><strong>SNR (Signal-to-Noise Ratio)</strong>: poměr signálu k šumu — čím vyšší, tím lepší.</li>
+                    </ul>
+
+                    <h4>Spojová vrstva (vrstva 2)</h4>
+                    <ul>
+                        <li><strong>FER (Frame Error Rate)</strong>: podíl poškozených nebo zahozených rámců.</li>
+                        <li><strong>Propustnost (throughput)</strong>: skutečně přenesená data za jednotku času (netto, bez overhead rámcování).</li>
+                        <li><strong>Kolizní doména</strong>: u historického Ethernet — míra kolizí ovlivňuje efektivní propustnost.</li>
+                    </ul>
+
+                    <h4>Síťová vrstva (vrstva 3)</h4>
+                    <ul>
+                        <li><strong>Latence (zpoždění)</strong>: čas od odeslání paketu po přijetí odpovědi (round-trip time, RTT); měří se pomocí ICMP ping.</li>
+                        <li><strong>Jitter</strong>: variabilita zpoždění — kritická pro VoIP a video streaming.</li>
+                        <li><strong>Packet loss</strong>: procento ztracených paketů — ovlivňuje TCP propustnost.</li>
+                        <li><strong>Hop count</strong>: počet routerů na cestě — indikátor složitosti trasy.</li>
+                    </ul>
+
+                    <div class="ex-box">
+                        <strong>Nástroje:</strong> <code>ping</code> měří RTT a packet loss. <code>traceroute</code>/<code>tracert</code> zobrazí cestu (hop by hop) a RTT na každém uzlu. OTDR (Optical Time Domain Reflectometer) měří útlum a zlomy v optickém vlákně.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Fyzická: BER, SNR, šířka pásma, útlum.</li>
+                            <li>Spojová: FER, throughput, kolize.</li>
+                            <li>Síťová: latence (RTT), jitter, packet loss, hop count.</li>
+                            <li>ping = RTT + ztrátovost; traceroute = vizualizace trasy.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-14">
+                    <h3>14. Ethernet – standard, struktura rámce, funkce switche</h3>
+
+                    <p>Ethernet (IEEE 802.3) je dnes dominantní standard pro drátové LAN. Vznikl v 70. letech v Xerox PARC a prošel vývojem od 10 Mbit/s coaxiálu až po dnešní 400 Gbit/s optiku.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Ethernet je rodina síťových technologií definovaná standardem IEEE 802.3, pracující na fyzické a linkové vrstvě OSI. Specifikuje formát rámce, přístupovou metodu (CSMA/CD) a fyzická média.
+                    </div>
+
+                    <h4>Evoluce Ethernetu</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Standard</th><th>Rychlost</th><th>Médium</th><th>Poznámka</th></tr></thead>
+                        <tbody>
+                            <tr><td>10BASE-T</td><td>10 Mbit/s</td><td>UTP Cat3</td><td>Historický, CSMA/CD relevantní</td></tr>
+                            <tr><td>100BASE-TX</td><td>100 Mbit/s</td><td>UTP Cat5</td><td>Fast Ethernet, kódování 4B/5B</td></tr>
+                            <tr><td>1000BASE-T</td><td>1 Gbit/s</td><td>UTP Cat5e/6</td><td>Gigabit Ethernet, 4 páry</td></tr>
+                            <tr><td>10GBASE-SR</td><td>10 Gbit/s</td><td>Optika (MM)</td><td>Datacentra</td></tr>
+                            <tr><td>100GBASE-LR4</td><td>100 Gbit/s</td><td>Optika (SM)</td><td>Páteřní sítě</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Struktura Ethernet rámce (viz téma 6)</h4>
+                    <p>Maximální velikost rámce (MTU) = 1500 bajtů payload + 14 bajtů hlavička + 4 bajty FCS = 1518 bajtů. Jumbo frames mohou mít MTU až 9000 bajtů (datacentra).</p>
+
+                    <h4>Funkce switche v Ethernet síti</h4>
+                    <p>Moderní Ethernet je plně přepínaný (switched): každý port switche je vlastní kolizní doménou, všechny porty jsou v full-duplex režimu. Switch (vrstva 2) přeposílá rámce na základě MAC tabulky. L3 switch navíc umí routing mezi VLANy.</p>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Ethernet = IEEE 802.3; dnes 1G–400G; od koaxiálu přes UTP po optiku.</li>
+                            <li>Rámec: preambule | dst MAC | src MAC | EtherType | payload (46–1500 B) | FCS.</li>
+                            <li>Moderní Ethernet = full duplex + switched → CSMA/CD prakticky nepoužívaný.</li>
+                            <li>L3 switch = switch + routing = kombinace vrstvy 2 a 3.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-15">
+                    <h3>15. Specifické rozsahy IP adres</h3>
+
+                    <p>Ne všechny IPv4 adresy jsou volně použitelné na internetu. RFC definuje speciální rozsahy pro privátní sítě, testování, multicast a jiné účely.</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Rozsah</th><th>Typ</th><th>Účel</th></tr></thead>
+                        <tbody>
+                            <tr><td>10.0.0.0/8</td><td>Privátní</td><td>Velké privátní sítě (Class A)</td></tr>
+                            <tr><td>172.16.0.0/12</td><td>Privátní</td><td>Středně velké privátní sítě (Class B)</td></tr>
+                            <tr><td>192.168.0.0/16</td><td>Privátní</td><td>Malé privátní sítě, domácnosti (Class C)</td></tr>
+                            <tr><td>127.0.0.0/8</td><td>Loopback</td><td>Smyčka zpět na sebe (127.0.0.1 = localhost)</td></tr>
+                            <tr><td>169.254.0.0/16</td><td>Link-local (APIPA)</td><td>Automatická konfigurace bez DHCP</td></tr>
+                            <tr><td>0.0.0.0/8</td><td>Metaadresa</td><td>Aktuální síť / nezadaná adresa</td></tr>
+                            <tr><td>255.255.255.255</td><td>Broadcast</td><td>Broadcast na celou lokální síť</td></tr>
+                            <tr><td>224.0.0.0/4</td><td>Multicast</td><td>Skupinové vysílání (224.x–239.x)</td></tr>
+                            <tr><td>100.64.0.0/10</td><td>Shared address space</td><td>CGN (Carrier-Grade NAT)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> Privátní adresy existují kvůli vyčerpání IPv4 prostoru — NAT (Network Address Translation) přeloží soukromou adresu na veřejnou při vstupu na internet. Loopback (127.0.0.1) umožňuje komunikaci aplikací se sebou samou bez síťové karty.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Prakticky:</strong> Domácí síť typicky používá 192.168.1.x/24. Router má veřejnou IP (přidělenou ISP) a pomocí NAT "skrývá" celou domácí síť za jedinou veřejnou adresu. Zařízení v síti 192.168.1.x nemohou být přímo oslovena z internetu.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Privátní: 10/8, 172.16/12, 192.168/16 — nejsou routovány na internetu, NAT.</li>
+                            <li>Loopback: 127.0.0.1 — komunikace se sebou samým.</li>
+                            <li>APIPA: 169.254/16 — automatická adresa bez DHCP.</li>
+                            <li>Multicast: 224/4 — skupinové vysílání (OSPF, video streaming).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-16">
+                    <h3>16. TCP vs. UDP – porovnání vlastností</h3>
+
+                    <p>Transportní vrstva nabízí dva základní protokoly. Volba závisí na tom, co aplikace potřebuje: spolehlivost nebo rychlost.</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Vlastnost</th><th>TCP</th><th>UDP</th></tr></thead>
+                        <tbody>
+                            <tr><td>Spojení</td><td>Spojově orientovaný (handshake)</td><td>Bezspojový (connectionless)</td></tr>
+                            <tr><td>Spolehlivost</td><td>Garantováno pořadí, žádné ztráty</td><td>Žádná záruka (best-effort)</td></tr>
+                            <tr><td>Overhead</td><td>Vyšší (hlavička 20+ B, ACK, handshake)</td><td>Nižší (hlavička 8 B)</td></tr>
+                            <tr><td>Rychlost</td><td>Pomalejší (flow/congestion control)</td><td>Rychlejší (žádné čekání na ACK)</td></tr>
+                            <tr><td>Pořadí dat</td><td>Garantováno</td><td>Nezaručeno</td></tr>
+                            <tr><td>Řízení toku</td><td>Ano (window size)</td><td>Ne</td></tr>
+                            <tr><td>Použití</td><td>HTTP, SMTP, FTP, SSH</td><td>DNS, VoIP, video, DHCP, gaming</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> TCP je jako doporučená pošta — potvrzení doručení, ale pomalejší. UDP je jako pohlednice — rychlejší, ale nevíš, jestli dorazila. VoIP raději přijme výpadek jednoho paketu (drobný šum) než aby čekalo na retransmisi (sekundové okno ticha).
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Proč DNS používá UDP:</strong> Dotaz i odpověď jsou krátké (vejdou se do jednoho datagramu), rychlost je důležitá, a pokud odpověď nepřijde, stačí zopakovat dotaz — bez potřeby TCP handshaku.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> UDP sám o sobě nezaručuje nic, ale aplikace <em>mohou</em> implementovat vlastní spolehlivost nad UDP (např. QUIC protokol, RTP s RTCP). V takovém případě mají výhody obou světů.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>TCP = spolehlivý, seřazený, řízený; vyšší overhead; web, e-mail, SSH.</li>
+                            <li>UDP = rychlý, bezspojový, no guarantees; DNS, VoIP, streaming, gaming.</li>
+                            <li>Obojí identifikuje aplikace pomocí čísel portů (16 bitů, 0–65535).</li>
+                            <li>QUIC = moderní protokol nad UDP implementující spolehlivost (HTTP/3).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-17">
+                    <h3>17. Prvky síťové infrastruktury – router, switch, hub</h3>
+
+                    <p>V síti existují aktivní prvky, které přeposílají nebo zesilují data. Liší se tím, na jaké vrstvě OSI pracují a jak "inteligentně" rozhodují o přeposílání.</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Prvek</th><th>Vrstva OSI</th><th>Adresace</th><th>Funkce</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Hub (rozbočovač)</strong></td><td>1 – Fyzická</td><td>Žádná</td><td>Zesílení a rozeslání signálu na všechny porty. Jedna kolizní doména. Zastaralý.</td></tr>
+                            <tr><td><strong>Switch (přepínač)</strong></td><td>2 – Linková</td><td>MAC</td><td>Přeposílání rámců na základě MAC tabulky. Každý port = vlastní kolizní doména. Standard v LAN.</td></tr>
+                            <tr><td><strong>Router (směrovač)</strong></td><td>3 – Síťová</td><td>IP</td><td>Směrování paketů mezi různými sítěmi podle routovací tabulky. Odděluje broadcast domény.</td></tr>
+                            <tr><td><strong>L3 Switch</strong></td><td>2+3</td><td>MAC + IP</td><td>Switch s routovací schopností. Rychlé přepínání + inter-VLAN routing.</td></tr>
+                            <tr><td><strong>Access Point (AP)</strong></td><td>1+2</td><td>MAC</td><td>Přemostění drátové a bezdrátové sítě (WiFi ↔ Ethernet).</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box">
+                        <strong>Příklad topologie:</strong> Internet → (ISP) → Router (hranice sítě, NAT) → L3 Switch (inter-VLAN routing) → L2 Switche (přístupová vrstva) → PC/tiskárny. WiFi AP připojená k L2 switchi.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Klíčový princip:</strong> Vyšší vrstva = větší inteligence = větší latence, ale chytřejší rozhodování. Hub nic nerozmýšlí (naivní broadcast), switch se dívá na MAC (lokální inteligence), router zná celou topologii internetu.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Hub (L1): vše na všechny porty, zastaralý, jedna kolizní doména.</li>
+                            <li>Switch (L2): přepíná podle MAC tabulky, každý port = kolizní doména.</li>
+                            <li>Router (L3): směruje podle IP, odděluje broadcast domény, propojuje sítě.</li>
+                            <li>L3 switch = switch + router v jednom zařízení (fast path hardware routing).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-18">
+                    <h3>18. Typy útoků na sítě a způsoby obrany</h3>
+
+                    <p>Sítě jsou terčem různých typů útoků. Pochopení útočníkovy taktiky je základem efektivní obrany.</p>
+
+                    <h4>Hlavní typy útoků</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Útok</th><th>Princip</th><th>Obrana</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>DoS / DDoS</strong></td><td>Zahltí server nebo síť falešnými požadavky → nedostupnost. DDoS = distribuovaný (botnet).</td><td>Rate limiting, scrubbing centrum, CDN, anycast</td></tr>
+                            <tr><td><strong>Man-in-the-Middle</strong></td><td>Útočník se vloží mezi komunikující strany, odposlouchává nebo modifikuje data.</td><td>TLS/HTTPS, certificate pinning, HSTS</td></tr>
+                            <tr><td><strong>ARP Spoofing</strong></td><td>Útočník posílá falešné ARP odpovědi → poisoning ARP cache → MITM v LAN.</td><td>Dynamic ARP Inspection (DAI), statické ARP záznamy</td></tr>
+                            <tr><td><strong>IP Spoofing</strong></td><td>Falšování zdrojové IP adresy paketu → skrytí útočníka nebo zrcadlení útoků.</td><td>Ingress filtering (BCP38), uRPF na routerech</td></tr>
+                            <tr><td><strong>DNS Spoofing</strong></td><td>Podvržení DNS odpovědí → přesměrování na falešný server.</td><td>DNSSEC, DoH/DoT (DNS over HTTPS/TLS)</td></tr>
+                            <tr><td><strong>Port scanning</strong></td><td>Skenování otevřených portů → průzkum před útokem.</td><td>Firewall, IPS, skrytí portů</td></tr>
+                            <tr><td><strong>Phishing</strong></td><td>Sociální inženýrství — podvodné zprávy lákající přihlašovací údaje.</td><td>Vzdělávání uživatelů, email filtering, MFA</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Strategie obrany:</strong> Defense in depth — vrstvená ochrana. Žádné jedno opatření nestačí. Kombinace: šifrování (TLS), autentizace (certifikáty, MFA), filtrování (ACL, firewall), monitoring (IDS/IPS) a vzdělávání uživatelů.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>DDoS: zahltí dostupnost; obrana = rate limiting, scrubbing, CDN.</li>
+                            <li>MITM: odposlech/modifikace; obrana = TLS/HTTPS.</li>
+                            <li>ARP/DNS spoofing: otrávení cache na L2/L7; obrana = DAI, DNSSEC.</li>
+                            <li>Defense in depth = vrstvená ochrana kombinující šifrování, filtrování a monitoring.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-19">
+                    <h3>19. Přepínané sítě, VLAN – virtualizace</h3>
+
+                    <p>Fyzická síť je jedna — ale logicky ji chceme rozdělit. VLAN (Virtual LAN) umožňuje na jedné fyzické infrastruktuře provozovat více izolovaných sítí.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> VLAN je logická skupina portů (nebo zařízení) na switchi, která tvoří vlastní broadcast doménu nezávisle na fyzickém umístění. Zařízení v různých VLAN nemohou komunikovat přímo — potřebují router nebo L3 switch.
+                    </div>
+
+                    <h4>Tagování IEEE 802.1Q</h4>
+                    <p>Standard 802.1Q definuje vložení <strong>VLAN tagu</strong> (4 bajty) do Ethernet rámce za zdrojovou MAC adresu. Tag obsahuje <strong>VID (VLAN ID)</strong> — 12 bitů → 4094 různých VLAN (0 a 4095 rezervovány).</p>
+
+                    <div class="ex-box">
+                        <strong>Access port vs. Trunk port:</strong>
+                        <ul>
+                            <li><strong>Access port</strong>: připojeno koncové zařízení (PC, tiskárna). Port patří jedné VLAN. Příchozí rámce se tagují interně; odchozí se odesílají bez tagu (device to nezná VLAN).</li>
+                            <li><strong>Trunk port</strong>: propojení switch-switch nebo switch-router. Přenáší rámce více VLAN zároveň s 802.1Q tagy. Router pak provádí inter-VLAN routing ("router on a stick").</li>
+                        </ul>
+                    </div>
+
+                    <h4>Proč VLAN?</h4>
+                    <ul>
+                        <li><strong>Bezpečnostní izolace</strong>: VLAN pro HR, VLAN pro Finance, VLAN pro hosty — navzájem nemohou komunikovat.</li>
+                        <li><strong>Snížení broadcast domény</strong>: broadcast flood se šíří jen uvnitř VLAN, ne do celé sítě.</li>
+                        <li><strong>Flexibilita</strong>: přesun zařízení do jiné VLAN rekonfigurací portu, bez fyzického přepojení.</li>
+                    </ul>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>VLAN = logická izolace na L2 — vlastní broadcast doména na sdílené fyzické infrastruktuře.</li>
+                            <li>IEEE 802.1Q: 4bajtový tag s VID (12 bitů, 4094 VLAN) vložený do Ethernet rámce.</li>
+                            <li>Access port = jedno VLAN, bez tagů ven; trunk port = více VLAN, tagy zachovány.</li>
+                            <li>Inter-VLAN routing potřebuje router nebo L3 switch.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-20">
+                    <h3>20. IPv4 vs. IPv6 – rozdíly, vzájemná komunikace</h3>
+
+                    <p>IPv4 adresní prostor (4,3 miliardy adres) je vyčerpán. IPv6 byl navržen jako nástupce s obrovskými adresním prostorem a dalšími vylepšeními.</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Vlastnost</th><th>IPv4</th><th>IPv6</th></tr></thead>
+                        <tbody>
+                            <tr><td>Délka adresy</td><td>32 bitů</td><td>128 bitů</td></tr>
+                            <tr><td>Počet adres</td><td>~4,3 miliardy</td><td>~3,4 × 10³⁸</td></tr>
+                            <tr><td>Zápis</td><td>Decimální: 192.168.1.1</td><td>Hexadecimální: 2001:db8::1</td></tr>
+                            <tr><td>Header</td><td>20–60 B, proměnný</td><td>40 B, fixní (zjednodušení)</td></tr>
+                            <tr><td>NAT</td><td>Nutný (nedostatek adres)</td><td>Nepotřebný (každé zařízení = globální adresa)</td></tr>
+                            <tr><td>Konfigurace</td><td>DHCP nebo ruční</td><td>SLAAC (auto-konfigurace) nebo DHCPv6</td></tr>
+                            <tr><td>IPSec</td><td>Volitelný</td><td>Integrovaný (povinná podpora)</td></tr>
+                            <tr><td>Broadcast</td><td>Ano</td><td>Ne — nahrazen multicast/anycast</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Vzájemná komunikace (přechodové mechanismy)</h4>
+                    <ul>
+                        <li><strong>Dual Stack</strong>: zařízení má obě adresy (IPv4 i IPv6) a komunikuje oběma protokoly. Nejjednodušší přechod.</li>
+                        <li><strong>Tunneling</strong>: IPv6 pakety zapouzdřeny do IPv4 paketů pro přenos přes IPv4 sítě (6in4, 6to4, Teredo).</li>
+                        <li><strong>NAT64 + DNS64</strong>: překlad IPv6 adres na IPv4 na hranici sítě. Umožňuje IPv6-only zařízením komunikovat s IPv4 servery.</li>
+                    </ul>
+
+                    <div class="ex-box">
+                        <strong>SLAAC (Stateless Address Autoconfiguration):</strong> IPv6 zařízení si samo generuje adresu z prefixu oznámeného routerem (Router Advertisement) a vlastního EUI-64 identifikátoru (odvozeného z MAC adresy). Nepotřebuje DHCP server pro základní konfiguraci.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>IPv6 = 128 bitů, 3,4×10³⁸ adres, fixní 40B header, bez NAT a broadcastu.</li>
+                            <li>Přechod: dual stack (obě adresy zároveň) je nejjednodušší.</li>
+                            <li>NAT64: IPv6 sítě komunikují s IPv4 servery přes překladač.</li>
+                            <li>SLAAC: IPv6 zařízení si konfiguruje adresu samo z Router Advertisement.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-21">
+                    <h3>21. DNS – princip fungování</h3>
+
+                    <p>IP adresy si nikdo nepamatuje. DNS (Domain Name System) překládá lidsky čitelná doménová jména (www.google.com) na IP adresy. Je to distribuovaný hierarchický databázový systém.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> DNS je hierarchický, distribuovaný systém překladu doménových jmen na IP adresy (a naopak — reverzní DNS). Pracuje na aplikační vrstvě, primárně přes UDP port 53 (krátké dotazy) nebo TCP port 53 (velké odpovědi, zone transfery).
+                    </div>
+
+                    <h4>Hierarchie DNS</h4>
+                    <ul>
+                        <li><strong>Root servery</strong> (13 clusterů, A–M): znají adresy TLD serverů.</li>
+                        <li><strong>TLD servery</strong> (Top-Level Domain): .com, .cz, .org — znají adresy autoritativních serverů pro domény.</li>
+                        <li><strong>Autoritativní servery</strong>: spravují konkrétní doménu (např. google.com), odpovídají finálně.</li>
+                        <li><strong>Rekurzivní resolver</strong>: provozovaný ISP nebo Googlem (8.8.8.8) — přijme dotaz od klienta, projde hierarchii a vrátí výsledek.</li>
+                    </ul>
+
+                    <h4>Průběh DNS dotazu (rekurzivní)</h4>
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Klient se ptá na <code>www.example.com</code>:
+                        <ol>
+                            <li>Klient → Rekurzivní resolver: "Co je IP www.example.com?"</li>
+                            <li>Resolver → Root server: "Kdo spravuje .com?"</li>
+                            <li>Root server → Resolver: "TLD server pro .com je X."</li>
+                            <li>Resolver → TLD server: "Kdo spravuje example.com?"</li>
+                            <li>TLD server → Resolver: "Autoritativní server je Y."</li>
+                            <li>Resolver → Autoritativní server: "Co je IP www.example.com?"</li>
+                            <li>Autoritativní server → Resolver: "93.184.216.34"</li>
+                            <li>Resolver → Klient: "93.184.216.34" (a uloží do cache na TTL sekund)</li>
+                        </ol>
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Caching:</strong> DNS záznamy mají TTL (Time To Live). Resolver cachuje odpovědi → většina dotazů se vyřeší lokálně bez procházení celé hierarchie. Tímto se systém škáluje na miliardy dotazů denně.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>DNS = hierarchický překladač jmen → IP adresy; UDP/TCP port 53.</li>
+                            <li>Hierarchie: Root → TLD → Autoritativní server.</li>
+                            <li>Rekurzivní resolver za klienta projde celou hierarchií a výsledek cachuje.</li>
+                            <li>TTL určuje jak dlouho je záznam platný v cache — ovlivňuje propagaci změn.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-22">
+                    <h3>22. Aplikační protokoly – SMTP, ICMP, ARP</h3>
+
+                    <p>Stručný přehled tří důležitých protokolů, které se pohybují na různých vrstvách a slouží různým účelům.</p>
+
+                    <h4>ARP – Address Resolution Protocol (Vrstva 2)</h4>
+                    <div class="def-box">
+                        <strong>Definice:</strong> ARP mapuje IPv4 adresu na MAC adresu v rámci lokální sítě. Každé zařízení udržuje ARP cache (IP → MAC).
+                    </div>
+                    <p><strong>Princip:</strong> Chci poslat paket na IP 192.168.1.5, ale neznám jeho MAC. Vyšlu broadcast ARP Request: "Kdo má IP 192.168.1.5?" Zařízení s touto IP odpoví unicastem: "Já! Moje MAC je XX:XX." Zapíši do ARP cache.</p>
+
+                    <h4>ICMP – Internet Control Message Protocol (Vrstva 3)</h4>
+                    <div class="def-box">
+                        <strong>Definice:</strong> ICMP přenáší řídicí a chybové zprávy na síťové vrstvě. Je součástí IP (protokolové číslo 1), ale není transportní protokol — neposílá aplikační data.
+                    </div>
+                    <p><strong>Použití:</strong> <code>ping</code> = ICMP Echo Request + Echo Reply (měření RTT a dostupnosti). <code>traceroute</code> využívá ICMP Time Exceeded (TTL expiraci). Routery oznamují chyby pomocí ICMP Destination Unreachable.</p>
+
+                    <h4>SMTP – Simple Mail Transfer Protocol (Vrstva 7)</h4>
+                    <div class="def-box">
+                        <strong>Definice:</strong> SMTP je aplikační protokol pro <em>odesílání</em> e-mailu mezi mail servery (TCP port 25, nebo 587 pro submission). Pro příjem e-mailů klientem se používá IMAP (port 993) nebo POP3.
+                    </div>
+                    <p><strong>Princip:</strong> Klient se připojí k SMTP serveru, projde handshake (EHLO), autentizuje se, specifikuje odesílatele (MAIL FROM), příjemce (RCPT TO) a tělo zprávy (DATA). Server zprávu přijme a doručí cílovému SMTP serveru příjemce (zjistí ho z DNS MX záznamu).</p>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>ARP (L2): IP → MAC překlad; broadcast dotaz, unicast odpověď, cache s TTL.</li>
+                            <li>ICMP (L3): řídicí protokol IP; ping (Echo), traceroute (TTL exceeded), chybové hlášení.</li>
+                            <li>SMTP (L7): odesílání e-mailů; port 25/587; příjem = IMAP/POP3.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-23">
+                    <h3>23. IPSec – základní funkční principy</h3>
+
+                    <p>IPSec (Internet Protocol Security) je rozšíření IP protokolu zajišťující bezpečnost na síťové vrstvě. Pracuje transparentně — aplikace nemusí být upravovány, bezpečnost je "pod" nimi.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> IPSec je sada protokolů (RFC 4301) pro šifrování, autentizaci a integritu IP komunikace na vrstvě 3. Může chránit jak individuální pakety, tak celé VPN tunely.
+                    </div>
+
+                    <h4>Tři klíčové protokoly</h4>
+                    <ul>
+                        <li><strong>AH (Authentication Header)</strong>: zajišťuje integritu a autentizaci odesílatele, ale <em>nešifruje</em> payload. Chrání celý paket včetně IP hlavičky. Prakticky obsoletní — neprojde NATem (mění IP hlavičku → AH hash selže).</li>
+                        <li><strong>ESP (Encapsulating Security Payload)</strong>: šifruje payload + zajišťuje integritu a autentizaci. Nevztahuje se na vnější IP hlavičku. Standardní volba pro VPN.</li>
+                        <li><strong>IKE (Internet Key Exchange)</strong>: protokol pro automatické vyjednání klíčů a parametrů SA (Security Association). IKEv2 je modernější, odolnější vůči útokům.</li>
+                    </ul>
+
+                    <h4>Provozní módy</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Mód</th><th>Co chrání</th><th>Použití</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Transportní mód</strong></td><td>Pouze payload (data) — IP hlavička zůstává viditelná</td><td>End-to-end ochrana mezi dvěma hostiteli</td></tr>
+                            <tr><td><strong>Tunelový mód</strong></td><td>Celý původní paket (IP + data) zapouzdřen do nového IP paketu</td><td>VPN gateway-to-gateway (site-to-site VPN)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box">
+                        <strong>Site-to-site VPN s IPSec:</strong> Router pobočky A (GW-A) a router pobočky B (GW-B) vyjednají přes IKE SA (šifrovací algoritmus, klíče). Pakety z A do B se zabalí do ESP tunelového módu, odešlou po internetu šifrovaně, GW-B rozbalí a doručí do vnitřní sítě B.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>IPSec = bezpečnost na L3; transparentní pro aplikace.</li>
+                            <li>AH = autentizace (bez šifrování); ESP = šifrování + autentizace. V praxi ESP.</li>
+                            <li>IKE = automatická výměna klíčů a vyjednání SA.</li>
+                            <li>Tunelový mód = celý paket zapouzdřen → VPN; transportní mód = jen payload → end-to-end.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-24">
+                    <h3>24. TLS – základní funkční principy</h3>
+
+                    <p>TLS (Transport Layer Security) je nástupce SSL a zajišťuje bezpečnou komunikaci na aplikační vrstvě. Je základem HTTPS, SMTP over TLS, IMAPS a dalších bezpečných protokolů.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> TLS je kryptografický protokol (RFC 8446 pro TLS 1.3) zajišťující důvěrnost (šifrování), integritu (MAC) a autentizaci (certifikáty) komunikace nad TCP. Pracuje mezi transportní a aplikační vrstvou.
+                    </div>
+
+                    <h4>TLS Handshake (TLS 1.3)</h4>
+                    <ol>
+                        <li><strong>ClientHello</strong>: Klient pošle podporované verze TLS, šifrovací sady (cipher suites), a klíčové sdílení (key share) pro Diffie-Hellman.</li>
+                        <li><strong>ServerHello + Certificate</strong>: Server zvolí cipher suite, pošle svůj X.509 certifikát a vlastní DH klíčový podíl.</li>
+                        <li><strong>Ověření certifikátu</strong>: Klient ověří certifikát serveru pomocí PKI (chain of trust → kořenová CA). Ověří, zda certifikát odpovídá doméně a není revokován.</li>
+                        <li><strong>Výměna klíčů (DH)</strong>: Obě strany odvodí sdílený tajný klíč (pre-master secret → master secret) bez jeho přenosu sítí. To zajišťuje <strong>perfect forward secrecy</strong>.</li>
+                        <li><strong>Finished</strong>: Obě strany potvrdí handshake. Od této chvíle komunikace probíhá symetrickým šifrováním (AES-GCM).</li>
+                    </ol>
+
+                    <div class="insight-box">
+                        <strong>Proč asymetrické → symetrické?</strong> Asymetrické šifrování (RSA, DH) je bezpečné pro výměnu klíčů, ale pomalé pro velké objemy dat. TLS ho používá jen v handshaku pro vyjednání symetrického klíče. Symetrickým šifrováním (AES) se pak šifruje veškerý datový tok — je 100× rychlejší.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Perfect Forward Secrecy (PFS):</strong> Každá TLS session používá nové, dočasné DH klíče. I kdyby byl kompromitován privátní klíč serveru, nelze dešifrovat historicky zachycené komunikace. TLS 1.3 mandatorně vyžaduje PFS (odstranil statické RSA výměny klíčů).
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> TLS 1.0 a 1.1 jsou zastaralé a zranitelné (POODLE, BEAST, BEAST). TLS 1.2 je akceptovatelné. TLS 1.3 (2018) je doporučený standard — zjednodušil handshake a odstranil slabé algoritmy.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>TLS zajišťuje důvěrnost (šifrování), integritu (MAC) a autentizaci (certifikáty X.509).</li>
+                            <li>Handshake: DH výměna klíčů → sdílený symetrický klíč bez přenosu po síti.</li>
+                            <li>Perfect Forward Secrecy: dočasné klíče každé session → historický provoz nelze dešifrovat.</li>
+                            <li>TLS 1.3 = aktuální standard; TLS 1.0/1.1 zastaralé a zranitelné.</li>
+                        </ul>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

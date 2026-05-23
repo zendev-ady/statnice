@@ -1,21 +1,783 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <title>ZWA - Webové aplikace | SZZ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZWA - Webové aplikace | SZZ Příprava</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
+                macros: { N: "\\mathbb{N}", R: "\\mathbb{R}", Z: "\\mathbb{Z}", Q: "\\mathbb{Q}", C: "\\mathbb{C}" }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-<body class="page-specialization">
-    <nav class="navbar navbar-dark bg-success fixed-top">
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="fas fa-arrow-left me-2"></i>Dashboard</a>
             <span class="navbar-text mx-auto"><strong>ZWA</strong> - Webové aplikace</span>
-            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')"><i class="fas fa-adjust"></i></button>
+            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')">
+                <i class="fas fa-adjust"></i>
+            </button>
         </div>
     </nav>
-    <div class="container"><h1>Webové aplikace</h1><div class="alert alert-info mt-4"><i class="fas fa-info-circle"></i> Ve výstavbě</div></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 d-none d-lg-block">
+                <nav class="topic-nav pt-4">
+                    <h6 class="text-muted text-uppercase fw-bold mb-3">Témata</h6>
+                    <ul class="nav flex-column">
+                        <li><a class="nav-link py-1" href="#topic-1">1. XSS</a></li>
+                        <li><a class="nav-link py-1" href="#topic-2">2. MVC vzor</a></li>
+                        <li><a class="nav-link py-1" href="#topic-3">3. SQL injection</a></li>
+                        <li><a class="nav-link py-1" href="#topic-4">4. Bezpečnost webových aplikací</a></li>
+                        <li><a class="nav-link py-1" href="#topic-5">5. Architektura webových aplikací</a></li>
+                        <li><a class="nav-link py-1" href="#topic-6">6. HTTP protokol</a></li>
+                        <li><a class="nav-link py-1" href="#topic-7">7. Stavovost webové aplikace</a></li>
+                        <li><a class="nav-link py-1" href="#topic-8">8. Front vs. Page controller</a></li>
+                        <li><a class="nav-link py-1" href="#topic-9">9. PHP a routing</a></li>
+                        <li><a class="nav-link py-1" href="#topic-10">10. AJAX</a></li>
+                        <li><a class="nav-link py-1" href="#topic-11">11. SoA a škálovatelnost</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="col-lg-9">
+                <h1 class="mb-4">Webové aplikace</h1>
+
+                <!-- TOPIC 1: XSS -->
+                <section class="topic-section" id="topic-1">
+                    <h3>1. XSS (Cross-site Scripting)</h3>
+                    <h4>Co to je a proč to vzniklo</h4>
+                    <p>
+                        XSS vzniká, když webová aplikace zahrne do výstupu uživatelský vstup bez dostatečného ošetření.
+                        Prohlížeč pak obsah považuje za legitimní kód stránky a spustí ho. Útočník tak může ve jménu
+                        oběti ovládat stránku — číst cookies, přesměrovávat, odesílat formuláře.
+                    </p>
+
+                    <div class="def-box"><strong>Definice:</strong> XSS (Cross-site Scripting) je třída zranitelností, při níž útočník injektuje spustitelný skript do webové stránky zobrazené jiným uživatelem, čímž skript běží v kontextu (originu) napadené aplikace.</div>
+
+                    <h4>Varianty</h4>
+                    <div class="ex-box">
+                        <strong>Příklad – Reflected XSS:</strong>
+                        <br>Aplikace zobrazí hledaný výraz: <code>Výsledky pro: &lt;script&gt;alert(document.cookie)&lt;/script&gt;</code>.
+                        Útočník pošle oběti odkaz s payloadem v URL. Skript se <em>neuloží</em> na server, ale odrazí
+                        se zpět v odpovědi. Oběť musí kliknout na škodlivý odkaz — proto je tento typ méně nebezpečný
+                        než stored XSS, ale stále velmi rozšířený.
+                    </div>
+                    <div class="ex-box">
+                        <strong>Příklad – Stored (Persistent) XSS:</strong>
+                        <br>Útočník uloží payload do databáze (komentář, profil, fórum). Každý uživatel, který danou
+                        stránku zobrazí, skript spustí automaticky. Stačí jednou uložit, útok se opakuje pro všechny
+                        návštěvníky — mnohem nebezpečnější varianta.
+                    </div>
+                    <div class="warn-box"><strong>Pozor:</strong> Existuje ještě třetí varianta — <em>DOM-based XSS</em>, kde payload nikdy neopustí prohlížeč; manipuluje přímo DOM prostřednictvím JavaScript kódu na straně klienta (čtení z <code>location.hash</code> apod.).</div>
+
+                    <h4>Obrana</h4>
+                    <ul>
+                        <li><strong>Output encoding</strong> — HTML entity encoding každého uživatelského vstupu vkládaného do HTML (<code>&amp;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>"</code>). Nejdůležitější obrana.</li>
+                        <li><strong>Content Security Policy (CSP)</strong> — HTTP hlavička, která říká prohlížeči, odkud smí načítat skripty. Zabrání spuštění inline skriptů a skriptů z cizích domén.</li>
+                        <li><strong>HttpOnly flag na cookies</strong> — zabrání JavaScriptu číst session cookie.</li>
+                        <li><strong>Validace vstupu</strong> — whitelistový přístup tam, kde je to možné.</li>
+                    </ul>
+
+                    <div class="insight-box"><strong>Intuice:</strong> XSS je v podstatě problém mixing dat a kódu. Prohlížeč nedokáže rozlišit, co je data a co kód — proto musíme data enkódovat, aby je prohlížeč vždy interpretoval jako text, ne jako instrukce.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>XSS = injekce skriptu útočníka do stránky jiného uživatele</li>
+                            <li>Reflected: payload v URL, nevytrvalý; Stored: uložen v DB, zasáhne všechny návštěvníky</li>
+                            <li>Hlavní obrana: output encoding + CSP + HttpOnly cookies</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 2: MVC -->
+                <section class="topic-section" id="topic-2">
+                    <h3>2. MVC architektonický vzor</h3>
+                    <h4>Motivace</h4>
+                    <p>
+                        Bez struktury web aplikace rychle degeneruje do "spaghetti kódu" — HTML promíšené s SQL
+                        a business logikou. MVC odděluje odpovědnosti, aby různé části aplikace mohly být vyvíjeny
+                        a testovány nezávisle.
+                    </p>
+
+                    <div class="def-box"><strong>Definice:</strong> MVC (Model–View–Controller) je architektonický vzor rozdělující aplikaci do tří komponent: Model (data a business logika), View (prezentace dat uživateli) a Controller (zpracování uživatelského vstupu a orchestrace).</div>
+
+                    <h4>Komponenty a jejich odpovědnosti</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Komponenta</th><th>Odpovědnost</th><th>Co NESMÍ dělat</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Model</strong></td>
+                                <td>Reprezentuje data, business pravidla, validace, přístup k DB. Zcela nezávislý na UI.</td>
+                                <td>Generovat HTML, pracovat s HTTP requestem</td>
+                            </tr>
+                            <tr>
+                                <td><strong>View</strong></td>
+                                <td>Renderuje data z Modelu do HTML (nebo JSON). Obsahuje pouze prezentační logiku.</td>
+                                <td>Přistupovat přímo k DB, rozhodovat o business pravidlech</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Controller</strong></td>
+                                <td>Přijímá HTTP požadavky, volá Model, vybírá View a posílá data do View.</td>
+                                <td>Obsahovat business logiku nebo SQL dotazy</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Směry interakce</h4>
+                    <div class="ex-box">
+                        <strong>Typický tok požadavku:</strong><br>
+                        <code>HTTP Request → Controller → Model (data) → Controller → View → HTTP Response</code>
+                        <ol>
+                            <li>Uživatel odešle formulář (POST /products)</li>
+                            <li>Controller přijme požadavek, validuje vstup</li>
+                            <li>Controller zavolá <code>Product::create($data)</code> na Modelu</li>
+                            <li>Model uloží data do DB</li>
+                            <li>Controller vybere View (nebo přesměruje)</li>
+                            <li>View obdrží data a renderuje HTML</li>
+                        </ol>
+                    </div>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Controller je "dirigent" — sám nic nehraje, ale říká Modelu, aby přinesl data, a View, aby je zobrazil. View je čtenář, Model je knihovna. Tato separace umožňuje totéž View použít pro API (JSON) i pro HTML, nebo vyměnit databázi bez změny Views.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Model = data + logika, View = prezentace, Controller = orchestrace</li>
+                            <li>Tok: Request → Controller → Model → Controller → View → Response</li>
+                            <li>Benefity: testovatelnost, oddělení zodpovědností, znovupoužitelnost</li>
+                            <li>Používají ho všechny moderní PHP frameworky (Laravel, Symfony)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 3: SQL Injection -->
+                <section class="topic-section" id="topic-3">
+                    <h3>3. SQL Injection</h3>
+                    <h4>Princip útoku</h4>
+                    <p>
+                        SQL injection vzniká, když aplikace sestavuje SQL dotaz přímou konkatenací uživatelského vstupu.
+                        Útočník do vstupu vloží SQL syntaxi, která změní strukturu dotazu — místo dat interpreter dostane příkazy.
+                    </p>
+
+                    <div class="ex-box">
+                        <strong>Příklad útoku na přihlašovací formulář:</strong>
+                        <br>Kód: <code>SELECT * FROM users WHERE username='$user' AND password='$pass'</code>
+                        <br>Útočník zadá: username = <code>' OR '1'='1' --</code>
+                        <br>Výsledný dotaz: <code>SELECT * FROM users WHERE username='' OR '1'='1' --' AND password='...'</code>
+                        <br>Podmínka je vždy pravdivá, <code>--</code> zakomentuje zbytek. Útočník se přihlásí bez hesla.
+                    </div>
+
+                    <div class="warn-box"><strong>Pozor:</strong> SQL injection může vést nejen ke čtení dat, ale i k jejich modifikaci (<code>DROP TABLE</code>), ke čtení souborů, nebo při určitých konfiguracích i ke spuštění OS příkazů (xp_cmdshell v MS SQL).</div>
+
+                    <h4>Obrana</h4>
+                    <div class="def-box"><strong>Parametrizované dotazy (Prepared Statements):</strong> Způsob sestavení SQL dotazu, kde struktura dotazu je oddělena od dat. Server nejprve zkompiluje šablonu dotazu, teprve pak dosadí data jako hodnoty — nikdy jako kód.</div>
+
+                    <div class="ex-box">
+                        <strong>PHP PDO – správně:</strong>
+<pre><code>$stmt = $pdo->prepare('SELECT * FROM users WHERE username = ? AND password = ?');
+$stmt->execute([$username, $password]);
+</code></pre>
+                        Bez ohledu na to, co uživatel zadá, jeho vstup bude vždy interpretován jako <em>hodnota</em>, ne jako součást SQL.
+                    </div>
+
+                    <ul>
+                        <li><strong>ORM frameworky</strong> — Eloquent, Doctrine automaticky používají prepared statements</li>
+                        <li><strong>Principle of least privilege</strong> — DB uživatel aplikace nemá právo DROP TABLE</li>
+                        <li><strong>Validace vstupu</strong> — whitelisting přijatelných hodnot kde to dává smysl</li>
+                    </ul>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Prepared statements fungují proto, že databáze dostane plán dotazu před tím, než vůbec vidí data. Útočníkův vstup přichází až v druhém kroku a databáze ho nikdy nezpracuje jako instrukce — je to jako šuplík, do kterého lze dát cokoliv, ale jeho obsah se nikdy nespustí.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>SQLi = útočník mění strukturu SQL dotazu přes uživatelský vstup</li>
+                            <li>Hlavní obrana: prepared statements / parametrizované dotazy</li>
+                            <li>Sekundárně: least privilege, ORM, validace vstupu</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 4: Web security -->
+                <section class="topic-section" id="topic-4">
+                    <h3>4. Bezpečnost webových aplikací</h3>
+                    <h4>Přehled hlavních problémů (OWASP Top 10)</h4>
+                    <p>
+                        OWASP (Open Web Application Security Project) udržuje žebříček nejrozšířenějších zranitelností.
+                        Je de facto standardem pro bezpečnostní audit webových aplikací.
+                    </p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Zranitelnost</th><th>Popis</th><th>Obrana</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Broken Access Control</strong></td>
+                                <td>Uživatel přistupuje k datům/funkcím, na které nemá právo (např. mění id v URL)</td>
+                                <td>Autorizační kontroly na serveru, RBAC</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Injection (SQLi, XSS)</strong></td>
+                                <td>Viz témata 1 a 3</td>
+                                <td>Prepared statements, output encoding</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cryptographic Failures</strong></td>
+                                <td>Citlivá data přenášena/uložena bez šifrování, slabé algoritmy (MD5, SHA1)</td>
+                                <td>HTTPS, bcrypt/Argon2 pro hesla, silné šifry</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Insecure Design</strong></td>
+                                <td>Bezpečnost nebyla zvažována při návrhu</td>
+                                <td>Threat modeling, secure SDLC</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Security Misconfiguration</strong></td>
+                                <td>Výchozí hesla, debug mód v produkci, zbytečné služby</td>
+                                <td>Hardening, pravidelné audity</td>
+                            </tr>
+                            <tr>
+                                <td><strong>CSRF</strong></td>
+                                <td>Falzifikace požadavků — útočník přiměje prohlížeč oběti odeslat požadavek</td>
+                                <td>CSRF tokeny, SameSite cookies</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Vulnerable Components</strong></td>
+                                <td>Zastaralé knihovny se známými CVE</td>
+                                <td>Dependency scanning, pravidelné aktualizace</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Klíčové principy obrany</h4>
+                    <ul>
+                        <li><strong>Defense in depth</strong> — více vrstev obrany; prolomení jedné neznamená kompromitaci systému</li>
+                        <li><strong>Least privilege</strong> — každá komponenta má minimální potřebná práva</li>
+                        <li><strong>Fail securely</strong> — při chybě systém selže do bezpečného stavu, neodhaluje detaily</li>
+                        <li><strong>Validate at boundaries</strong> — validace vstupu na hranici systému (HTTP request), důvěra internímu kódu</li>
+                    </ul>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Většina zranitelností pramení z jediné chyby — aplikace důvěřuje uživatelskému vstupu. Zlaté pravidlo: <em>veškerý vstup je nepřátelský</em>, dokud není prokázán opak.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>OWASP Top 10 je standardní přehled nejnebezpečnějších webových zranitelností</li>
+                            <li>Nejrozšířenější: broken access control, injection, cryptographic failures</li>
+                            <li>Klíčové principy: defense in depth, least privilege, validace vstupu</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 5: Web app architecture -->
+                <section class="topic-section" id="topic-5">
+                    <h3>5. Architektura webových aplikací</h3>
+                    <h4>Třívrstvá architektura</h4>
+                    <p>
+                        Moderní webové aplikace jsou typicky organizovány do tří logických vrstev, které mohou běžet
+                        na jednom nebo více fyzických serverech.
+                    </p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Vrstva</th><th>Odpovědnost</th><th>Technologie</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Prezentační vrstva</strong><br>(Presentation / Client tier)</td>
+                                <td>Zobrazení UI, interakce s uživatelem, odeslání HTTP požadavků</td>
+                                <td>HTML, CSS, JavaScript, prohlížeč</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Aplikační vrstva</strong><br>(Business Logic / Middle tier)</td>
+                                <td>Business pravidla, zpracování požadavků, validace, orchestrace dat</td>
+                                <td>PHP, Python, Java, Node.js, .NET</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Datová vrstva</strong><br>(Data / Persistence tier)</td>
+                                <td>Trvalé uložení dat, dotazy, integrita dat</td>
+                                <td>MySQL, PostgreSQL, MongoDB, Redis</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Proč oddělovat vrstvy?</h4>
+                    <ul>
+                        <li><strong>Škálovatelnost</strong> — každá vrstva se škáluje nezávisle (přidat DB repliky bez změny app serveru)</li>
+                        <li><strong>Bezpečnost</strong> — databáze není přímo dostupná z internetu, ochráněna za aplikační vrstvou</li>
+                        <li><strong>Udržovatelnost</strong> — změna UI neovlivní business logiku</li>
+                        <li><strong>Testovatelnost</strong> — business logika testovatelná bez UI</li>
+                    </ul>
+
+                    <h4>Varianty nasazení</h4>
+                    <div class="ex-box">
+                        <strong>Příklady reálného nasazení:</strong>
+                        <ul>
+                            <li><em>Monolith na jednom serveru</em> — vše na jednom stroji (vývoj, malé projekty)</li>
+                            <li><em>Oddělená DB</em> — aplikační a prezentační vrstva společně, databáze na dedikovaném serveru</li>
+                            <li><em>Plně distribuované</em> — každá vrstva na vlastní infrastruktuře, load balancery, CDN</li>
+                            <li><em>Microservices / SoA</em> — aplikační vrstva rozdrobena do nezávislých služeb (viz téma 11)</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Tři vrstvy: prezentační (UI), aplikační (logika), datová (persistence)</li>
+                            <li>Oddělení umožňuje nezávislé škálování, testování a nasazení</li>
+                            <li>Databáze nikdy přímo přístupná z internetu</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 6: HTTP -->
+                <section class="topic-section" id="topic-6">
+                    <h3>6. HTTP protokol</h3>
+                    <h4>Základní charakteristiky</h4>
+                    <div class="def-box"><strong>Definice:</strong> HTTP (Hypertext Transfer Protocol) je aplikační protokol fungující na principu požadavek–odpověď (request–response) nad TCP/IP. Je <em>bezstavový</em> (stateless) — každý požadavek je nezávislý, server si nepamatuje předchozí.</div>
+
+                    <h4>HTTP metody</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Metoda</th><th>Účel</th><th>Idempotentní</th><th>Bezpečná</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>GET</strong></td><td>Načtení zdroje, data v URL</td><td>Ano</td><td>Ano</td></tr>
+                            <tr><td><strong>POST</strong></td><td>Vytvoření nového zdroje / odeslání dat</td><td>Ne</td><td>Ne</td></tr>
+                            <tr><td><strong>PUT</strong></td><td>Nahrazení celého zdroje</td><td>Ano</td><td>Ne</td></tr>
+                            <tr><td><strong>PATCH</strong></td><td>Částečná aktualizace zdroje</td><td>Ne*</td><td>Ne</td></tr>
+                            <tr><td><strong>DELETE</strong></td><td>Smazání zdroje</td><td>Ano</td><td>Ne</td></tr>
+                            <tr><td><strong>HEAD</strong></td><td>Jako GET, ale bez těla odpovědi</td><td>Ano</td><td>Ano</td></tr>
+                            <tr><td><strong>OPTIONS</strong></td><td>Zjistit, jaké metody server podporuje</td><td>Ano</td><td>Ano</td></tr>
+                        </tbody>
+                    </table>
+                    <p class="text-muted small">* Bezpečná = nemění stav serveru. Idempotentní = opakované volání má stejný výsledek.</p>
+
+                    <h4>Struktura požadavku a odpovědi</h4>
+                    <div class="ex-box">
+                        <strong>HTTP Request:</strong>
+<pre><code>POST /api/login HTTP/1.1
+Host: example.com
+Content-Type: application/json
+Authorization: Bearer eyJhbGciO...
+
+{"username": "adam", "password": "secret"}
+</code></pre>
+                        <strong>HTTP Response:</strong>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+Set-Cookie: session=abc123; HttpOnly; Secure
+
+{"token": "eyJhbGciO..."}
+</code></pre>
+                    </div>
+
+                    <h4>Autorizace v HTTP</h4>
+                    <ul>
+                        <li><strong>Basic Auth</strong> — <code>Authorization: Basic base64(username:password)</code>. Jednoduché, ale heslo jde v každém požadavku (nutně HTTPS).</li>
+                        <li><strong>Bearer Token (OAuth 2.0 / JWT)</strong> — <code>Authorization: Bearer &lt;token&gt;</code>. Klient dostane token po přihlášení a posílá ho v každém požadavku. Token obsahuje claims (kdo je uživatel), server ověří podpis.</li>
+                        <li><strong>Session cookie</strong> — server vytvoří session, ID uloží do cookie; prohlížeč ji posílá automaticky.</li>
+                    </ul>
+
+                    <h4>Status kódy</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Skupina</th><th>Příklady</th></tr></thead>
+                        <tbody>
+                            <tr><td>2xx Úspěch</td><td>200 OK, 201 Created, 204 No Content</td></tr>
+                            <tr><td>3xx Přesměrování</td><td>301 Moved Permanently, 304 Not Modified</td></tr>
+                            <tr><td>4xx Chyba klienta</td><td>400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found</td></tr>
+                            <tr><td>5xx Chyba serveru</td><td>500 Internal Server Error, 503 Service Unavailable</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box"><strong>Intuice:</strong> HTTP je bezstavový záměrně — zjednodušuje škálování. Každý server zvládne zpracovat jakýkoli požadavek bez sdílení stavu. Stavovost (přihlášení, košík) je pak řešena explicitně na aplikační úrovni pomocí cookies nebo tokenů.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>HTTP je bezstavový request-response protokol nad TCP/IP</li>
+                            <li>Klíčové metody: GET (čtení), POST (vytvoření), PUT/PATCH (aktualizace), DELETE</li>
+                            <li>Autorizace: Basic Auth, Bearer Token (JWT), session cookie</li>
+                            <li>Status kódy: 2xx úspěch, 3xx redirect, 4xx chyba klienta, 5xx chyba serveru</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 7: Statefulness -->
+                <section class="topic-section" id="topic-7">
+                    <h3>7. Stavovost webové aplikace</h3>
+                    <h4>Problém</h4>
+                    <p>
+                        HTTP je bezstavový — po každém požadavku server zapomene, s kým mluvil. Přitom aplikace potřebuje
+                        pamatovat: kdo je přihlášen, co je v košíku, jaký je jazyk. Stavovost musíme implementovat explicitně.
+                    </p>
+
+                    <h4>Klientská strana</h4>
+                    <div class="def-box"><strong>Cookie:</strong> Malý textový soubor uložený v prohlížeči. Prohlížeč ho automaticky přikládá ke každému HTTP požadavku na příslušnou doménu. Nastavuje se hlavičkou <code>Set-Cookie</code> v odpovědi.</div>
+
+                    <div class="ex-box">
+                        <strong>Atributy cookie:</strong>
+                        <ul>
+                            <li><code>HttpOnly</code> — JavaScript nesmí číst cookie (ochrana před XSS krádeží)</li>
+                            <li><code>Secure</code> — cookie se posílá pouze přes HTTPS</li>
+                            <li><code>SameSite=Strict/Lax</code> — ochrana před CSRF (cookie se neposílá při cross-site requestech)</li>
+                            <li><code>Expires</code> / <code>Max-Age</code> — platnost cookie</li>
+                        </ul>
+                    </div>
+
+                    <p>Další klientská úložiště: <code>localStorage</code> (trvalé, přístupné JS, vhodné pro UI preference), <code>sessionStorage</code> (jen pro danou záložku), IndexedDB (strukturovaná data, offline).</p>
+
+                    <h4>Serverová strana</h4>
+                    <div class="def-box"><strong>Session:</strong> Stav uložený na serveru, identifikovaný unikátním Session ID. Klient dostane jen ID (typicky v cookie), citlivá data zůstávají na serveru.</div>
+
+                    <div class="ex-box">
+                        <strong>Průběh session:</strong>
+                        <ol>
+                            <li>Klient pošle přihlašovací formulář</li>
+                            <li>Server ověří credentials, vytvoří session záznam v DB/paměti</li>
+                            <li>Server pošle <code>Set-Cookie: session_id=abc123</code></li>
+                            <li>Každý další požadavek klient přikládá cookie s ID</li>
+                            <li>Server načte session data podle ID a ví, kdo je přihlášen</li>
+                        </ol>
+                    </div>
+
+                    <h4>Srovnání</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Kritérium</th><th>Cookie (data u klienta)</th><th>Session (data na serveru)</th></tr></thead>
+                        <tbody>
+                            <tr><td>Bezpečnost</td><td>Nižší — data viditelná/modifikovatelná</td><td>Vyšší — data pod kontrolou serveru</td></tr>
+                            <tr><td>Kapacita</td><td>~4 KB</td><td>Neomezená</td></tr>
+                            <tr><td>Škálovatelnost</td><td>Bez problémů</td><td>Vyžaduje sdílené úložiště (Redis) při více serverech</td></tr>
+                            <tr><td>Výkon</td><td>Data jdou v každém požadavku</td><td>Jen ID jde v požadavku, data se načítají</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box"><strong>Intuice:</strong> JWT tokeny jsou moderní alternativa session — celý stav je zakódován v tokenu podepsaném serverem. Token nese data (claims), server nemusí nic ukládat. Ideální pro API a microservices, kde sdílená session storage by byla zátěží.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>HTTP je bezstavový — stavovost musíme vyřešit explicitně</li>
+                            <li>Cookie: data u klienta (~4KB), server ji nečte, prohlížeč ji posílá automaticky</li>
+                            <li>Session: data na serveru, klient má jen ID; bezpečnější, ale škálování vyžaduje sdílené úložiště</li>
+                            <li>JWT: alternativa session pro API — stav zakódován v tokenu, server neukládá</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 8: Front vs Page Controller -->
+                <section class="topic-section" id="topic-8">
+                    <h3>8. Front controller vs. Page controller</h3>
+                    <h4>Page Controller</h4>
+                    <div class="def-box"><strong>Page Controller:</strong> Každá stránka/endpoint má vlastní PHP soubor, který zpracovává požadavek pro danou URL. Více vstupních bodů aplikace.</div>
+
+                    <div class="ex-box">
+                        <strong>Struktura Page Controller:</strong>
+<pre><code>/products.php     → zpracovává /products
+/product.php?id=1 → zpracovává /product/1
+/cart.php         → zpracovává /cart
+/admin/users.php  → zpracovává /admin/users
+</code></pre>
+                        Každý soubor sám ověřuje přihlášení, načítá DB, renderuje šablonu. Logika se duplikuje.
+                    </div>
+
+                    <h4>Front Controller</h4>
+                    <div class="def-box"><strong>Front Controller:</strong> Jediný vstupní bod (<code>index.php</code>) přijímá všechny HTTP požadavky. Centrální router mapuje URL na příslušný handler (controller třídu a metodu).</div>
+
+                    <div class="ex-box">
+                        <strong>Tok požadavku ve Front Controller:</strong>
+<pre><code>Každý požadavek → index.php
+                → Router::resolve($method, $path)
+                → ProductController::show($id)
+                → Response
+</code></pre>
+                        URL rewriting v <code>.htaccess</code> zajistí, že všechny požadavky jdou přes <code>index.php</code>:
+<pre><code>RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php [QSA,L]
+</code></pre>
+                    </div>
+
+                    <h4>Srovnání</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Kritérium</th><th>Page Controller</th><th>Front Controller</th></tr></thead>
+                        <tbody>
+                            <tr><td>Vstupní body</td><td>Více (jeden soubor = jedna stránka)</td><td>Jeden (index.php)</td></tr>
+                            <tr><td>Centralizace logiky</td><td>Obtížná — duplikace kódu</td><td>Snadná (auth, logging, CSRF v jednom místě)</td></tr>
+                            <tr><td>Bezpečnost</td><td>Každý soubor musí ošetřit přístup</td><td>Centrální kontrola — těžší zapomenout</td></tr>
+                            <tr><td>Složitost</td><td>Jednodušší pro začátečníky</td><td>Vyžaduje pochopení routeru</td></tr>
+                            <tr><td>Vhodné pro</td><td>Malé projekty, skripty</td><td>Frameworky (Laravel, Symfony), větší projekty</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Page Controller je jako recepce v každém patře budovy — každé patro si samo hlídá přístupy. Front Controller je jako hlavní recepce v přízemí — všichni musí projít přes ni, takže bezpečnost a logování jsou garantované pro každého návštěvníka.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Page Controller: každá URL má svůj soubor; jednoduché, ale duplikace kódu</li>
+                            <li>Front Controller: jeden vstupní bod, centrální router; základ moderních PHP frameworků</li>
+                            <li>Front Controller umožňuje centrální autentizaci, logování, CSRF ochranu bez duplikace</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 9: PHP routing -->
+                <section class="topic-section" id="topic-9">
+                    <h3>9. PHP – serverování obsahu, GET requesty, routing</h3>
+                    <h4>Jak PHP zpracovává GET požadavek</h4>
+                    <p>
+                        Webový server (Apache, Nginx) přijme HTTP GET požadavek. Pokud URL odpovídá PHP souboru
+                        (nebo je nakonfigurován rewriting), předá požadavek PHP interpreteru. Ten spustí skript,
+                        výstup skriptu se stane tělem HTTP odpovědi.
+                    </p>
+
+                    <div class="ex-box">
+                        <strong>Přístup k datům GET požadavku v PHP:</strong>
+<pre><code>// URL: /products?category=books&sort=price
+
+$_GET['category']          // 'books'
+$_GET['sort']              // 'price'
+$_SERVER['REQUEST_METHOD'] // 'GET'
+$_SERVER['REQUEST_URI']    // '/products?category=books&sort=price'
+$_SERVER['HTTP_HOST']      // 'example.com'
+</code></pre>
+                    </div>
+
+                    <h4>Routing</h4>
+                    <p>
+                        Routing je mapování URL na PHP kód. Cíl je mít pěkné URL (<code>/products/42</code> místo
+                        <code>/product.php?id=42</code>) a centralizovanou logiku zpracování.
+                    </p>
+
+                    <div class="ex-box">
+                        <strong>Jednoduchá implementace routeru:</strong>
+<pre><code>// routes.php
+$router->get('/products', 'ProductController@index');
+$router->get('/products/{id}', 'ProductController@show');
+$router->post('/products', 'ProductController@store');
+
+// Router::resolve($method, $path) vrátí callable
+// index.php
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$method = $_SERVER['REQUEST_METHOD'];
+$handler = $router->resolve($method, $path);
+$handler($request);
+</code></pre>
+                    </div>
+
+                    <h4>Dynamické parametry v URL</h4>
+                    <div class="ex-box">
+                        <strong>Extrakce parametrů:</strong>
+                        Routa <code>/products/{id}/reviews/{reviewId}</code> matchuje URL <code>/products/42/reviews/7</code>
+                        a extrahuje <code>id=42</code>, <code>reviewId=7</code>. Router typicky používá regex:
+<pre><code>$pattern = '#^/products/(\d+)/reviews/(\d+)$#';
+preg_match($pattern, $path, $matches);
+// $matches[1] = 42, $matches[2] = 7
+</code></pre>
+                    </div>
+
+                    <h4>RESTful konvence</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Metoda</th><th>URL</th><th>Akce</th></tr></thead>
+                        <tbody>
+                            <tr><td>GET</td><td>/products</td><td>Index — seznam produktů</td></tr>
+                            <tr><td>GET</td><td>/products/{id}</td><td>Show — detail produktu</td></tr>
+                            <tr><td>POST</td><td>/products</td><td>Store — vytvoření produktu</td></tr>
+                            <tr><td>PUT/PATCH</td><td>/products/{id}</td><td>Update — aktualizace</td></tr>
+                            <tr><td>DELETE</td><td>/products/{id}</td><td>Destroy — smazání</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>PHP přijme GET request přes webový server, data z URL jsou v <code>$_GET</code></li>
+                            <li>Routing mapuje URL patterny na PHP handlery (controller metody)</li>
+                            <li>URL rewriting (.htaccess) přesměruje vše na index.php (front controller)</li>
+                            <li>RESTful konvence: URL identifikuje zdroj, HTTP metoda identifikuje akci</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 10: AJAX -->
+                <section class="topic-section" id="topic-10">
+                    <h3>10. AJAX</h3>
+                    <h4>Princip a motivace</h4>
+                    <div class="def-box"><strong>AJAX (Asynchronous JavaScript and XML):</strong> Technika komunikace webového prohlížeče se serverem na pozadí, bez nutnosti přenačtení celé stránky. Přenášená data nemusí být XML — dnes typicky JSON.</div>
+
+                    <p>
+                        Klasický web: každá interakce (kliknutí, odeslání formuláře) způsobí kompletní reload stránky.
+                        AJAX umožňuje aktualizovat jen část stránky — výsledek vyhledávání, komentáře, notifikace — bez
+                        přerušení práce uživatele.
+                    </p>
+
+                    <div class="ex-box">
+                        <strong>Moderní AJAX pomocí Fetch API:</strong>
+<pre><code>// Asynchronní — JS pokračuje dál, nečeká
+fetch('/api/products/42')
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('product-name').textContent = data.name;
+  })
+  .catch(err => console.error('Chyba:', err));
+
+// Nebo s async/await
+async function loadProduct(id) {
+  const response = await fetch(`/api/products/${id}`);
+  const data = await response.json();
+  return data;
+}
+</code></pre>
+                    </div>
+
+                    <h4>Asynchronnost a event loop</h4>
+                    <p>
+                        JavaScript je jednovláknový — nemůže skutečně paralelizovat. Místo toho má <em>event loop</em>:
+                        HTTP požadavek se odešle, JS pokračuje dál, a když přijde odpověď, callback se zařadí do fronty
+                        a spustí při nejbližší příležitosti.
+                    </p>
+
+                    <h4>Race condition v AJAXu</h4>
+                    <div class="def-box"><strong>Race condition:</strong> Situace, kdy výsledek závisí na pořadí dokončení asynchronních operací, které nelze zaručit.</div>
+
+                    <div class="ex-box">
+                        <strong>Typický scénář:</strong>
+                        <ol>
+                            <li>Uživatel napíše "p" do vyhledávacího pole → odesláme request R1 pro "p"</li>
+                            <li>Napíše "ph" → odesláme request R2 pro "ph"</li>
+                            <li>R2 přijde dříve — zobrazíme výsledky pro "ph" ✓</li>
+                            <li>R1 přijde se zpožděním — přepíšeme výsledky pro "p" ✗ (špatně!)</li>
+                        </ol>
+                    </div>
+
+                    <h4>Řešení race condition</h4>
+                    <ul>
+                        <li><strong>Zrušení předchozího požadavku</strong> — <code>AbortController</code> umožní přerušit fetch request před odesláním nového</li>
+                        <li><strong>Verziování</strong> — každý request dostane číslo, odpovědi s nižším číslem se ignorují</li>
+                        <li><strong>Debouncing</strong> — čekáme, až uživatel přestane psát (300ms), pak teprve odešleme</li>
+                        <li><strong>Centralizovaný stav</strong> — Redux/Flux pattern: všechny aktualizace jdou přes jeden dispatcher, který zaručuje konzistenci</li>
+                    </ul>
+
+                    <div class="ex-box">
+                        <strong>AbortController řešení:</strong>
+<pre><code>let controller = null;
+
+function search(query) {
+  if (controller) controller.abort(); // zruší předchozí
+  controller = new AbortController();
+
+  fetch(`/api/search?q=${query}`, { signal: controller.signal })
+    .then(r => r.json())
+    .then(data => showResults(data))
+    .catch(err => { if (err.name !== 'AbortError') console.error(err); });
+}
+</code></pre>
+                    </div>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Asynchronní kód je jako objednávka v restauraci — objednáš, číšník odejde, ty mezitím pijete víno. Problém nastane, když objednáš dvakrát a nevíš, které jídlo přijde první. AbortController je ekvivalent "vlastně, zruš tu první objednávku".</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>AJAX = asynchronní HTTP požadavky na pozadí bez reload stránky</li>
+                            <li>JS je jednovláknový, asynchronnost řeší event loop a callbacky/promises</li>
+                            <li>Race condition: odpovědi přicházejí v jiném pořadí než byly odeslány</li>
+                            <li>Řešení: AbortController, debouncing, verziování, centralizovaný stav</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 11: SoA -->
+                <section class="topic-section" id="topic-11">
+                    <h3>11. SoA (Service-Oriented Architecture) a stavovost, škálovatelnost</h3>
+                    <h4>Co je SoA</h4>
+                    <div class="def-box"><strong>SoA (Service-Oriented Architecture):</strong> Architektonický přístup, kde aplikace je sestavena z nezávislých <em>služeb</em>, které spolu komunikují přes dobře definovaná rozhraní (typicky HTTP/REST nebo SOAP). Každá služba zapouzdřuje jednu business doménu a může být nasazena a škálována nezávisle.</div>
+
+                    <p>
+                        SoA vzniklo jako odpověď na problémy monolitických aplikací: monolith je těžké škálovat (musíš
+                        škálovat vše najednou), obtížně udržitelný (změna jedné části rozbije jinou) a technologicky
+                        rigidní (celý systém musí používat stejný jazyk/framework).
+                    </p>
+
+                    <h4>Klíčové principy</h4>
+                    <ul>
+                        <li><strong>Loose coupling</strong> — služby jsou minimálně závislé na ostatních; komunikují přes rozhraní, ne přímé volání</li>
+                        <li><strong>High cohesion</strong> — každá služba dělá jednu věc dobře (objednávky, platby, notifikace)</li>
+                        <li><strong>Interoperabilita</strong> — služby mohou být v různých technologiích, komunikují přes standardní protokoly</li>
+                        <li><strong>Znovupoužitelnost</strong> — stejná služba může obsluhovat více klientů (web, mobilní app, interní nástroje)</li>
+                    </ul>
+
+                    <div class="ex-box">
+                        <strong>Příklad: e-shop jako SoA</strong>
+                        <ul>
+                            <li><em>User Service</em> — správa uživatelů, autentizace</li>
+                            <li><em>Product Service</em> — katalog produktů, zásoby</li>
+                            <li><em>Order Service</em> — vytváření a správa objednávek</li>
+                            <li><em>Payment Service</em> — zpracování plateb</li>
+                            <li><em>Notification Service</em> — emaily, push notifikace</li>
+                        </ul>
+                        Každá služba má vlastní databázi, nasazuje se nezávisle, škáluje se podle potřeby (Payment Service ve špičce potřebuje víc instancí).
+                    </div>
+
+                    <h4>Stavovost v SoA</h4>
+                    <p>
+                        Distribuované prostředí komplikuje správu stavu. Preferovaný přístup: <strong>bezstavové služby</strong>
+                        — každý požadavek nese veškeré potřebné informace, stav je externalizován.
+                    </p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Přístup</th><th>Popis</th><th>Výhoda</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td>Bezstavové služby</td>
+                                <td>Stav uložen externě (Redis, DB). Každá instance může obsluhovat jakýkoli request.</td>
+                                <td>Snadné škálování</td>
+                            </tr>
+                            <tr>
+                                <td>JWT tokeny</td>
+                                <td>Stav (identita uživatele) zakódován v tokenu podepsaném serverem.</td>
+                                <td>Bez sdíleného úložiště</td>
+                            </tr>
+                            <tr>
+                                <td>Event sourcing</td>
+                                <td>Stav se rekonstruuje z posloupnosti událostí (event log jako single source of truth).</td>
+                                <td>Auditovatelnost, time-travel</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Škálovatelnost v SoA</h4>
+                    <ul>
+                        <li><strong>Nezávislé škálování</strong> — pokud Payment Service je přetížena, přidáme instance jen pro ni</li>
+                        <li><strong>Fault isolation</strong> — výpadek Notification Service nepadne celý e-shop</li>
+                        <li><strong>API Gateway</strong> — centrální vstupní bod, který routuje požadavky na správné služby, řeší autentizaci a rate limiting</li>
+                        <li><strong>Message queues</strong> — Kafka, RabbitMQ pro asynchronní komunikaci; Order Service vloží zprávu, Payment Service ji zpracuje podle kapacity</li>
+                    </ul>
+
+                    <h4>Problémy a omezení</h4>
+                    <div class="warn-box"><strong>Pozor:</strong> SoA přináší komplexitu distribuovaných systémů:
+                        <ul>
+                            <li><em>Síťová latence</em> — místo lokálního volání jde požadavek přes síť</li>
+                            <li><em>Eventual consistency</em> — nelze garantovat silnou konzistenci dat napříč službami</li>
+                            <li><em>Debugging</em> — trasování požadavku přes 5 služeb je složité (nutné distributed tracing)</li>
+                            <li><em>Operační overhead</em> — desítky služeb = desítky deploymentů, monitoringů, logů</li>
+                        </ul>
+                    </div>
+
+                    <div class="insight-box"><strong>Intuice:</strong> SoA je jako rozdělit velkou firmu na menší divize — každá má svou zodpovědnost a může se rozrůstat nezávisle. Ale koordinace mezi divizemi je složitější než v malé firmě. Microservices jsou extrémní verze SoA — velmi jemné rozdělení, každý service je malý a jednoduchý. SoA je vhodné tehdy, kdy monolith začíná brzdit vývoj a různé části aplikace mají výrazně odlišné nároky na škálování.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>SoA = aplikace jako sada nezávislých, komunikujících služeb; každá za svou doménu</li>
+                            <li>Stavovost: preferovat bezstavové služby + externalizace stavu (Redis, JWT)</li>
+                            <li>Škálování: každá služba nezávisle, fault isolation, API Gateway, message queues</li>
+                            <li>Cena: síťová latence, eventual consistency, operační složitost</li>
+                        </ul>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
     <script src="subjects-nav.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

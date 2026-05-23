@@ -1,21 +1,777 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <title>KAB - Kryptografie a bezpečnost | SZZ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAB - Kryptografie a bezpečnost | SZZ Příprava</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
+                macros: { N: "\\mathbb{N}", R: "\\mathbb{R}", Z: "\\mathbb{Z}", Q: "\\mathbb{Q}", C: "\\mathbb{C}" }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-primary fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="fas fa-arrow-left me-2"></i>Dashboard</a>
-            <span class="navbar-text mx-auto"><strong>KAB</strong> - Kryptografie a bezpečnost</span>
-            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')"><i class="fas fa-adjust"></i></button>
+            <span class="navbar-text mx-auto text-white"><strong>KAB</strong> – Kryptografie a bezpečnost</span>
+            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')">
+                <i class="fas fa-adjust"></i>
+            </button>
         </div>
     </nav>
-    <div class="container"><h1>Kryptografie a bezpečnost</h1><div class="alert alert-info mt-4"><i class="fas fa-info-circle"></i> Ve výstavbě</div></div>
+
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar TOC -->
+            <div class="col-lg-3 d-none d-lg-block">
+                <nav class="topic-nav pt-4">
+                    <h6 class="text-muted text-uppercase fw-bold mb-3">Témata</h6>
+                    <ul class="nav flex-column">
+                        <li><a class="nav-link py-1" href="#topic-1">1. Asymetrické šifrování</a></li>
+                        <li><a class="nav-link py-1" href="#topic-2">2. Symetrické šifrování</a></li>
+                        <li><a class="nav-link py-1" href="#topic-3">3. Digitální podpis</a></li>
+                        <li><a class="nav-link py-1" href="#topic-4">4. RSA</a></li>
+                        <li><a class="nav-link py-1" href="#topic-5">5. Hashovací funkce</a></li>
+                        <li><a class="nav-link py-1" href="#topic-6">6. Certifikáty a PKI</a></li>
+                        <li><a class="nav-link py-1" href="#topic-7">7. Bezpečnost v sítích</a></li>
+                        <li><a class="nav-link py-1" href="#topic-8">8. Blokové šifry</a></li>
+                        <li><a class="nav-link py-1" href="#topic-9">9. Diffie-Hellman</a></li>
+                        <li><a class="nav-link py-1" href="#topic-10">10. Man-in-the-middle</a></li>
+                        <li><a class="nav-link py-1" href="#topic-11">11. Detekce a opravy chyb</a></li>
+                        <li><a class="nav-link py-1" href="#topic-12">12. Bezpečnost WiFi</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Main content -->
+            <div class="col-lg-9">
+                <h1 class="mb-4">Kryptografie a bezpečnost</h1>
+
+                <!-- Topic 1 -->
+                <section class="topic-section" id="topic-1">
+                    <h3>1. Asymetrické šifrování – princip, výhody a nevýhody</h3>
+                    <p>Asymetrické šifrování řeší klíčový problém symetrie: jak si dvě strany bezpečně předají klíč, když sdílený kanál není důvěryhodný?</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Asymetrické (neboli šifrování s veřejným klíčem) je systém, kde každý účastník má <strong>dvojici klíčů</strong>: <strong>veřejný klíč</strong> (může ho znát kdokoliv) a <strong>soukromý klíč</strong> (zná pouze vlastník). Co se zašifruje veřejným klíčem, lze dešifrovat pouze soukromým klíčem – a naopak.
+                    </div>
+
+                    <h4>Jak to funguje krok za krokem</h4>
+                    <div class="ex-box">
+                        <strong>Příklad – Alice chce poslat tajnou zprávu Bobovi:</strong>
+                        <ol>
+                            <li>Bob zveřejní svůj <em>veřejný klíč</em> (třeba na webu).</li>
+                            <li>Alice zašifruje zprávu Bobovým <em>veřejným klíčem</em>.</li>
+                            <li>Zašifrovanou zprávu pošle Bobovi přes nezabezpečený kanál.</li>
+                            <li>Bob dešifruje zprávu svým <em>soukromým klíčem</em> – nikdo jiný to nedokáže.</li>
+                        </ol>
+                        Analogie: veřejný klíč je jako otevřený zámeček, soukromý klíč je jako klíč od zámečku. Každý může vhodit zprávu do trezoru (zašifrovat), ale otevřít ho může jen vlastník.
+                    </div>
+
+                    <h4>Matematický základ</h4>
+                    <p>Asymetrické šifry jsou postaveny na tzv. <strong>jednosměrných funkcích s padacím dvířkem</strong> (trapdoor one-way functions) – operace jedním směrem je snadná, opačným směrem prakticky nemožná bez znalosti tajemství:</p>
+                    <ul>
+                        <li><strong>Faktorizace velkých čísel</strong> – základ RSA: vynásobit dvě prvočísla je triviální, rozložit součin zpět je extrémně těžké.</li>
+                        <li><strong>Problém diskrétního logaritmu</strong> – základ Diffie-Hellman, ElGamal, ECDSA.</li>
+                        <li><strong>Problém eliptických křivek</strong> – základ ECC (Elliptic Curve Cryptography), bezpečnější při kratších klíčích.</li>
+                    </ul>
+
+                    <h4>Srovnání se symetrickým šifrováním</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead>
+                            <tr><th>Vlastnost</th><th>Asymetrické</th><th>Symetrické</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Počet klíčů</td><td>Pár (veřejný + soukromý)</td><td>Jeden sdílený klíč</td></tr>
+                            <tr><td>Distribuce klíčů</td><td>Veřejný klíč lze sdílet volně</td><td>Nutno domluvit bezpečně</td></tr>
+                            <tr><td>Rychlost</td><td>Pomalé (1 000× pomalejší)</td><td>Rychlé</td></tr>
+                            <tr><td>Použití v praxi</td><td>Výměna klíčů, podpisy, TLS handshake</td><td>Šifrování dat (AES)</td></tr>
+                            <tr><td>Příklady</td><td>RSA, ECC, ElGamal</td><td>AES, ChaCha20, DES</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> Asymetrické šifrování se v praxi <em>nepoužívá na šifrování samotných dat</em> – je příliš pomalé. Místo toho se používá pro bezpečnou výměnu symetrického klíče (tzv. <strong>hybridní šifrování</strong>). HTTPS takhle funguje: TLS handshake je asymetrický, samotný přenos dat pak symetrický (AES).
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Dva klíče: veřejný (pro šifrování/ověření) a soukromý (pro dešifrování/podpis).</li>
+                            <li>Výhoda: odpadá problém s distribucí klíčů.</li>
+                            <li>Nevýhoda: pomalé – vhodné jen pro krátká data (klíče, podpisy).</li>
+                            <li>V praxi se kombinuje se symetrickým šifrováním (hybridní šifrování).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Topic 2 -->
+                <section class="topic-section" id="topic-2">
+                    <h3>2. Symetrické šifrování – princip, výhody a nevýhody</h3>
+                    <p>Symetrické šifrování je nejstarší a nejrychlejší přístup: odesílatel i příjemce sdílejí <em>jeden tajný klíč</em>, který slouží k oběma operacím.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <strong>Symetrické šifrování</strong> je kryptografický systém, kde stejný klíč $k$ slouží jak k šifrování: $c = E_k(m)$, tak k dešifrování: $m = D_k(c)$. Bezpečnost závisí na utajení klíče $k$.
+                    </div>
+
+                    <h4>Princip</h4>
+                    <p>Moderní symetrické šifry pracují jako <strong>blokové</strong> nebo <strong>proudové</strong> šifry:</p>
+                    <ul>
+                        <li><strong>Blokové šifry</strong> (AES, DES): rozdělí zprávu na bloky pevné délky a každý zašifrují. Viz téma 8.</li>
+                        <li><strong>Proudové šifry</strong> (ChaCha20, RC4): generují pseudonáhodný proud bitů (keystream) a XORují ho s plaintextem bit po bitu.</li>
+                    </ul>
+
+                    <div class="ex-box">
+                        <strong>Příklad – AES v praxi:</strong> Při šifrování HTTPS spojení se po TLS handshake dohodne symetrický klíč (např. 256bitový AES klíč). Veškerá data pak jdou zašifrována tímto klíčem – šifrovat gigabajty dat je tak otázka milisekund, ne sekund.
+                    </div>
+
+                    <h4>Výhody a nevýhody</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Výhody</th><th>Nevýhody</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <ul class="mb-0">
+                                        <li>Velmi rychlé (HW akcelerace AES)</li>
+                                        <li>Jednoduché na implementaci</li>
+                                        <li>Vhodné pro velké objemy dat</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul class="mb-0">
+                                        <li><strong>Distribuce klíče</strong> – jak si tajný klíč vyměnit bezpečně?</li>
+                                        <li>Pro $n$ účastníků potřeba $\frac{n(n-1)}{2}$ klíčů</li>
+                                        <li>Neposkytuje neodmítnutelnost (nepopiratelnost)</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Insight:</strong> Problém distribuce klíčů je důvod, proč asymetrická kryptografie vůbec vznikla. Dnes se tyto světy kombinují: asymetrické šifrování (nebo DH výměna) zajistí bezpečné dohodnutí sdíleného tajemství, pak symetrické šifrování přebere samotný přenos dat.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Jeden sdílený klíč pro šifrování i dešifrování.</li>
+                            <li>Rychlé a efektivní – ideální pro šifrování dat.</li>
+                            <li>Slabina: nutnost bezpečně domluvit klíč předem.</li>
+                            <li>Standardní algoritmus dnes: AES (128/256 bitů).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Topic 3 -->
+                <section class="topic-section" id="topic-3">
+                    <h3>3. Digitální podpis – proces podepsání a ověření, role hashe</h3>
+                    <p>Digitální podpis je kryptografický mechanismus, který zaručuje <strong>autentičnost</strong> (kdo zprávu odeslal) a <strong>integritu</strong> (zpráva nebyla změněna) – a navíc poskytuje <strong>nepopiratelnost</strong>.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <strong>Digitální podpis</strong> je hodnota vypočítaná ze zprávy pomocí soukromého klíče podepisujícího, která umožňuje ověřit pravost zprávy pomocí jeho veřejného klíče. Na rozdíl od šifrování: podepisuji svým <em>soukromým</em> klíčem, ověřuje se <em>veřejným</em> klíčem.
+                    </div>
+
+                    <h4>Role hashovací funkce</h4>
+                    <p>Přímé podepisování celé zprávy asymetrickým algoritmem by bylo extrémně pomalé (asymetrické operace jsou drahé). Proto se podepisuje pouze <strong>hash zprávy</strong>:</p>
+
+                    <h4>Proces podepsání (krok za krokem)</h4>
+                    <div class="ex-box">
+                        <strong>Příklad – Alice podepisuje dokument:</strong>
+                        <ol>
+                            <li><strong>Hashování:</strong> Alice vypočítá hash dokumentu: $h = H(m)$, kde $H$ je např. SHA-256. Výsledek je 256bitový otisk.</li>
+                            <li><strong>Šifrování hashe:</strong> Alice zašifruje hash svým soukromým klíčem: $\sigma = E_{priv}(h)$. Toto je digitální podpis $\sigma$.</li>
+                            <li><strong>Odeslání:</strong> Alice pošle dvojici $(m, \sigma)$ – zprávu a podpis.</li>
+                        </ol>
+                    </div>
+
+                    <h4>Proces ověření (krok za krokem)</h4>
+                    <div class="ex-box">
+                        <strong>Příklad – Bob ověřuje podpis Alice:</strong>
+                        <ol>
+                            <li>Bob dešifruje podpis Aliciným <em>veřejným</em> klíčem: $h' = D_{pub}(\sigma)$. Získá hash, který Alice podepsala.</li>
+                            <li>Bob sám vypočítá hash přijaté zprávy: $h = H(m)$.</li>
+                            <li>Bob porovná $h$ a $h'$. Pokud se shodují, podpis je platný – zpráva pochází od Alice a nebyla změněna.</li>
+                        </ol>
+                    </div>
+
+                    <h4>Proč je hash klíčový?</h4>
+                    <ul>
+                        <li><strong>Efektivita:</strong> Hashuje se vždy fixně malý výstup (např. 256 bitů), ne celý dokument.</li>
+                        <li><strong>Integrita:</strong> Jakákoliv změna dokumentu změní hash – podpis přestane sedět.</li>
+                        <li><strong>Jednosměrnost:</strong> Z hashe nelze zpětně odvodit původní dokument.</li>
+                    </ul>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> Digitální podpis <em>nešifruje</em> zprávu – zpráva je stále čitelná. Zajišťuje pouze autentičnost a integritu. Pro důvěrnost je potřeba zprávu zvlášť zašifrovat.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Podepisuji soukromým klíčem, ověřuji veřejným – opačně než šifrování.</li>
+                            <li>Podepisuje se hash zprávy (SHA-256), ne celá zpráva – kvůli výkonu.</li>
+                            <li>Garantuje: autentičnost (kdo podepsal), integritu (nezměněno), nepopiratelnost.</li>
+                            <li>Příklady: RSA podpis, ECDSA (používá Ethereum, TLS certifikáty).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Topic 4 -->
+                <section class="topic-section" id="topic-4">
+                    <h3>4. RSA – generování klíčů, šifrování, dešifrování</h3>
+                    <p>RSA (Rivest–Shamir–Adleman, 1977) je nejznámější asymetrická šifra. Bezpečnost stojí na obtížnosti rozložení velkého čísla na prvočíselné faktory (<strong>faktorizace</strong>).</p>
+
+                    <div class="def-box">
+                        <strong>Základ:</strong> RSA využívá Eulerovu větu: $m^{\varphi(n)} \equiv 1 \pmod{n}$ pro čísla nesoudělná s $n$. Klíče jsou navrhovány tak, aby šifrování a dešifrování byly navzájem inverzní operace v $\mathbb{Z}_n^*$.
+                    </div>
+
+                    <h4>Krok 1 – Generování klíčů</h4>
+                    <div class="ex-box">
+                        <strong>Příklad (zjednodušené čísla pro ilustraci):</strong>
+                        <ol>
+                            <li>Zvolíme dvě velká prvočísla $p$ a $q$. Příklad: $p = 61$, $q = 53$.</li>
+                            <li>Vypočítáme $n = p \cdot q = 3233$. Toto je <strong>modulus</strong> (součást obou klíčů).</li>
+                            <li>Vypočítáme Eulerovu funkci: $\varphi(n) = (p-1)(q-1) = 60 \cdot 52 = 3120$.</li>
+                            <li>Zvolíme <strong>veřejný exponent</strong> $e$ nesoudělný s $\varphi(n)$. Typicky $e = 65537$. Příklad: $e = 17$.</li>
+                            <li>Vypočítáme <strong>soukromý exponent</strong> $d$ jako modulární inverz $e$ modulo $\varphi(n)$: $d \cdot e \equiv 1 \pmod{\varphi(n)}$. Příklad: $d = 2753$.</li>
+                        </ol>
+                        <strong>Výsledek:</strong> Veřejný klíč: $(n, e) = (3233, 17)$. Soukromý klíč: $(n, d) = (3233, 2753)$.
+                    </div>
+
+                    <h4>Krok 2 – Šifrování</h4>
+                    <p>Zpráva $m$ (číslo menší než $n$) se zašifruje veřejným klíčem:</p>
+                    <div class="formula-block">$$c = m^e \bmod n$$</div>
+                    <p>Příklad: $m = 65$, pak $c = 65^{17} \bmod 3233 = 2790$.</p>
+
+                    <h4>Krok 3 – Dešifrování</h4>
+                    <p>Šifrovaná zpráva $c$ se dešifruje soukromým klíčem:</p>
+                    <div class="formula-block">$$m = c^d \bmod n$$</div>
+                    <p>Příklad: $m = 2790^{2753} \bmod 3233 = 65$ ✓</p>
+
+                    <h4>Proč je RSA bezpečné?</h4>
+                    <p>Útočník zná $n$ a $e$. Aby zjistil $d$, musí znát $\varphi(n) = (p-1)(q-1)$. K tomu by potřeboval znát $p$ a $q$ – tedy rozložit $n$ na prvočísla. Pro 2048bitové $n$ je to výpočetně neproveditelné dnešními počítači.</p>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> RSA klíče musí být dostatečně velké – dnes minimálně <strong>2048 bitů</strong>, doporučeně 4096 bitů. Starší 512bitové klíče byly prolomeny. Kvantové počítače (Shorův algoritmus) by RSA mohly zlomit – proto se vyvíjí post-kvantová kryptografie.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Bezpečnost = těžkost faktorizace čísla $n = p \cdot q$.</li>
+                            <li>Šifrování: $c = m^e \bmod n$ (veřejným klíčem).</li>
+                            <li>Dešifrování: $m = c^d \bmod n$ (soukromým klíčem).</li>
+                            <li>Klíče: minimálně 2048 bitů; pro podpisy se podepisuje hash, ne celá zpráva.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Topic 5 -->
+                <section class="topic-section" id="topic-5">
+                    <h3>5. Hashovací funkce – vlastnosti ideální hashovací funkce</h3>
+                    <p>Hashovací funkce transformuje vstup libovolné délky na výstup pevné délky (<strong>hash</strong>, <strong>otisk</strong>). Klíčová vlastnost: z otisku nelze rekonstruovat originál.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <strong>Kryptografická hashovací funkce</strong> $H: \{0,1\}^* \to \{0,1\}^n$ mapuje libovolně dlouhou zprávu na $n$-bitový otisk. Musí splňovat specifické bezpečnostní vlastnosti.
+                    </div>
+
+                    <h4>Pět klíčových vlastností</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Vlastnost</th><th>Popis</th><th>Proč je důležitá</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Determinismus</strong></td>
+                                <td>Stejný vstup → vždy stejný výstup</td>
+                                <td>Ověření integrity – musím dostat stejný hash</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Jednosměrnost</strong> (preimage resistance)</td>
+                                <td>Ze znalosti $h = H(m)$ nelze efektivně najít $m$</td>
+                                <td>Bezpečnost hesel, podpisů</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Odolnost vůči druhému vzoru</strong> (second preimage resistance)</td>
+                                <td>Ze znalosti $m$ nelze najít $m' \neq m$ tak, aby $H(m') = H(m)$</td>
+                                <td>Nemohu podvrhnout jiný dokument se stejným hashem</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Odolnost vůči kolizím</strong> (collision resistance)</td>
+                                <td>Je výpočetně nemožné najít jakékoliv dva vstupy $m \neq m'$ se stejným hashem</td>
+                                <td>Kryptografická bezpečnost podpisů</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Lavinový efekt</strong> (avalanche effect)</td>
+                                <td>Malá změna vstupu → velká změna výstupu (cca 50 % bitů)</td>
+                                <td>Nelze z podobných vstupů odvodit vztah</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Příklady hashovacích funkcí</h4>
+                    <ul>
+                        <li><strong>MD5</strong> (128 bitů) – dnes prolomená, kolize nalezeny, <em>nepoužívat</em> pro bezpečnostní účely.</li>
+                        <li><strong>SHA-1</strong> (160 bitů) – prolomená (kolize nalezena Googlem 2017), <em>nepoužívat</em> pro certifikáty.</li>
+                        <li><strong>SHA-256</strong> (256 bitů) – aktuální standard, součást rodiny SHA-2. Používán v TLS, Bitcoinu.</li>
+                        <li><strong>SHA-3</strong> (různé délky) – alternativa, jiná konstrukce (Keccak/sponge), odolná vůči délkové extenzi.</li>
+                    </ul>
+
+                    <div class="ex-box">
+                        <strong>Příklad – lavinový efekt:</strong>
+                        <br><code>SHA-256("hello") = 2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824</code>
+                        <br><code>SHA-256("hellp") = a5352ac7c78b32da3d1a44e41b10ec5dc2e35b73f1b04e7b90efebb1b01c3c76</code>
+                        <br>Jedna změna písmena → zcela jiný hash. To je lavinový efekt.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Upozornění – hashování hesel:</strong> Obyčejný SHA-256 hash hesla <em>nestačí</em> pro ukládání hesel – útočník může použít předpočítané tabulky (rainbow tables). Pro hesla se používají speciální funkce: <strong>bcrypt</strong>, <strong>scrypt</strong>, nebo <strong>Argon2</strong>, které jsou záměrně pomalé a používají <strong>salt</strong> (náhodný řetězec přidaný k heslu).
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Hash = pevně dlouhý otisk libovolně dlouhé zprávy.</li>
+                            <li>5 klíčových vlastností: determinismus, jednosměrnost, odolnost vůči vzoru, odolnost vůči kolizím, lavinový efekt.</li>
+                            <li>Dnes standard: SHA-256 (nebo SHA-3); MD5 a SHA-1 jsou zastaralé.</li>
+                            <li>Pro hesla nestačí plain hash – nutno použít bcrypt/Argon2 se saltem.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Topic 6 -->
+                <section class="topic-section" id="topic-6">
+                    <h3>6. Certifikáty a infrastruktura veřejného klíče (PKI)</h3>
+                    <p>Asymetrické šifrování funguje jen pokud <em>víme, že veřejný klíč skutečně patří dané osobě</em>. PKI je systém, který toto ověřuje a garantuje.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <strong>Digitální certifikát</strong> je elektronický dokument, který váže veřejný klíč s identitou jeho vlastníka a je podepsán důvěryhodnou třetí stranou – <strong>certifikační autoritou (CA)</strong>. Standardní formát: <strong>X.509</strong>.
+                    </div>
+
+                    <h4>Co certifikát obsahuje?</h4>
+                    <ul>
+                        <li>Identita vlastníka (doménové jméno, organizace)</li>
+                        <li>Veřejný klíč vlastníka</li>
+                        <li>Identita vydavatele (CA)</li>
+                        <li>Platnost (od–do)</li>
+                        <li>Digitální podpis CA (klíčová část!)</li>
+                        <li>Sériové číslo, rozšíření (použití klíče, alternativní jména...)</li>
+                    </ul>
+
+                    <h4>Hierarchie certifikačních autorit</h4>
+                    <div class="ex-box">
+                        <strong>Příklad – řetěz důvěry (chain of trust):</strong>
+                        <ol>
+                            <li><strong>Root CA</strong> – kořenová certifikační autorita (např. DigiCert, Let's Encrypt). Její certifikát je self-signed a uložen přímo v OS/prohlížeči.</li>
+                            <li><strong>Intermediate CA</strong> – zprostředkující autorita, podepsaná Root CA.</li>
+                            <li><strong>End-entity certifikát</strong> – certifikát vašeho webu (server.cz), podepsaný Intermediate CA.</li>
+                        </ol>
+                        Prohlížeč ověří celý řetěz: certifikát serveru → Intermediate CA → Root CA. Root CA musí být v prohlížečem důvěryhodných zdrojích.
+                    </div>
+
+                    <h4>Jak PKI funguje v HTTPS</h4>
+                    <ol>
+                        <li>Server pošle svůj certifikát klientovi.</li>
+                        <li>Klient ověří podpis CA na certifikátu (pomocí veřejného klíče CA z root store).</li>
+                        <li>Klient ověří platnost certifikátu (datum, revokace).</li>
+                        <li>Klient použije veřejný klíč ze certifikátu pro TLS handshake.</li>
+                    </ol>
+
+                    <h4>Revokace certifikátů</h4>
+                    <p>Co když byl soukromý klíč kompromitován? Certifikát lze zneplatnit:</p>
+                    <ul>
+                        <li><strong>CRL</strong> (Certificate Revocation List) – CA vydává seznam zneplatněných certifikátů. Nevýhoda: velké soubory, cachování.</li>
+                        <li><strong>OCSP</strong> (Online Certificate Status Protocol) – klient se ptá CA v reálném čase, zda je certifikát platný. Rychlejší, ale závislé na dostupnosti CA.</li>
+                    </ul>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> PKI je silné jen jak silná je nejslabší CA. V 2011 byla kompromitována CA DigiNotar – útočník si nechal vydat falešné certifikáty pro google.com a mohl provádět MITM útoky. Incidenty jako tento vedly ke vzniku <strong>Certificate Transparency</strong> (CT) – veřejný log všech vydaných certifikátů.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Certifikát = podepsaná vazba veřejného klíče a identity.</li>
+                            <li>Důvěra jde hierarchicky: Root CA → Intermediate CA → server.</li>
+                            <li>Certifikát lze zneplatnit: CRL nebo OCSP.</li>
+                            <li>Bez PKI by asymetrická kryptografie otevřela dveře MITM útokům.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Topic 7 -->
+                <section class="topic-section" id="topic-7">
+                    <h3>7. Komunikační bezpečnost v sítích – typy útoků a způsoby ochrany</h3>
+                    <p>Síťová komunikace je vystavena různým hrozbám. Pochopit typy útoků znamená rozumět, co chceme chránit a čím.</p>
+
+                    <h4>Co chráníme – bezpečnostní cíle (CIA triáda)</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Cíl</th><th>Popis</th><th>Příklad ochrany</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Důvěrnost</strong> (Confidentiality)</td><td>Data vidí jen oprávnění příjemci</td><td>Šifrování (TLS, AES)</td></tr>
+                            <tr><td><strong>Integrita</strong> (Integrity)</td><td>Data nebyla cestou pozměněna</td><td>MAC, digitální podpisy, hashe</td></tr>
+                            <tr><td><strong>Dostupnost</strong> (Availability)</td><td>Systém je dostupný oprávněným uživatelům</td><td>DDoS ochrana, redundance</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Typy útoků</h4>
+                    <div class="ex-box">
+                        <strong>Pasivní útoky</strong> (útočník jen odposlouchává, nemodifikuje):
+                        <ul>
+                            <li><strong>Odposlechnutí (Eavesdropping / Sniffing)</strong> – zachytávání nešifrované komunikace (Wireshark v nešifrované WiFi, ARP poisoning).</li>
+                            <li><strong>Analýza provozu (Traffic analysis)</strong> – i bez znalosti obsahu lze odvodit informace z metadat (kdo s kým, jak často).</li>
+                        </ul>
+                    </div>
+                    <div class="ex-box">
+                        <strong>Aktivní útoky</strong> (útočník modifikuje nebo generuje komunikaci):
+                        <ul>
+                            <li><strong>Man-in-the-Middle (MITM)</strong> – viz téma 10.</li>
+                            <li><strong>Replay útok</strong> – zachycení validní zprávy a její opětovné odeslání (např. přihlašovací token). Ochrana: nonce, timestamp, sekvenční čísla.</li>
+                            <li><strong>IP spoofing</strong> – útočník falšuje zdrojovou IP adresu.</li>
+                            <li><strong>DNS poisoning</strong> – podvrhnutí DNS záznamu → přesměrování na falešný server.</li>
+                            <li><strong>DoS / DDoS</strong> – zahlcení serveru požadavky → nedostupnost.</li>
+                            <li><strong>SQL injection, XSS</strong> – útoky na aplikační vrstvu.</li>
+                        </ul>
+                    </div>
+
+                    <h4>Způsoby ochrany</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Hrozba</th><th>Ochrana</th></tr></thead>
+                        <tbody>
+                            <tr><td>Odposlechnutí</td><td>Šifrování (TLS/HTTPS, VPN, SSH)</td></tr>
+                            <tr><td>Podvrhnutí identity</td><td>Autentizace + PKI certifikáty</td></tr>
+                            <tr><td>Modifikace dat</td><td>Digitální podpisy, HMAC</td></tr>
+                            <tr><td>Replay útok</td><td>Nonce, timestamp, TLS session ID</td></tr>
+                            <tr><td>DDoS</td><td>Rate limiting, firewally, CDN, Anycast</td></tr>
+                            <tr><td>DNS poisoning</td><td>DNSSEC (digitální podpisy DNS záznamů)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Insight – TLS jako komplexní ochrana:</strong> TLS (Transport Layer Security) chrání najednou proti odposlechu (šifrování), podvrhnutí (certifikáty PKI), modifikaci (MAC v každém záznamu) i replay útokům (náhodné nonce v handshaku). Proto je HTTPS dnes základním minimem pro jakoukoliv webovou komunikaci.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Bezpečnostní cíle: důvěrnost, integrita, dostupnost (CIA).</li>
+                            <li>Pasivní útoky: odposlech; aktivní: MITM, replay, spoofing, DoS.</li>
+                            <li>Hlavní obrana: šifrování (TLS), autentizace (PKI), integrita (HMAC/podpisy).</li>
+                            <li>HTTPS/TLS pokrývá většinu hrozeb na transportní vrstvě.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Topic 8 -->
+                <section class="topic-section" id="topic-8">
+                    <h3>8. Blokové šifry – princip, příklady</h3>
+                    <p>Bloková šifra je symetrická šifra, která zpracovává data v pevně velkých blocích (typicky 128 bitů) a transformuje je pomocí klíče.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <strong>Bloková šifra</strong> je funkce $E_k: \{0,1\}^n \to \{0,1\}^n$, která mapuje $n$-bitový blok plaintextu na $n$-bitový blok ciphertextu pomocí klíče $k$. Musí být invertibilní: $D_k = E_k^{-1}$.
+                    </div>
+
+                    <h4>DES – Data Encryption Standard</h4>
+                    <p>Historicky první standardizovaná bloková šifra (NIST, 1977). 64bitový blok, 56bitový klíč (8 bitů je parita). Dnes <strong>zastaralý</strong> – 56bitový klíč lze prolomit brute-force útokem. Nástupce: <strong>3DES</strong> (triple DES) – aplikuje DES třikrát se třemi různými klíči, bezpečnější ale pomalý.</p>
+
+                    <h4>AES – Advanced Encryption Standard</h4>
+                    <p>Dnešní standard (NIST, 2001), původně algoritmus <strong>Rijndael</strong>. Klíčové parametry:</p>
+                    <ul>
+                        <li>Délka bloku: pevně <strong>128 bitů</strong></li>
+                        <li>Délka klíče: <strong>128, 192 nebo 256 bitů</strong></li>
+                        <li>Počet rund: 10/12/14 (podle délky klíče)</li>
+                    </ul>
+                    <p>Každá runda AES obsahuje čtyři operace: <em>SubBytes</em> (S-box substituce), <em>ShiftRows</em> (posun řádků), <em>MixColumns</em> (lineární mix sloupců), <em>AddRoundKey</em> (XOR s rundovním klíčem). Kombinace zajišťuje zmatení (confusion) a difúzi (diffusion).</p>
+
+                    <h4>Operační módy – jak šifrovat víc než jeden blok</h4>
+                    <p>Bloková šifra sama šifruje jeden blok. Pro delší zprávy potřebujeme operační mód:</p>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Mód</th><th>Princip</th><th>Bezpečnost</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>ECB</strong> (Electronic Codebook)</td>
+                                <td>Každý blok šifrován nezávisle stejným klíčem</td>
+                                <td><span class="text-danger">Nebezpečný</span> – stejné bloky → stejný ciphertext (odhaluje vzory)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>CBC</strong> (Cipher Block Chaining)</td>
+                                <td>Každý blok se XORuje s předchozím ciphertextem před šifrováním; první blok s IV</td>
+                                <td>Bezpečný, ale sekvenční (nelze paralelizovat)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>CTR</strong> (Counter)</td>
+                                <td>Šifruje se čítač, výsledek XORuje s plaintextem → z blokové šifry proudová</td>
+                                <td>Bezpečný, paralelizovatelný, populární (AES-CTR)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>GCM</strong> (Galois/Counter Mode)</td>
+                                <td>CTR + autentizace (AEAD – Authenticated Encryption)</td>
+                                <td>Dnes standard pro TLS 1.3, AES-GCM</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="warn-box">
+                        <strong>Upozornění – ECB mód:</strong> Slavný příklad: šifrování obrázku tučňáka Tux v módu ECB zachová rozpoznatelné tvary, protože stejné bloky pixelů → stejný ciphertext. Nikdy nepoužívat ECB pro reálná data!
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Bloková šifra šifruje pevně velký blok (AES: 128 bitů) pomocí klíče.</li>
+                            <li>DES = historický, prolomitelný. AES = dnešní standard (128/256 bitů klíče).</li>
+                            <li>Pro delší data potřeba operační mód: ECB (nevhodný), CBC, CTR, GCM.</li>
+                            <li>TLS 1.3 používá výhradně AES-GCM nebo ChaCha20-Poly1305 (AEAD).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Topic 9 -->
+                <section class="topic-section" id="topic-9">
+                    <h3>9. Diffie-Hellmanův protokol – princip výměny klíčů</h3>
+                    <p>Diffie-Hellman (DH) z roku 1976 vyřešil zásadní problém: jak si dvě strany dohodnou sdílené tajemství přes <em>nezabezpečený kanál</em>, aniž by ho kdo třetí mohl odposlechnout.</p>
+
+                    <div class="def-box">
+                        <strong>Základ:</strong> DH staví na <strong>problému diskrétního logaritmu</strong>. Výpočet $g^x \bmod p$ pro dané $g, x, p$ je snadný. Naopak zjistit $x$ ze znalosti $g^x \bmod p$ je (pro velká prvočísla $p$) prakticky nemožné.
+                    </div>
+
+                    <h4>Princip krok za krokem</h4>
+                    <div class="ex-box">
+                        <strong>Příklad – Alice a Bob se domluví bez toho, aby sdíleli tajemství:</strong>
+                        <ol>
+                            <li><strong>Veřejné parametry</strong> (veřejně sdílené, může vidět kdokoliv): velké prvočíslo $p$ a generátor $g$ (primitivní kořen modulo $p$).</li>
+                            <li><strong>Alice</strong> zvolí tajné číslo $a$, vypočítá $A = g^a \bmod p$ a pošle $A$ Bobovi.</li>
+                            <li><strong>Bob</strong> zvolí tajné číslo $b$, vypočítá $B = g^b \bmod p$ a pošle $B$ Alici.</li>
+                            <li><strong>Alice</strong> vypočítá sdílené tajemství: $s = B^a \bmod p = g^{ab} \bmod p$.</li>
+                            <li><strong>Bob</strong> vypočítá totéž: $s = A^b \bmod p = g^{ab} \bmod p$.</li>
+                        </ol>
+                        Obě strany mají stejné $s = g^{ab} \bmod p$, přičemž odposlouchávač viděl jen $g, p, A, B$ – nikoliv $a, b$ ani $s$.
+                    </div>
+
+                    <h4>Barevná analogie (pro intuici)</h4>
+                    <div class="insight-box">
+                        <strong>Insight – analogie s barvami:</strong>
+                        <ol>
+                            <li>Alice a Bob se dohodnou na společné barvě (žlutá) – veřejně viditelné.</li>
+                            <li>Každý přidá svou tajnou barvu (Alice: červená, Bob: modrá) a výsledek zveřejní.</li>
+                            <li>Každý vezme barvu druhého a přidá svou tajnou barvu → oba dostanou stejnou finální barvu.</li>
+                        </ol>
+                        Odposlouchávač vidí jen veřejné barvy – smíchat je zpět je těžké (jako diskrétní logaritmus).
+                    </div>
+
+                    <h4>Varianty a použití</h4>
+                    <ul>
+                        <li><strong>ECDH</strong> (Elliptic Curve DH) – místo modular aritmetiky využívá eliptické křivky. Kratší klíče, stejná bezpečnost. Dnes preferovaný.</li>
+                        <li><strong>DHE / ECDHE</strong> (Ephemeral) – nový klíč pro každé spojení → <strong>Perfect Forward Secrecy</strong> (PFS). I když někdo kompromituje server, nemůže dešifrovat minulé spojení. TLS 1.3 vyžaduje pouze ECDHE.</li>
+                    </ul>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> DH sám o sobě nechrání proti MITM útoku! Útočník může provést DH výměnu zvlášť s Alicí a zvlášť s Bobem a číst veškerou komunikaci. Proto musí být DH kombinován s autentizací (certifikáty PKI) – jako v TLS.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>DH umožňuje dohodnutí sdíleného tajemství přes veřejný kanál.</li>
+                            <li>Bezpečnost = těžkost výpočtu diskrétního logaritmu.</li>
+                            <li>ECDHE (eliptické křivky, ephemeral) = dnešní standard v TLS 1.3.</li>
+                            <li>Sám nechrání před MITM – nutno kombinovat s autentizací.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Topic 10 -->
+                <section class="topic-section" id="topic-10">
+                    <h3>10. Útok man-in-the-middle – popis, obrana</h3>
+                    <p>Man-in-the-Middle (MITM) je útok, kde se útočník vklíní do komunikace dvou stran tak, že obě věří, že komunikují přímo spolu – ale veškerá komunikace jde přes útočníka.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Při <strong>MITM útoku</strong> se útočník Mallory transparentně vloží mezi Alici a Boba. Alice komunikuje s Mallorym (myslí si, že s Bobem), Bob komunikuje s Mallorym (myslí si, že s Alicí). Mallory může veškerou komunikaci číst a modifikovat.
+                    </div>
+
+                    <h4>Jak útok probíhá</h4>
+                    <div class="ex-box">
+                        <strong>Příklad – MITM na DH výměnu bez autentizace:</strong>
+                        <ol>
+                            <li>Alice zahájí DH výměnu s Bobem.</li>
+                            <li>Mallory zachytí Alicin veřejný klíč $A$ a provede vlastní DH výměnu s Alicí (pošle ji svůj klíč $M_A$).</li>
+                            <li>Mallory zároveň zahájí DH výměnu s Bobem (pošle mu klíč $M_B$).</li>
+                            <li>Alice i Bob si myslí, že mají sdílené tajemství s druhou stranou – ve skutečnosti mají sdílené tajemství s Mallorym.</li>
+                            <li>Mallory dešifruje, čte/modifikuje, a přeposílá.</li>
+                        </ol>
+                    </div>
+
+                    <h4>Techniky MITM útoku v praxi</h4>
+                    <ul>
+                        <li><strong>ARP Spoofing</strong> – útočník odpovídá na ARP dotazy s falešnou MAC adresou → provoz v lokální síti jde přes útočníka.</li>
+                        <li><strong>DNS Spoofing</strong> – podvrhnutí DNS záznamu → uživatel se připojí na falešnou IP adresu.</li>
+                        <li><strong>SSL Stripping</strong> – útočník degraduje HTTPS na HTTP → komunikace nešifrovaná. (Obrana: HSTS – HTTP Strict Transport Security.)</li>
+                        <li><strong>Falešný WiFi hotspot</strong> – útočník vytvoří AP se stejným SSID → uživatelé se připojí a provoz jde přes útočníka.</li>
+                        <li><strong>BGP Hijacking</strong> – přesměrování internetového provozu na úrovni routovacích protokolů.</li>
+                    </ul>
+
+                    <h4>Obrana</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Obrana</th><th>Jak pomáhá</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>TLS s certifikáty (PKI)</strong></td><td>Klient ověří identitu serveru přes certifikát – Mallory nemůže vydávat certifikát za example.com bez soukromého klíče</td></tr>
+                            <tr><td><strong>HSTS</strong></td><td>Prohlížeč vždy použije HTTPS – zabrání SSL stripping</td></tr>
+                            <tr><td><strong>Certificate Pinning</strong></td><td>Aplikace akceptuje jen konkrétní certifikát – zabrání falešné CA</td></tr>
+                            <tr><td><strong>VPN</strong></td><td>Šifrovaný tunel zabrání odposlechu i v nedůvěryhodné síti</td></tr>
+                            <tr><td><strong>DNSSEC</strong></td><td>DNS záznamy jsou digitálně podepsané – zabrání DNS spoofingu</td></tr>
+                            <tr><td><strong>Dvoufaktorová autentizace</strong></td><td>I při odposlechnutém heslu útočník nezíská přístup</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>MITM = útočník se transparentně vklíní mezi dvě komunikující strany.</li>
+                            <li>Funguje všude, kde chybí vzájemná autentizace.</li>
+                            <li>Hlavní obrana: TLS s PKI certifikáty (ověření identity), HSTS, DNSSEC.</li>
+                            <li>V lokálních sítích: ARP spoofing → detekce dynamickým ARP inspection na switchích.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Topic 11 -->
+                <section class="topic-section" id="topic-11">
+                    <h3>11. Detekce a opravy chyb – Hammingova vzdálenost, kódová slova</h3>
+                    <p>Při přenosu dat může dojít k bitovým chybám (šum, interference). Kódování pro detekci/opravu chyb přidává redundanci, která umožní tyto chyby odhalit a opravit.</p>
+
+                    <div class="def-box">
+                        <strong>Definice – Hammingova vzdálenost:</strong> <strong>Hammingova vzdálenost</strong> $d(x, y)$ dvou slov $x$ a $y$ stejné délky je počet pozic, na kterých se liší.
+                        <br>Příklad: $d(1011101,\ 1001001) = 2$ (liší se na pozicích 3 a 5).
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Definice – kód a kódová slova:</strong> <strong>Blokový kód</strong> $C$ je podmnožina $\{0,1\}^n$. Prvky $C$ jsou <strong>kódová slova</strong>. <strong>Minimální kódová vzdálenost</strong> $d_{min}$ je nejmenší Hammingova vzdálenost mezi libovolnými dvěma různými kódovými slovy: $d_{min} = \min_{x \neq y \in C} d(x, y)$.
+                    </div>
+
+                    <h4>Jak $d_{min}$ určuje schopnost kódu</h4>
+                    <div class="thm-box">
+                        <strong>Věta:</strong>
+                        <ul>
+                            <li>Kód s $d_{min} \geq e+1$ dokáže <strong>detekovat</strong> až $e$ chyb.</li>
+                            <li>Kód s $d_{min} \geq 2t+1$ dokáže <strong>opravit</strong> až $t$ chyb (dekódování nejbližšího souseda).</li>
+                        </ul>
+                        Intuice: kódová slova jsou od sebe dostatečně vzdálena, takže chybové slovo je blíže správnému kódovému slovu než jakémukoliv jinému.
+                    </div>
+
+                    <h4>Příklady kódů</h4>
+                    <div class="ex-box">
+                        <strong>Paritní bit (parity check):</strong> Nejjednodušší kód. Přidá 1 bit tak, aby počet jedniček byl sudý.
+                        <ul>
+                            <li>$1011 \to 10110$ (sudá parita)</li>
+                            <li>$d_{min} = 2$ → detekuje 1 chybu, neopravuje.</li>
+                            <li>Používá se v Ethernetu, pamětech.</li>
+                        </ul>
+                    </div>
+                    <div class="ex-box">
+                        <strong>Hammingův kód (7,4):</strong> Kóduje 4 bity informace do 7 bitů (3 kontrolní bity). $d_{min} = 3$ → opravuje 1 chybu, detekuje 2.
+                        <p>Struktura: kontrolní bity jsou na pozicích mocnin 2 ($p_1, p_2, p_4$), datové bity na ostatních.</p>
+                        <p>Každý kontrolní bit pokrývá určité datové bity (XOR). Při chybě vyhodnocením kontrolních bitů zjistíme přesnou pozici chyby (tzv. <strong>syndrom</strong>) a opravíme ji přetočením bitu.</p>
+                        <ul>
+                            <li>Použití: ECC paměti v serverech (oprava 1bitové chyby v RAM).</li>
+                        </ul>
+                    </div>
+
+                    <h4>Vztah: detekce vs. oprava chyb</h4>
+                    <p>Detekce chyb je „jednodušší" – stačí menší $d_{min}$. Oprava chyb vyžaduje větší $d_{min}$ a tedy více redundantních bitů. Kompromis závisí na aplikaci:</p>
+                    <ul>
+                        <li><strong>TCP/IP</strong> – detekce (checksum, CRC), oprava pomocí retransmise.</li>
+                        <li><strong>CD/DVD, QR kódy</strong> – Reed-Solomon kód, silná oprava chyb (bez možnosti žádat o opakování).</li>
+                        <li><strong>ECC RAM</strong> – Hammingův kód, oprava 1bitových chyb v reálném čase.</li>
+                    </ul>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Hammingova vzdálenost = počet odlišných bitů dvou slov.</li>
+                            <li>Minimální kódová vzdálenost $d_{min}$ určuje sílu kódu: $d_{min} \geq e+1$ detekuje $e$ chyb; $d_{min} \geq 2t+1$ opravuje $t$ chyb.</li>
+                            <li>Paritní bit: $d_{min} = 2$, detekuje 1 chybu.</li>
+                            <li>Hammingův kód $(7,4)$: $d_{min} = 3$, opravuje 1 chybu – základ ECC pamětí.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Topic 12 -->
+                <section class="topic-section" id="topic-12">
+                    <h3>12. Bezpečnost WiFi – IEEE 802.11, WEP, WPA/WPA2, Protected Management Frames (802.11w)</h3>
+                    <p>WiFi bezpečnost prošla dramatickým vývojem – každá generace vznikla jako reakce na prolomení předchozí.</p>
+
+                    <h4>IEEE 802.11 – základní standard</h4>
+                    <p>IEEE 802.11 je rodina standardů pro bezdrátové sítě (WiFi). Definuje fyzickou a linkovou vrstvu. Komunikace probíhá přes sdílené médium (vzduch) → odposlech je triviální bez šifrování. Správa sítě probíhá přes <strong>management frames</strong> (beacon, authentication, deauthentication, association).</p>
+
+                    <h4>WEP – Wired Equivalent Privacy (1997)</h4>
+                    <div class="warn-box">
+                        <strong>WEP je prolomený – nepoužívat!</strong> Šifrování: RC4 (proudová šifra) se 40bitovým nebo 104bitovým klíčem + 24bitový inicializační vektor (IV). Problémy:
+                        <ul>
+                            <li>24bitový IV je příliš krátký – IV se opakuje (birthday paradox), po ~5 000 paketech.</li>
+                            <li>Opakující se IV + vlastnosti RC4 → útočník může rekonstruovat klíč zachycením ~40 000 paketů (útok trvá minuty).</li>
+                            <li>Integritu chrání jen CRC-32 – lze modifikovat šifrovaný obsah bez detekce.</li>
+                        </ul>
+                    </div>
+
+                    <h4>WPA – WiFi Protected Access (2003)</h4>
+                    <p>Nouzové řešení jako přechodný standard. Použil <strong>TKIP</strong> (Temporal Key Integrity Protocol) – stále RC4, ale s per-paketovými klíči a MIC (Message Integrity Check). Kompatibilní se starým HW. Dnes také považován za <strong>zastaralý a zranitelný</strong>.</p>
+
+                    <h4>WPA2 (802.11i) – dnešní standard (2004)</h4>
+                    <div class="def-box">
+                        <strong>WPA2</strong> přinesl zásadní vylepšení: nahradil RC4+TKIP za <strong>AES-CCMP</strong> (Counter Mode CBC-MAC Protocol). AES poskytuje silné šifrování a CCMP zajišťuje integritu. Dva módy:
+                        <ul>
+                            <li><strong>Personal (PSK)</strong> – sdílené heslo (Pre-Shared Key). Vhodné pro domácnosti.</li>
+                            <li><strong>Enterprise (802.1X)</strong> – autentizace přes RADIUS server (EAP). Každý uživatel má vlastní přihlašovací údaje. Vhodné pro firmy.</li>
+                        </ul>
+                    </div>
+                    <p><strong>Slabina WPA2-Personal:</strong> Útok slovníkem/hrubou silou na handshake – pokud je heslo slabé, lze ho prolomit offline zachycením 4-way handshake.</p>
+
+                    <h4>WPA3 (2018)</h4>
+                    <p>Novinka: nahrazuje PSK za <strong>SAE</strong> (Simultaneous Authentication of Equals / Dragonfly handshake) – odolný vůči offline slovníkovým útokům. WPA3-Enterprise vyžaduje 192bitové šifrování.</p>
+
+                    <h4>Protected Management Frames – 802.11w</h4>
+                    <div class="def-box">
+                        <strong>Problém:</strong> V WPA/WPA2 jsou management frames (zejm. deauthentication a disassociation) odesílány nešifrovaně a bez autentizace. Útočník může kdokoliv poslat falešný deauth frame a odpojit klienty od AP → základ deauth útoků.
+                    </div>
+                    <div class="ex-box">
+                        <strong>Deauth útok:</strong> Útočník zjistí MAC adresu AP, odešle broadcast deauth frames s falešnou zdrojovou MAC adresou AP → všichni klienti se odpojí. Používáno k nucenímu zachycení WPA2 handshake nebo k DoS útoku.
+                    </div>
+                    <p><strong>802.11w (2009)</strong> – standard Protected Management Frames (PMF) přidal ochranu vybraných management frames kryptografickými mechanismy. Deauth a disassociation frames jsou chráněny šifrováním a autentizací → útočník nemůže podvrhnout odpojení.</p>
+                    <p>WPA3 <strong>vyžaduje</strong> PMF povinně. WPA2 ho podporuje volitelně (dnes doporučeno zapnout).</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Standard</th><th>Šifrování</th><th>Bezpečnost</th><th>Status</th></tr></thead>
+                        <tbody>
+                            <tr><td>WEP</td><td>RC4 + 24b IV</td><td>Prolomeno</td><td class="text-danger">Nepoužívat</td></tr>
+                            <tr><td>WPA (TKIP)</td><td>RC4 + TKIP</td><td>Slabé</td><td class="text-danger">Zastaralý</td></tr>
+                            <tr><td>WPA2 (CCMP)</td><td>AES-CCMP</td><td>Silné</td><td class="text-warning">Aktuální (bez PMF slabší)</td></tr>
+                            <tr><td>WPA3 (SAE)</td><td>AES + SAE</td><td>Nejsilnější</td><td class="text-success">Doporučený</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>WEP je prolomený (slabý IV + RC4), WPA přechodné řešení, WPA2 s AES-CCMP je dnešní minimum.</li>
+                            <li>WPA2-Personal slabina: offline útok slovníkem na handshake při slabém hesle.</li>
+                            <li>802.11w (PMF) chrání management frames před falešnými deauth útoky.</li>
+                            <li>WPA3 = budoucnost: SAE, povinné PMF, odolnost vůči offline útokům.</li>
+                        </ul>
+                    </div>
+                </section>
+
+            </div><!-- /col-lg-9 -->
+        </div><!-- /row -->
+    </div><!-- /container -->
+
     <script src="subjects-nav.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

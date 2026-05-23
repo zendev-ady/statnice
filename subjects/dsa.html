@@ -1,22 +1,882 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <title>DSA - Datové struktury a algoritmy | SZZ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA - Datové struktury a algoritmy | SZZ Příprava</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
+                macros: { N: "\\mathbb{N}", R: "\\mathbb{R}", Z: "\\mathbb{Z}", Q: "\\mathbb{Q}", C: "\\mathbb{C}" }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-primary fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="fas fa-arrow-left me-2"></i>Dashboard</a>
             <span class="navbar-text mx-auto"><strong>DSA</strong> - Datové struktury a algoritmy</span>
-            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')"><i class="fas fa-adjust"></i></button>
+            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')">
+                <i class="fas fa-adjust"></i>
+            </button>
         </div>
     </nav>
-    <div class="container"><h1>Datové struktury a algoritmy</h1><div class="alert alert-info mt-4"><i class="fas fa-info-circle"></i> Ve výstavbě</div></div>
-    <script src="subjects-nav.js"></script>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 d-none d-lg-block">
+                <nav class="topic-nav pt-4">
+                    <h6 class="text-muted text-uppercase fw-bold mb-3">Témata</h6>
+                    <ul class="nav flex-column">
+                        <li><a class="nav-link py-1" href="#topic-1">1. Asymptotická složitost</a></li>
+                        <li><a class="nav-link py-1" href="#topic-2">2. Merge sort</a></li>
+                        <li><a class="nav-link py-1" href="#topic-3">3. Třídy P a NP</a></li>
+                        <li><a class="nav-link py-1" href="#topic-4">4. NP-úplnost</a></li>
+                        <li><a class="nav-link py-1" href="#topic-5">5. Rychlosti růstu</a></li>
+                        <li><a class="nav-link py-1" href="#topic-6">6. Heap sort</a></li>
+                        <li><a class="nav-link py-1" href="#topic-7">7. Přehled řadících algoritmů</a></li>
+                        <li><a class="nav-link py-1" href="#topic-8">8. Master theorem</a></li>
+                        <li><a class="nav-link py-1" href="#topic-9">9. Stabilita řazení</a></li>
+                        <li><a class="nav-link py-1" href="#topic-10">10. Halda (heap)</a></li>
+                        <li><a class="nav-link py-1" href="#topic-11">11. Hashovací tabulka</a></li>
+                        <li><a class="nav-link py-1" href="#topic-12">12. Teorie grafů</a></li>
+                        <li><a class="nav-link py-1" href="#topic-13">13. BFS a DFS</a></li>
+                        <li><a class="nav-link py-1" href="#topic-14">14. Quick sort</a></li>
+                        <li><a class="nav-link py-1" href="#topic-15">15. Counting a Radix sort</a></li>
+                        <li><a class="nav-link py-1" href="#topic-16">16. BST</a></li>
+                        <li><a class="nav-link py-1" href="#topic-17">17. Cook-Levinův teorém</a></li>
+                        <li><a class="nav-link py-1" href="#topic-18">18. Turingův stroj</a></li>
+                        <li><a class="nav-link py-1" href="#topic-19">19. Rekurze</a></li>
+                        <li><a class="nav-link py-1" href="#topic-20">20. Matematická indukce</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="col-lg-9">
+                <h1 class="mb-4">Datové struktury a algoritmy</h1>
+
+                <!-- TOPIC 1 -->
+                <section class="topic-section" id="topic-1">
+                    <h3>1. Asymptotická složitost – Big O, Theta, Omega</h3>
+                    <h4>Motivace</h4>
+                    <p>Chceme porovnávat algoritmy nezávisle na konkrétním hardware a konstantních faktorech. Nezajímá nás přesný čas, ale jak se čas <em>chová</em> při rostoucím vstupu $n$. Asymptotická analýza abstrahuje od konstant a zaměřuje se na dominantní člen.</p>
+
+                    <div class="def-box"><strong>Definice (Big O):</strong> $f(n) \in O(g(n))$ právě tehdy, když existují konstanty $c > 0$ a $n_0$ takové, že pro všechna $n > n_0$ platí $f(n) \leq c \cdot g(n)$. Big O dává <em>horní odhad</em> — algoritmus roste nejvýše tak rychle jako $g(n)$.</div>
+
+                    <div class="def-box"><strong>Definice (Omega):</strong> $f(n) \in \Omega(g(n))$ právě tehdy, když existují $c > 0$ a $n_0$ takové, že pro všechna $n > n_0$ platí $f(n) \geq c \cdot g(n)$. Omega dává <em>dolní odhad</em>.</div>
+
+                    <div class="def-box"><strong>Definice (Theta):</strong> $f(n) \in \Theta(g(n))$ právě tehdy, když $f(n) \in O(g(n))$ a zároveň $f(n) \in \Omega(g(n))$. Theta říká, že $f$ roste <em>přesně tak rychle</em> jako $g$ (až na konstanty).</div>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Představ si, že $f(n)$ je počet operací algoritmu a $g(n)$ je referenční funkce. Big O je jako strop — "tohle je nejhorší případ". Omega je podlaha — "tohle je nejlepší případ". Theta je obojí najednou — "přesná třída".</div>
+
+                    <h4>K čemu je to dobré</h4>
+                    <p>Asymptotická složitost umožňuje říct: "pro velká $n$ bude algoritmus A rychlejší než B", bez ohledu na konkrétní počítač. Používá se při volbě algoritmu pro produkční systémy.</p>
+
+                    <div class="ex-box"><strong>Příklady:</strong>
+                        <ul>
+                            <li>Lineární vyhledávání v poli: $O(n)$ — projdeme každý prvek jednou.</li>
+                            <li>Binární vyhledávání: $O(\log n)$ — každým krokem půlíme prohledávaný prostor.</li>
+                            <li>Bubble sort: $O(n^2)$ — pro $n = 10^6$ prvků je to $10^{12}$ operací, prakticky nepoužitelné.</li>
+                            <li>Funkce $5n^2 + 3n + 7 \in \Theta(n^2)$ — dominuje $n^2$, konstanty 5, 3, 7 jsou nepodstatné.</li>
+                        </ul>
+                    </div>
+
+                    <div class="warn-box"><strong>Pozor:</strong> Big O říká "nejvýše", ne "přesně". Každý algoritmus $O(n)$ je zároveň $O(n^2)$, ale ne naopak. Proto Theta je silnější a přesnější tvrzení.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>$O$ = horní mez (nejhorší případ nebo odhad shora)</li>
+                            <li>$\Omega$ = dolní mez (neobejdeme se s méně)</li>
+                            <li>$\Theta$ = přesná třída (horní i dolní mez zároveň)</li>
+                            <li>Zanedbáváme konstanty a nižší členy — pro velká $n$ jsou nevýznamné</li>
+                            <li>Klíčový nástroj pro porovnání algoritmů bez závislosti na hardware</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 2 -->
+                <section class="topic-section" id="topic-2">
+                    <h3>2. Merge sort – implementace a složitost</h3>
+                    <h4>Princip (rozděl a panuj)</h4>
+                    <p>Merge sort funguje na principu <em>rozděl a panuj</em>: rozdělíme pole na dvě poloviny, rekurzivně seřadíme každou z nich a pak je sloučíme (merge). Klíčová operace je merge — slučování dvou seřazených polí do jednoho seřazeného.</p>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Seřadit 8 prvků znamená seřadit dvě 4-prvkové skupiny a sloučit je. Seřadit 4 prvky znamená seřadit dvě 2-prvkové... Rekurze se zastaví na 1 prvku, který je triviálně seřazený.</div>
+
+                    <h4>Pseudokód</h4>
+                    <pre><code>mergeSort(A, l, r):
+    if l >= r: return
+    m = (l + r) / 2
+    mergeSort(A, l, m)
+    mergeSort(A, m+1, r)
+    merge(A, l, m, r)
+
+merge(A, l, m, r):
+    zkopíruj A[l..m] do L, A[m+1..r] do R
+    i = j = 0, k = l
+    while i < |L| and j < |R|:
+        if L[i] <= R[j]: A[k++] = L[i++]
+        else: A[k++] = R[j++]
+    zkopíruj zbylé prvky</code></pre>
+
+                    <h4>Odvození složitosti (rekurentní rovnicí)</h4>
+                    <p>Každé volání mergeSort dělá dvě rekurzivní volání na $n/2$ prvcích a merge v čase $O(n)$:</p>
+                    <div class="formula-block">$$T(n) = 2T\!\left(\frac{n}{2}\right) + O(n)$$</div>
+                    <p>Pomocí Master theoremu (případ $a = 2, b = 2, c = 1$, tedy $a = b^c$):</p>
+                    <div class="formula-block">$$T(n) = \Theta(n \log n)$$</div>
+
+                    <div class="thm-box"><strong>Věta:</strong> Merge sort má časovou složitost $\Theta(n \log n)$ ve všech případech (nejlepší, průměrný i nejhorší). Prostorová složitost je $O(n)$ — potřebuje pomocné pole pro merge.</div>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Pole [5, 2, 8, 1, 9, 3] se rozdělí na [5, 2, 8] a [1, 9, 3], každá polovina se rekurzivně seřadí na [2, 5, 8] a [1, 3, 9], pak merge dá [1, 2, 3, 5, 8, 9].</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Princip rozděl a panuj — rekurzivní půlení + merge</li>
+                            <li>$\Theta(n \log n)$ vždy — nejlepší srovnávací algoritmus pro obecný případ</li>
+                            <li>Stabilní — zachovává pořadí stejných prvků</li>
+                            <li>Nevýhoda: potřebuje $O(n)$ extra paměti</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 3 -->
+                <section class="topic-section" id="topic-3">
+                    <h3>3. Třídy složitosti P a NP</h3>
+                    <h4>Kontext</h4>
+                    <p>Bavíme se o <em>rozhodovacích úlohách</em> — takových, jejichž odpověď je ANO nebo NE. Například: "Existuje v grafu Hamiltonova kružnice?" nebo "Je číslo $n$ prvočíslo?"</p>
+
+                    <div class="def-box"><strong>Definice (P):</strong> Třída <strong>P</strong> (polynomiální čas) je množina všech rozhodovacích problémů, pro které existuje deterministický algoritmus s časovou složitostí $O(n^k)$ pro nějakou konstantu $k$. Jinými slovy: problémy řešitelné "rychle".</div>
+
+                    <div class="def-box"><strong>Definice (NP):</strong> Třída <strong>NP</strong> (nedeterministicky polynomiální) je množina rozhodovacích problémů, u nichž lze pro kladnou odpověď (ANO) ověřit správnost předloženého "certifikátu" v polynomiálním čase. Ekvivalentně: problémy řešitelné v polynomiálním čase na nedeterministickém Turingově stroji.</div>
+
+                    <h4>Klíčový rozdíl: řešení vs. ověření</h4>
+                    <div class="insight-box"><strong>Intuice:</strong> Sudoku — <em>vyplnit</em> sudoku může trvat dlouho, ale <em>ověřit</em>, zda je dané vyplnění správné, je snadné (zkontrolovat řádky, sloupce, bloky). Problémy v NP jsou právě takové: "rychle ověřitelné", ale ne nutně "rychle řešitelné".</div>
+
+                    <p>Platí $P \subseteq NP$ — každý problém řešitelný v polynomiálním čase je i ověřitelný v polynomiálním čase (ověřovatel jednoduše spustí algoritmus a ignoruje certifikát). Zda platí $P = NP$ nebo $P \subsetneq NP$ je největší otevřená otázka informatiky.</p>
+
+                    <div class="ex-box"><strong>Příklady:</strong>
+                        <ul>
+                            <li><strong>P:</strong> Řazení pole, vyhledávání, test prvočíselnosti (AKS algoritmus), nejkratší cesta (Dijkstra)</li>
+                            <li><strong>NP:</strong> Hamiltonova kružnice, SAT (splnitelnost logické formule), problém batohu</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>P = problémy efektivně řešitelné (deterministicky, polynomiální čas)</li>
+                            <li>NP = problémy efektivně ověřitelné (certifikát ověřitelný v polynomiálním čase)</li>
+                            <li>$P \subseteq NP$, ale zda $P = NP$ nevíme — nejslavnější otevřený problém CS</li>
+                            <li>Praktický dopad: NP problémy nemáme efektivní obecný algoritmus (předpokládáme $P \neq NP$)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 4 -->
+                <section class="topic-section" id="topic-4">
+                    <h3>4. NP-úplnost</h3>
+                    <h4>Co je NP-úplnost</h4>
+                    <p>NP-úplné problémy jsou "nejtěžší" problémy v NP. Pokud bychom pro jeden z nich našli polynomiální algoritmus, všechny NP problémy by šly řešit polynomiálně — tedy $P = NP$.</p>
+
+                    <div class="def-box"><strong>Definice:</strong> Problém $L$ je <strong>NP-úplný</strong>, pokud:
+                        <ol>
+                            <li>$L \in NP$ (je ověřitelný v polynomiálním čase)</li>
+                            <li>Každý problém $L' \in NP$ se polynomiálně redukuje na $L$ (tj. $L' \leq_p L$)</li>
+                        </ol>
+                    </div>
+
+                    <h4>Polynomiální redukce</h4>
+                    <p>Říkáme, že problém $A$ se polynomiálně redukuje na $B$ ($A \leq_p B$), pokud existuje funkce $f$ komputable v polynomiálním čase taková, že $x \in A \Leftrightarrow f(x) \in B$. Intuitivně: "umím přeformulovat $A$ jako instanci $B$".</p>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Redukce je jako překlad. Pokud zvládnu přeložit libovolný NP problém do podoby problému $L$ v polynomiálním čase, pak $L$ je "alespoň tak těžký" jako všechny NP problémy.</div>
+
+                    <div class="ex-box"><strong>Příklady NP-úplných problémů:</strong>
+                        <ul>
+                            <li><strong>SAT</strong> — lze ohodnotit proměnné v logické formuli (CNF) tak, aby byla splněna? Historicky první NP-úplný problém (Cook-Levin).</li>
+                            <li><strong>3-SAT</strong> — jako SAT, ale každá klauzule má právě 3 literály</li>
+                            <li><strong>Hamiltonova kružnice</strong> — existuje v grafu cyklus procházející každým vrcholem právě jednou?</li>
+                            <li><strong>Problém batohu</strong> — lze vybrat předměty do batohu tak, aby celková hmotnost nepřekročila limit a hodnota byla alespoň $K$?</li>
+                            <li><strong>Problém kliky</strong> — existuje v grafu klika (úplný podgraf) velikosti $k$?</li>
+                            <li><strong>Barvení grafu</strong> — lze obarvit vrcholy grafu $k$ barvami, aby žádní sousedé neměli stejnou barvu?</li>
+                        </ul>
+                    </div>
+
+                    <div class="warn-box"><strong>Pozor:</strong> NP-úplný neznamená "neřešitelný". Znamená to, že neexistuje (předpokládáme) efektivní obecný algoritmus. Pro konkrétní instance nebo omezené struktury existují heuristiky, aproximační algoritmy nebo exponenciální algoritmy s malou bází.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>NP-úplné problémy jsou nejtěžší v NP — polynomiální řešení jednoho by znamenalo $P = NP$</li>
+                            <li>Definovány pomocí polynomiální redukce z jakéhokoli NP problému</li>
+                            <li>SAT je kanonický příklad — historicky první, dokázán Cook-Levinovým teorémem</li>
+                            <li>V praxi: používáme aproximace, heuristiky (greedy, genetické algoritmy), nebo speciální případy</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 5 -->
+                <section class="topic-section" id="topic-5">
+                    <h3>5. Typické rychlosti růstu</h3>
+                    <h4>Hierarchie tříd složitosti</h4>
+                    <p>Asymptotické třídy tvoří hierarchii — pro velká $n$ platí ostré uspořádání:</p>
+                    <div class="formula-block">$$O(1) \subset O(\log n) \subset O(\sqrt{n}) \subset O(n) \subset O(n \log n) \subset O(n^2) \subset O(n^3) \subset O(2^n) \subset O(n!)$$</div>
+
+                    <table class="table table-bordered summary-table">
+                        <thead>
+                            <tr><th>Třída</th><th>Název</th><th>Příklad</th><th>$n = 10^6$</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>$O(1)$</td><td>konstantní</td><td>přístup do pole, push na zásobník</td><td>1 op</td></tr>
+                            <tr><td>$O(\log n)$</td><td>logaritmická</td><td>binární vyhledávání, operace v BST/haldě</td><td>~20 op</td></tr>
+                            <tr><td>$O(\sqrt{n})$</td><td>odmocninová</td><td>test prvočíselnosti hrubou silou</td><td>~1 000 op</td></tr>
+                            <tr><td>$O(n)$</td><td>lineární</td><td>lineární vyhledávání, průchod polem</td><td>$10^6$ op</td></tr>
+                            <tr><td>$O(n \log n)$</td><td>linearitmická</td><td>merge sort, heap sort, FFT</td><td>~$2 \times 10^7$ op</td></tr>
+                            <tr><td>$O(n^2)$</td><td>kvadratická</td><td>bubble sort, insertion sort, násobení matic naivně</td><td>$10^{12}$ op</td></tr>
+                            <tr><td>$O(n^3)$</td><td>kubická</td><td>Floyd-Warshall, Gaussian elimination</td><td>$10^{18}$ op</td></tr>
+                            <tr><td>$O(2^n)$</td><td>exponenciální</td><td>generování všech podmnožin, NP problémy hrubou silou</td><td>$10^{300000}$ op</td></tr>
+                            <tr><td>$O(n!)$</td><td>faktoriální</td><td>TSP hrubou silou, permutace</td><td>nepředstavitelné</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Pro $n = 10^6$ zvládne moderní počítač (~$10^9$ operací/s) výpočty do zhruba $O(n \log n)$ v reálném čase (sekundy). $O(n^2)$ trvá hodiny, $O(2^n)$ je prakticky neproveditelné.</div>
+
+                    <div class="ex-box"><strong>Praktické příklady:</strong>
+                        <ul>
+                            <li>Databázový index (B-tree): $O(\log n)$ vyhledávání i vkládání</li>
+                            <li>Řazení miliónu čísel merge sortem: $O(n \log n) \approx 2 \times 10^7$ — zlomek sekundy</li>
+                            <li>Bubble sort na milionu čísel: $O(n^2) = 10^{12}$ — cca 16 minut</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Hierarchie: $O(1) \subset O(\log n) \subset O(n) \subset O(n \log n) \subset O(n^2) \subset O(2^n)$</li>
+                            <li>Pro $n \geq 10^6$ je hranice použitelnosti přibližně $O(n \log n)$</li>
+                            <li>Exponenciální a faktoriální složitost = nepoužitelné pro větší $n$</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 6 -->
+                <section class="topic-section" id="topic-6">
+                    <h3>6. Heap sort – halda, heapify, build heap</h3>
+                    <h4>Princip</h4>
+                    <p>Heap sort využívá datovou strukturu halda (max-heap). Myšlenka: postavíme max-haldu z pole, pak opakovaně odebíráme maximum (kořen), přesuneme ho na konec pole a obnovíme vlastnost haldy.</p>
+
+                    <h4>Fáze algoritmu</h4>
+                    <p><strong>1. Build heap (sestavení haldy):</strong> Z libovolného pole vytvoříme max-haldu voláním <code>heapify</code> na všechny vnitřní uzly od posledního k prvnímu (zdola nahoru).</p>
+                    <div class="formula-block">$$\text{buildHeap: } O(n) \text{ (ne } O(n \log n)\text{ — vrchní uzly se "prosypou" málo)}$$</div>
+                    <p><strong>2. Extraction + heapify:</strong> $n$-krát odebereme maximum (přesuneme kořen na konec), pak zavoláme <code>heapify</code> na zmenšenou haldu. Každá operace stojí $O(\log n)$.</p>
+
+                    <div class="def-box"><strong>Heapify (sift-down):</strong> Oprava haldy v uzlu $i$ — pokud je $i$ menší než některý potomek, prohodíme ho s větším potomkem a rekurzivně opravíme dál. Složitost $O(\log n)$.</div>
+
+                    <div class="thm-box"><strong>Věta:</strong> Heap sort má časovou složitost $\Theta(n \log n)$ ve všech případech. Je in-place (nepotřebuje extra paměť). Není stabilní.</div>
+
+                    <div class="insight-box"><strong>Intuice proč buildHeap je $O(n)$:</strong> Uzly na hloubce $d$ od listů volají heapify s hloubkou $d$. Listů (hloubka 0) je $n/2$, uzlů v hloubce 1 je $n/4$, atd. Součet $\sum_{d=0}^{\log n} \frac{n}{2^d} \cdot d = O(n)$.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Využívá max-heap — postavíme ho v $O(n)$, pak $n \times$ extrahujeme maximum v $O(\log n)$</li>
+                            <li>Celková složitost $\Theta(n \log n)$, in-place, ale nestabilní</li>
+                            <li>V praxi pomalejší než quicksort (cache miss), ale garantuje $\Theta(n \log n)$ i v nejhorším případě</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 7 -->
+                <section class="topic-section" id="topic-7">
+                    <h3>7. Přehled a porovnání řadících algoritmů</h3>
+
+                    <table class="table table-bordered summary-table">
+                        <thead>
+                            <tr><th>Algoritmus</th><th>Nejlepší</th><th>Průměrný</th><th>Nejhorší</th><th>Paměť</th><th>Stabilní</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Bubble sort</td><td>$O(n)$</td><td>$O(n^2)$</td><td>$O(n^2)$</td><td>$O(1)$</td><td>Ano</td></tr>
+                            <tr><td>Insertion sort</td><td>$O(n)$</td><td>$O(n^2)$</td><td>$O(n^2)$</td><td>$O(1)$</td><td>Ano</td></tr>
+                            <tr><td>Selection sort</td><td>$O(n^2)$</td><td>$O(n^2)$</td><td>$O(n^2)$</td><td>$O(1)$</td><td>Ne</td></tr>
+                            <tr><td>Merge sort</td><td>$O(n \log n)$</td><td>$O(n \log n)$</td><td>$O(n \log n)$</td><td>$O(n)$</td><td>Ano</td></tr>
+                            <tr><td>Heap sort</td><td>$O(n \log n)$</td><td>$O(n \log n)$</td><td>$O(n \log n)$</td><td>$O(1)$</td><td>Ne</td></tr>
+                            <tr><td>Quick sort</td><td>$O(n \log n)$</td><td>$O(n \log n)$</td><td>$O(n^2)$</td><td>$O(\log n)$</td><td>Ne</td></tr>
+                            <tr><td>Counting sort</td><td>$O(n+k)$</td><td>$O(n+k)$</td><td>$O(n+k)$</td><td>$O(k)$</td><td>Ano</td></tr>
+                            <tr><td>Radix sort</td><td>$O(d(n+k))$</td><td>$O(d(n+k))$</td><td>$O(d(n+k))$</td><td>$O(n+k)$</td><td>Ano</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box"><strong>Intuice volby algoritmu:</strong>
+                        <ul>
+                            <li>Malé pole ($n < 20$): insertion sort — nízká konstanta, cache přátelský</li>
+                            <li>Obecné řazení: quicksort (v praxi nejrychlejší v průměru) nebo merge sort (garantované $O(n \log n)$)</li>
+                            <li>Potřebuji stabilitu: merge sort nebo counting sort</li>
+                            <li>Celá čísla v malém rozsahu: counting sort nebo radix sort (překoná $O(n \log n)$ bariéru)</li>
+                        </ul>
+                    </div>
+
+                    <div class="thm-box"><strong>Dolní mez pro srovnávací řazení:</strong> Každý algoritmus, který řadí porovnáváním prvků, potřebuje v nejhorším případě $\Omega(n \log n)$ srovnání. Merge sort a heap sort tento limit dosahují optimálně.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Srovnávací algoritmy nemohou překonat $O(n \log n)$ — dokazuje se přes rozhodovací strom</li>
+                            <li>Counting/Radix sort překoná tuto mez, ale jen pro speciální typy dat</li>
+                            <li>V praxi se kombinuje: std::sort v C++ je introsort (quicksort + heapsort + insertion sort)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 8 -->
+                <section class="topic-section" id="topic-8">
+                    <h3>8. Metody odhadu složitosti – Master theorem</h3>
+                    <h4>Rekurentní rovnice</h4>
+                    <p>Algoritmy typu "rozděl a panuj" mají složitost popsanou rekurentní rovnicí. Typický tvar:</p>
+                    <div class="formula-block">$$T(n) = a \cdot T\!\left(\frac{n}{b}\right) + f(n)$$</div>
+                    <p>kde $a \geq 1$ je počet podproblémů, $b > 1$ je faktor zmenšení, $f(n)$ je práce mimo rekurzi.</p>
+
+                    <div class="def-box"><strong>Master theorem (Kuchařková věta):</strong> Pro rekurenci $T(n) = a \cdot T(n/b) + \Theta(n^c)$ platí:
+                        <ul>
+                            <li>Pokud $a > b^c$ (rekurze dominuje): $T(n) = \Theta(n^{\log_b a})$</li>
+                            <li>Pokud $a = b^c$ (vyrovnané): $T(n) = \Theta(n^c \log n)$</li>
+                            <li>Pokud $a < b^c$ (práce na vrcholu dominuje): $T(n) = \Theta(n^c)$</li>
+                        </ul>
+                    </div>
+
+                    <div class="ex-box"><strong>Příklady použití:</strong>
+                        <ul>
+                            <li><strong>Merge sort:</strong> $T(n) = 2T(n/2) + \Theta(n)$, $a=2, b=2, c=1$, $a = b^c$ → $\Theta(n \log n)$</li>
+                            <li><strong>Binární vyhledávání:</strong> $T(n) = T(n/2) + \Theta(1)$, $a=1, b=2, c=0$, $a = b^c$ → $\Theta(\log n)$</li>
+                            <li><strong>Strassen:</strong> $T(n) = 7T(n/2) + \Theta(n^2)$, $a=7, b=2, c=2$, $7 > 4$ → $\Theta(n^{\log_2 7}) \approx \Theta(n^{2.81})$</li>
+                        </ul>
+                    </div>
+
+                    <h4>Další metody</h4>
+                    <ul>
+                        <li><strong>Substituční metoda:</strong> uhadneme tvar řešení a dokážeme jej matematickou indukcí</li>
+                        <li><strong>Strom rekurze:</strong> nakreslíme strom volání, spočítáme práci na každé úrovni a součet přes všechny úrovně</li>
+                    </ul>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Master theorem: rychlý nástroj pro $T(n) = aT(n/b) + \Theta(n^c)$</li>
+                            <li>Tři případy podle porovnání $a$ a $b^c$ (kdo dominuje)</li>
+                            <li>Merge sort, binární vyhledávání a mnoho dalších algoritmů se analyzuje touto cestou</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 9 -->
+                <section class="topic-section" id="topic-9">
+                    <h3>9. Stabilita řadících algoritmů</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> Řadící algoritmus je <strong>stabilní</strong>, pokud pro prvky se stejnou hodnotou klíče zachovává jejich vzájemné pořadí z původního pole. Formálně: pokud $A[i] = A[j]$ a $i < j$ před řazením, pak $A[i]$ se vyskytuje před $A[j]$ i v seřazeném výsledku.</div>
+
+                    <h4>Proč na stabilitě záleží</h4>
+                    <div class="insight-box"><strong>Intuice:</strong> Řadíme záznamy zaměstnanců nejprve podle oddělení, pak podle jména. Pokud druhé řazení je stabilní, zachová pořadí v rámci stejného oddělení. Nestabilní algoritmus by mohl libovolně přehodit lidi se stejným jménem.</div>
+
+                    <div class="ex-box"><strong>Příklady:</strong>
+                        <ul>
+                            <li><strong>Stabilní:</strong> Merge sort, Insertion sort, Bubble sort, Counting sort, Radix sort</li>
+                            <li><strong>Nestabilní:</strong> Quick sort, Heap sort, Selection sort</li>
+                        </ul>
+                        <p>Radix sort funguje správně jen tehdy, když je interní řazení (counting sort) stabilní — jinak se pořadí číslic z předchozích průchodů poruší.</p>
+                    </div>
+
+                    <div class="warn-box"><strong>Pozor:</strong> Nestabilní algoritmus lze "stabilizovat" tak, že ke každému prvku přidáme jeho původní index jako sekundární klíč. To ale přidává paměť a komplexitu.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Stabilita = zachování pořadí prvků se stejným klíčem</li>
+                            <li>Důležité při víceúrovňovém řazení nebo práci s komplexními záznamy</li>
+                            <li>Stabilní: Merge, Insertion, Bubble, Counting, Radix</li>
+                            <li>Nestabilní: Quick, Heap, Selection</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 10 -->
+                <section class="topic-section" id="topic-10">
+                    <h3>10. Datová struktura – halda (heap)</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> <strong>Binární halda</strong> je úplný binární strom splňující <em>vlastnost haldy</em>: každý uzel má hodnotu $\geq$ (max-heap) nebo $\leq$ (min-heap) hodnotě svých potomků. "Úplný" znamená, že všechny úrovně jsou plně obsazeny kromě poslední, která je plněna zleva.</div>
+
+                    <h4>Implementace jako pole</h4>
+                    <p>Halda se elegantně ukládá do pole: kořen na indexu 1 (nebo 0), potomci uzlu $i$ jsou na indexech $2i$ a $2i+1$, rodič uzlu $i$ je na indexu $\lfloor i/2 \rfloor$.</p>
+
+                    <h4>Operace</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead>
+                            <tr><th>Operace</th><th>Složitost</th><th>Popis</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>peek (find-max)</td><td>$O(1)$</td><td>Maximum je vždy v kořeni (index 0/1)</td></tr>
+                            <tr><td>insert</td><td>$O(\log n)$</td><td>Přidáme na konec, "probubleme" nahoru (sift-up)</td></tr>
+                            <tr><td>extract-max</td><td>$O(\log n)$</td><td>Odebereme kořen, nahradíme posledním prvkem, sift-down</td></tr>
+                            <tr><td>build-heap</td><td>$O(n)$</td><td>Heapify od posledního vnitřního uzlu ke kořeni</td></tr>
+                            <tr><td>decrease-key</td><td>$O(\log n)$</td><td>Snížíme klíč, sift-up nebo sift-down</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box"><strong>Intuice sift-up / sift-down:</strong> Sift-up — přidáváme prvek na konec a "probubleme" ho nahoru, dokud je větší než rodič. Sift-down — máme prvek "na špatném místě" a "propadneme" ho dolů, dokud je menší než oba potomci.</div>
+
+                    <div class="ex-box"><strong>Použití haldy v praxi:</strong>
+                        <ul>
+                            <li>Prioritní fronta — vždy odebereme prvek s nejvyšší prioritou (dispatcher v OS)</li>
+                            <li>Dijkstrův algoritmus — odebereme vrchol s nejmenší vzdáleností</li>
+                            <li>Heap sort — viz téma 6</li>
+                            <li>Mediánový stream — dvě haldy (max-heap pro dolní polovinu, min-heap pro horní)</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Halda = úplný binární strom se zachováním heap-property, implementovaná jako pole</li>
+                            <li>Maximum (kořen) dostupné v $O(1)$, vkládání a odebírání v $O(\log n)$</li>
+                            <li>Build-heap je $O(n)$ — překvapivě rychlé díky rozložení práce</li>
+                            <li>Základ prioritní fronty — klíčová datová struktura v grafových algoritmech</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 11 -->
+                <section class="topic-section" id="topic-11">
+                    <h3>11. Datová struktura – hashovací tabulka</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> <strong>Hashovací tabulka</strong> je datová struktura pro ukládání párů klíč–hodnota. Využívá <em>hashovací funkci</em> $h(k)$, která mapuje klíč $k$ na index v poli. Průměrná složitost vkládání, vyhledávání i mazání je $O(1)$.</div>
+
+                    <h4>Jak to funguje</h4>
+                    <p>Hashovací funkce $h: \text{Klíče} \to \{0, 1, \ldots, m-1\}$ přiřadí klíči index do pole délky $m$. Problém nastane při <em>kolizích</em> — dva různé klíče dostanou stejný index.</p>
+
+                    <h4>Řešení kolizí</h4>
+                    <ul>
+                        <li><strong>Řetězení (chaining):</strong> Na každé pozici je spojový seznam prvků se stejným hashem. Průměrná délka listu = faktor naplnění $\alpha = n/m$. Složitost operací $O(1 + \alpha)$.</li>
+                        <li><strong>Otevřená adresace:</strong> Při kolizi hledáme jiné volné místo (lineární/kvadratické/dvojité hashování). Nevyžaduje extra paměť, ale přeplnění degraduje výkon.</li>
+                    </ul>
+
+                    <div class="def-box"><strong>Vlastnosti ideální hashovací funkce:</strong>
+                        <ul>
+                            <li>Deterministická — stejný klíč vždy dá stejný hash</li>
+                            <li>Uniformní distribuce — hashe jsou rovnoměrně rozloženy po tabulce</li>
+                            <li>Rychlá — výpočet v $O(1)$ nebo $O(|k|)$</li>
+                            <li>Lavinový efekt — malá změna klíče způsobí velkou změnu hashe (pro kryptografické funkce)</li>
+                        </ul>
+                    </div>
+
+                    <div class="ex-box"><strong>Příklady:</strong>
+                        <ul>
+                            <li>Python <code>dict</code>, Java <code>HashMap</code> — hash tabulky</li>
+                            <li>Databázové indexy pro rovnostní dotazy</li>
+                            <li>Deduplikace: ukládáme viděné prvky do hash setu, vyhledávání v $O(1)$</li>
+                            <li>Cache (CPU cache, CDN) — klíč je adresa/URL, hodnota je obsah</li>
+                        </ul>
+                    </div>
+
+                    <div class="warn-box"><strong>Pozor — nejhorší případ:</strong> Pokud hashovací funkce je špatná a všechny klíče kolidují, složitost degraduje na $O(n)$. Proto volba hashovací funkce je kritická. DoS útoky na webservery využívaly záměrné kolize v hash tabulkách.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Hash tabulka: $O(1)$ průměrně pro insert, lookup, delete — výjimečně efektivní</li>
+                            <li>Kolize řešeny řetězením nebo otevřenou adresací</li>
+                            <li>Ideální hash funkce: deterministická, uniformní, rychlá</li>
+                            <li>Nejhorší případ $O(n)$ při špatné funkci nebo záměrných kolizích</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 12 -->
+                <section class="topic-section" id="topic-12">
+                    <h3>12. Teorie grafů – definice, reprezentace</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> <strong>Graf</strong> $G = (V, E)$ je dvojice množiny <em>vrcholů</em> $V$ (vertices) a množiny <em>hran</em> $E$ (edges). V neorientovaném grafu jsou hrany symetrické: $\{u, v\} \in E$ platí oběma směry. V orientovaném grafu (digraph) jsou hrany šipky: $(u, v) \in E$ neimplikuje $(v, u) \in E$.</div>
+
+                    <h4>Základní pojmy</h4>
+                    <ul>
+                        <li><strong>Stupeň vrcholu</strong> (degree) — počet hran incidentních s vrcholem. V orientovaném: in-degree / out-degree.</li>
+                        <li><strong>Cesta</strong> — posloupnost vrcholů $v_1, v_2, \ldots, v_k$, kde $\{v_i, v_{i+1}\} \in E$.</li>
+                        <li><strong>Cyklus</strong> — uzavřená cesta (první = poslední vrchol, bez opakování ostatních).</li>
+                        <li><strong>Strom</strong> — acyklický souvislý graf, $|E| = |V| - 1$.</li>
+                        <li><strong>Vážený graf</strong> — každá hrana má přiřazenou váhu (číslo).</li>
+                    </ul>
+
+                    <h4>Reprezentace grafů</h4>
+                    <p><strong>Matice sousednosti</strong> — pole $|V| \times |V|$, $A[i][j] = 1$ (nebo váha) pokud hrana $(i,j)$ existuje.</p>
+                    <ul>
+                        <li>Paměť: $O(|V|^2)$ — nevhodné pro řídké grafy</li>
+                        <li>Test existence hrany: $O(1)$</li>
+                        <li>Výpis sousedů: $O(|V|)$</li>
+                    </ul>
+                    <p><strong>Seznam sousedů</strong> — pro každý vrchol seznam jeho sousedů.</p>
+                    <ul>
+                        <li>Paměť: $O(|V| + |E|)$ — efektivní pro řídké grafy</li>
+                        <li>Test existence hrany: $O(\text{deg}(v))$</li>
+                        <li>Výpis sousedů: $O(\text{deg}(v))$</li>
+                    </ul>
+
+                    <div class="insight-box"><strong>Kdy co použít:</strong> Hustý graf (mnoho hran, $|E| \approx |V|^2$) → matice sousednosti. Řídký graf ($|E| \approx |V|$, jako silniční síť) → seznam sousedů. Většina reálných grafů je řídká.</div>
+
+                    <div class="ex-box"><strong>Příklady grafů:</strong>
+                        <ul>
+                            <li>Silniční síť — vrcholy = křižovatky, hrany = silnice (vážený neorientovaný)</li>
+                            <li>Internet — vrcholy = servery, hrany = připojení</li>
+                            <li>Sociální síť — vrcholy = lidé, hrany = přátelství</li>
+                            <li>Závislosti v kompilátoru — orientovaný acyklický graf (DAG)</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Graf $G = (V, E)$: vrcholy a hrany, orientovaný nebo neorientovaný</li>
+                            <li>Matice sousednosti: $O(V^2)$ paměť, $O(1)$ dotaz na hranu — pro husté grafy</li>
+                            <li>Seznam sousedů: $O(V+E)$ paměť — pro řídké grafy (standardní volba)</li>
+                            <li>Stromy jsou speciální případ: $|E| = |V|-1$, acyklické, souvislé</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 13 -->
+                <section class="topic-section" id="topic-13">
+                    <h3>13. Algoritmy průchodu grafem (BFS, DFS)</h3>
+                    <h4>Breadth-First Search (BFS) – průchod do šířky</h4>
+                    <p>BFS prochází graf "vrstvu po vrstvě" — nejprve všechny vrcholy ve vzdálenosti 1 od startu, pak vzdálenosti 2, atd. Používá <strong>frontu</strong>.</p>
+
+                    <pre><code>BFS(G, start):
+    fronta Q = {start}, visited = {start}
+    while Q není prázdná:
+        v = Q.dequeue()
+        zpracuj v
+        for každého souseda u vrcholu v:
+            if u not in visited:
+                visited.add(u)
+                Q.enqueue(u)</code></pre>
+
+                    <div class="thm-box"><strong>Věta:</strong> BFS nalezne nejkratší cestu (v počtu hran) od startu ke všem dosažitelným vrcholům. Složitost: $\Theta(|V| + |E|)$ při reprezentaci seznamem sousedů.</div>
+
+                    <h4>Depth-First Search (DFS) – průchod do hloubky</h4>
+                    <p>DFS jde co nejhlouběji po jedné větvi, pak backtrackuje. Implementuje se rekurzivně nebo zásobníkem.</p>
+
+                    <pre><code>DFS(G, v, visited):
+    visited.add(v)
+    zpracuj v
+    for každého souseda u vrcholu v:
+        if u not in visited:
+            DFS(G, u, visited)</code></pre>
+
+                    <table class="table table-bordered summary-table">
+                        <thead>
+                            <tr><th>Vlastnost</th><th>BFS</th><th>DFS</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Datová struktura</td><td>Fronta (FIFO)</td><td>Zásobník (LIFO) / rekurze</td></tr>
+                            <tr><td>Složitost</td><td>$O(V+E)$</td><td>$O(V+E)$</td></tr>
+                            <tr><td>Nejkratší cesta</td><td>Ano (jednotkové hrany)</td><td>Ne</td></tr>
+                            <tr><td>Detekce cyklu</td><td>Ano</td><td>Ano</td></tr>
+                            <tr><td>Topologické třídění</td><td>Ne</td><td>Ano</td></tr>
+                            <tr><td>Komponenty souvislosti</td><td>Ano</td><td>Ano</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box"><strong>Intuice:</strong> BFS je jako vlna šířící se vodou od zdroje — zasáhne blízké body dříve. DFS je jako bludiště — jdeme jedním směrem dokud to jde, pak se vrátíme a zkusíme jiný.</div>
+
+                    <div class="ex-box"><strong>Příklady použití:</strong>
+                        <ul>
+                            <li>BFS: nejkratší cesta v mapě bez váhování (navigace s jednotkovými kroky)</li>
+                            <li>DFS: detekce cyklů v závislostním grafu (build systém), topologické třídění, strongly connected components (Tarjanův algoritmus)</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Oba průchody mají $O(V+E)$ — lineární v počtu vrcholů a hran</li>
+                            <li>BFS (fronta): nejkratší cesta bez vah, průzkum "blízkých" nejprve</li>
+                            <li>DFS (zásobník/rekurze): topologické třídění, detekce cyklů, komponenty</li>
+                            <li>Pro nejkratší cestu s váhami: Dijkstrův algoritmus (využívá prioritní frontu)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 14 -->
+                <section class="topic-section" id="topic-14">
+                    <h3>14. Quick sort – implementace a složitost</h3>
+                    <h4>Princip</h4>
+                    <p>Quick sort je algoritmus typu rozděl a panuj. Vybereme <em>pivot</em>, přeskupíme pole tak, aby vlevo od pivotu byly prvky menší nebo rovné a vpravo větší, a rekurzivně seřadíme obě části.</p>
+
+                    <pre><code>quickSort(A, l, r):
+    if l >= r: return
+    p = partition(A, l, r)   // vrátí pozici pivotu
+    quickSort(A, l, p-1)
+    quickSort(A, p+1, r)
+
+partition(A, l, r):
+    pivot = A[r]   // poslední prvek jako pivot
+    i = l - 1
+    for j = l to r-1:
+        if A[j] <= pivot:
+            i++, swap(A[i], A[j])
+    swap(A[i+1], A[r])
+    return i+1</code></pre>
+
+                    <h4>Složitost</h4>
+                    <div class="thm-box"><strong>Věta:</strong>
+                        <ul>
+                            <li><strong>Průměrný případ:</strong> $\Theta(n \log n)$ — pivot rozdělí pole přibližně na poloviny</li>
+                            <li><strong>Nejhorší případ:</strong> $\Theta(n^2)$ — nastane při vždy nejmenším/největším pivotu (např. seřazené pole s posledním prvkem jako pivoten)</li>
+                            <li><strong>In-place:</strong> $O(\log n)$ prostorová složitost (zásobník rekurze)</li>
+                            <li><strong>Nestabilní</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="insight-box"><strong>Proč je v praxi quicksort rychlejší než merge sort?</strong> Má menší konstanty — pracuje in-place, přístupuje k prvkům sekvenčně (cache-friendly), nepotřebuje alokovat extra paměť.</div>
+
+                    <h4>Jak vylepšit quicksort</h4>
+                    <ul>
+                        <li><strong>Randomizovaný pivot:</strong> vybíráme pivot náhodně → průměrná složitost $O(n \log n)$ s vysokou pravděpodobností, nejhorší případ je extrémně nepravděpodobný</li>
+                        <li><strong>Medián tří:</strong> pivot = medián z prvního, středního a posledního prvku</li>
+                        <li><strong>Introsort:</strong> začne quicksortem, při příliš hlubokém zanoření přepne na heapsort</li>
+                    </ul>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Quicksort: rozděl kolem pivotu, rekurzivně seřaď obě části</li>
+                            <li>Průměrně $O(n \log n)$, nejhorší případ $O(n^2)$ (seřazené pole s naivním pivotem)</li>
+                            <li>In-place, nestabilní, v praxi nejrychlejší srovnávací algoritmus díky malým konstantám</li>
+                            <li>Randomizovaný pivot eliminuje praktické nejhorší případy</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 15 -->
+                <section class="topic-section" id="topic-15">
+                    <h3>15. Counting sort a Radix sort</h3>
+                    <h4>Counting sort (K-sort)</h4>
+                    <p>Counting sort je neporovnávací řadící algoritmus. Funguje pro celá čísla v rozsahu $[0, k]$.</p>
+                    <ol>
+                        <li>Spočítáme výskyt každé hodnoty do pole $C$ délky $k+1$</li>
+                        <li>Kumulativní součet — $C[i]$ říká, kolik prvků je $\leq i$</li>
+                        <li>Procházíme vstup zprava (pro stabilitu) a umístíme každý prvek na správnou pozici</li>
+                    </ol>
+                    <div class="formula-block">$$\text{Složitost: } \Theta(n + k)$$</div>
+                    <p>Kde $n$ je počet prvků a $k$ je rozsah hodnot. Pokud $k = O(n)$, pak $\Theta(n)$.</p>
+
+                    <div class="warn-box"><strong>Pozor:</strong> Counting sort je efektivní jen pokud $k$ je malé oproti $n$. Pro data v rozsahu $[0, 10^9]$ by pole $C$ mělo $10^9$ položek — nepraktické.</div>
+
+                    <h4>Radix sort</h4>
+                    <p>Radix sort řadí víceciferná čísla čísla po cifrách, od nejméně významné (LSD) po nejvíce významnou (nebo naopak). Každý průchod používá stabilní řazení (typicky counting sort).</p>
+                    <div class="formula-block">$$\text{Složitost: } \Theta(d \cdot (n + k))$$</div>
+                    <p>kde $d$ je počet číslic a $k$ je základ číselné soustavy. Pro celá čísla do $n^c$: $d = O(\log_k n)$, tedy celkem $\Theta(n \log n / \log k)$.</p>
+
+                    <div class="insight-box"><strong>Intuice Radix sort:</strong> Seřadíme kartičky s čísly nejprve podle jednotek (counting sort — stabilní!), pak podle desítek, pak podle stovek... Po $d$ průchodech je pole seřazené. Stabilita je klíčová — jinak by řazení podle vyšší cifry narušilo pořadí dosažené nižší cifrou.</div>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Řazení čísel [329, 457, 657, 839, 436, 720, 355]:
+                        <ul>
+                            <li>Po průchodu jednotkami: [720, 355, 436, 457, 657, 329, 839]</li>
+                            <li>Po průchodu desítkami: [720, 329, 436, 839, 355, 457, 657]</li>
+                            <li>Po průchodu stovkami: [329, 355, 436, 457, 657, 720, 839] ✓</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Counting sort: $\Theta(n+k)$, stabilní, jen pro celá čísla v malém rozsahu</li>
+                            <li>Radix sort: $\Theta(d(n+k))$, stabilní, překonává $O(n \log n)$ pro celá čísla s omezeným počtem číslic</li>
+                            <li>Oba jsou neporovnávací — proto mohou překonat teoretickou dolní mez $\Omega(n \log n)$ pro srovnávací řazení</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 16 -->
+                <section class="topic-section" id="topic-16">
+                    <h3>16. Binární vyhledávací strom (BST)</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> <strong>Binární vyhledávací strom</strong> je binární strom, ve kterém pro každý uzel $v$ platí: všechny klíče v levém podstromu jsou $<$ klíč $v$ a všechny klíče v pravém podstromu jsou $>$ klíč $v$.</div>
+
+                    <h4>Operace</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead>
+                            <tr><th>Operace</th><th>Průměrně</th><th>Nejhorší</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Search</td><td>$O(\log n)$</td><td>$O(n)$</td></tr>
+                            <tr><td>Insert</td><td>$O(\log n)$</td><td>$O(n)$</td></tr>
+                            <tr><td>Delete</td><td>$O(\log n)$</td><td>$O(n)$</td></tr>
+                            <tr><td>Min/Max</td><td>$O(\log n)$</td><td>$O(n)$</td></tr>
+                            <tr><td>In-order traversal</td><td>$O(n)$</td><td>$O(n)$</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box"><strong>Intuice:</strong> BST je jako binární vyhledávání, ale ve stromové struktuře. Klíč nás navede — jdeme doleva nebo doprava. In-order průchod (vlevo, kořen, vpravo) dá prvky v seřazeném pořadí.</div>
+
+                    <div class="warn-box"><strong>Degenerovaný strom:</strong> Pokud vkládáme seřazená data, BST degeneruje na lineární seznam — všechny operace mají $O(n)$. Proto existují vyvážené BST: AVL stromy, Red-Black stromy, které garantují výšku $O(\log n)$.</div>
+
+                    <h4>Vyvážené BST</h4>
+                    <ul>
+                        <li><strong>AVL strom:</strong> Pro každý uzel se výšky levého a pravého podstromu liší nejvýše o 1. Garantuje $O(\log n)$ pro všechny operace.</li>
+                        <li><strong>Red-Black strom:</strong> Méně přísné vyvážení, ale méně rotací při vkládání. Používá se v C++ STL (<code>std::map</code>, <code>std::set</code>), Java TreeMap.</li>
+                        <li><strong>B-strom:</strong> Vyvážený strom s více klíči v uzlu — optimalizovaný pro diskové operace, základ databázových indexů.</li>
+                    </ul>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>BST: klíče vlevo menší, vpravo větší — umožňuje binární vyhledávání ve stromě</li>
+                            <li>Průměrně $O(\log n)$, nejhorší $O(n)$ při degeneraci</li>
+                            <li>Vyvážené BST (AVL, Red-Black) garantují $O(\log n)$ vždy</li>
+                            <li>In-order traversal = seřazená posloupnost klíčů</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 17 -->
+                <section class="topic-section" id="topic-17">
+                    <h3>17. Cook-Levinův teorém a polynomiální redukce</h3>
+                    <h4>Historický kontext</h4>
+                    <p>Stephen Cook (1971) a nezávisle Leonid Levin dokázali, že problém SAT je NP-úplný. To bylo průlomové — prokázalo existenci nejtěžší třídy problémů v NP a dalo nástroj pro dokazování NP-úplnosti dalších problémů.</p>
+
+                    <div class="thm-box"><strong>Cook-Levinův teorém:</strong> Problém splnitelnosti booleovské formule v konjunktivní normální formě (SAT) je NP-úplný. Formálně: každý problém $L \in NP$ se polynomiálně redukuje na SAT.</div>
+
+                    <h4>SAT — definice problému</h4>
+                    <p>Dána booleovská formule v KNF (konjunkce klauzulí, každá klauzule je disjunkce literálů): "Existuje ohodnocení proměnných takové, aby byla formule splněna?"</p>
+                    <div class="ex-box"><strong>Příklad:</strong> $(x_1 \vee \neg x_2) \wedge (\neg x_1 \vee x_3) \wedge (x_2 \vee x_3)$ — je splnitelná? Ano: $x_1 = 1, x_2 = 0, x_3 = 1$.</div>
+
+                    <h4>Polynomiální redukce — jak dokazovat NP-úplnost</h4>
+                    <p>Abychom dokázali, že nový problém $L$ je NP-úplný:</p>
+                    <ol>
+                        <li>Ukažme, že $L \in NP$ (certifikát ověřitelný v poly čase)</li>
+                        <li>Vyberme nějaký známý NP-úplný problém $L'$ (např. SAT nebo 3-SAT)</li>
+                        <li>Zkonstruujme polynomiální redukci $L' \leq_p L$ (přeformulujeme $L'$ jako instanci $L$)</li>
+                    </ol>
+
+                    <div class="insight-box"><strong>Intuice redukce:</strong> Redukce jako překlad. Chceme říci: "Pokud umím řešit $L$, umím řešit i $L'$." Tedy $L$ je "alespoň tak těžký" jako $L'$. Redukce musí být polynomiální — jinak bychom vyřešili $L'$ v exponenciálním čase a nic by to neznamenalo.</div>
+
+                    <div class="ex-box"><strong>Příklad redukce 3-SAT → Klika:</strong> Z každé klauzule $(a \vee b \vee c)$ vytvoříme trojici vrcholů, hrany vedou mezi vrcholy z různých klauzulí, pokud si neoporují. Klika velikosti $k$ (počet klauzulí) odpovídá splňujícímu ohodnocení.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Cook-Levinův teorém: SAT je první dokázaný NP-úplný problém</li>
+                            <li>Polynomiální redukce $A \leq_p B$: překládáme instance $A$ na instance $B$ v poly čase</li>
+                            <li>Důkaz NP-úplnosti: ukázat $L \in NP$ + redukce z již NP-úplného problému</li>
+                            <li>Klíčový nástroj pro klasifikaci problémů — stovky NP-úplných problémů dokázáno touto metodou</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 18 -->
+                <section class="topic-section" id="topic-18">
+                    <h3>18. Turingův stroj a konečné automaty</h3>
+                    <h4>Konečný automat (DFA)</h4>
+                    <div class="def-box"><strong>Definice:</strong> Deterministický konečný automat (DFA) je pětice $M = (Q, \Sigma, \delta, q_0, F)$, kde $Q$ je konečná množina stavů, $\Sigma$ je vstupní abeceda, $\delta: Q \times \Sigma \to Q$ je přechodová funkce, $q_0 \in Q$ je počáteční stav a $F \subseteq Q$ jsou přijímající stavy.</div>
+
+                    <p>DFA čte vstup zleva doprava, stav se mění podle $\delta$. Přijme vstup, pokud skončí v přijímajícím stavu. DFA rozpoznává <em>regulární jazyky</em>.</p>
+
+                    <div class="ex-box"><strong>Příklad DFA:</strong> Automat rozpoznávající binární řetězce s lichým počtem jedniček: stavy {sudý, lichý}, počáteční = sudý, přijímající = lichý. Při čtení '1' přepínáme stav, při '0' zůstáváme.</div>
+
+                    <h4>Turingův stroj</h4>
+                    <div class="def-box"><strong>Definice:</strong> Turingův stroj (TS) je sedmice $(Q, \Sigma, \Gamma, \delta, q_0, q_{accept}, q_{reject})$, kde navíc $\Gamma$ je pásková abeceda (včetně prázdného symbolu $\sqcup$) a $\delta: Q \times \Gamma \to Q \times \Gamma \times \{L, R\}$ — přechodová funkce, která určí nový stav, znak k zapsání a směr pohybu čtecí hlavy.</div>
+
+                    <p>Turingův stroj má potenciálně nekonečnou pásku — může číst, psát a pohybovat se oběma směry. Je <em>nejsilnějším</em> modelem výpočtu — ekvivalentní reálnému počítači (Church-Turingova teze).</p>
+
+                    <h4>Chomského hierarchie</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead>
+                            <tr><th>Typ</th><th>Gramatika</th><th>Automat</th><th>Příklad</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Typ 3</td><td>Regulární</td><td>DFA/NFA</td><td>$a^n$, e-mail regex</td></tr>
+                            <tr><td>Typ 2</td><td>Bezkontextová</td><td>Zásobníkový automat</td><td>$a^n b^n$, syntaxe prog. jazyků</td></tr>
+                            <tr><td>Typ 1</td><td>Kontextová</td><td>Lineárně ohraničený TS</td><td>$a^n b^n c^n$</td></tr>
+                            <tr><td>Typ 0</td><td>Obecná</td><td>Turingův stroj</td><td>Všechny rozpoznatelné jazyky</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box"><strong>Intuice:</strong> DFA je "paměťový" stroj bez zásobníku — umí jen regulární vzory. Turingův stroj má neomezenou pásku — je to model obecného výpočtu. Všechno, co umí moderní počítač, umí i Turingův stroj (a naopak).</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>DFA: konečný počet stavů, čte vstup jednosměrně, rozpoznává regulární jazyky</li>
+                            <li>Turingův stroj: nekonečná páska, čtení/zápis, nejsilnější model výpočtu</li>
+                            <li>Chomského hierarchie: regulární ⊂ bezkontextové ⊂ kontextové ⊂ rekurzivně spočetné</li>
+                            <li>Church-Turingova teze: vše co je algoritmicky řešitelné, řeší TS</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 19 -->
+                <section class="topic-section" id="topic-19">
+                    <h3>19. Rekurze – princip a příklady</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> <strong>Rekurze</strong> je technika, kdy funkce volá samu sebe na menším podproblému. Každá rekurzivní definice musí mít: (1) <em>základní případ</em> (báze, kdy rekurze skončí) a (2) <em>rekurzivní krok</em> (problém se zmenšuje k bázovému případu).</div>
+
+                    <h4>Princip "rozděl a panuj" přes rekurzi</h4>
+                    <p>Rekurze přirozeně vyjadřuje rozkladové algoritmy — problém rozdělíme na menší podproblémy stejného typu, každý vyřešíme rekurzí, výsledky zkombinujeme.</p>
+
+                    <div class="ex-box"><strong>Příklady:</strong>
+                        <ul>
+                            <li><strong>Faktoriál:</strong> $n! = n \cdot (n-1)!$, bázový případ $0! = 1$. Složitost $O(n)$.</li>
+                            <li><strong>Fibonacci:</strong> $F(n) = F(n-1) + F(n-2)$, bázový případ $F(0)=0, F(1)=1$. Naivní rekurze je $O(2^n)$ — exponenciální! S memoizací $O(n)$.</li>
+                            <li><strong>Binární vyhledávání:</strong> Hledáme v levé nebo pravé polovině — rekurzivní volání na $n/2$ prvcích. $O(\log n)$.</li>
+                            <li><strong>Hanojské věže:</strong> Přesun $n$ disků = přesun $n-1$ disků na pomocník + přesun největšího + přesun $n-1$ z pomocníku. $T(n) = 2T(n-1) + 1 = O(2^n)$.</li>
+                        </ul>
+                    </div>
+
+                    <div class="warn-box"><strong>Pozor — zásobník volání:</strong> Každé rekurzivní volání spotřebuje prostor na zásobníku. Příliš hluboká rekurze způsobí stack overflow. Pro $n = 10^6$ naivní rekurze nespolehlivá — použij iteraci nebo tail rekurzi.</div>
+
+                    <div class="insight-box"><strong>Rekurze vs. iterace:</strong> Každou rekurzi lze přepsat iterativně (explicitní zásobník). Rekurze je čitelnější, ale má overhead funkčních volání. Tail rekurze (rekurzivní volání je poslední operace) může být kompilátorem optimalizována na iteraci.</div>
+
+                    <h4>Dynamické programování</h4>
+                    <p>Když se rekurzivní volání opakují (jako u Fibonacciho), ukládáme výsledky — <em>memoizace</em>. Pokud problémy počítáme bottom-up (od malých k velkým), jde o <em>tabulaci</em>. Obě techniky jsou základem dynamického programování.</p>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Rekurze = funkce volá samu sebe na menším podproblému; nutná báze a krok</li>
+                            <li>Přirozená pro rozděl a panuj, stromy, grafy</li>
+                            <li>Naivní rekurze může být exponenciální (Fibonacci) — memoizace zachrání do $O(n)$</li>
+                            <li>Každá rekurze je přepsatelná iterativně; deep rekurze ohrožuje zásobník</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 20 -->
+                <section class="topic-section" id="topic-20">
+                    <h3>20. Matematická indukce</h3>
+
+                    <div class="def-box"><strong>Princip matematické indukce:</strong> Chceme dokázat, že tvrzení $P(n)$ platí pro všechna $n \geq n_0$. Stačí:
+                        <ol>
+                            <li><strong>Bázový případ:</strong> Dokažme $P(n_0)$ přímo.</li>
+                            <li><strong>Indukční krok:</strong> Předpokládáme, že $P(k)$ platí pro nějaké $k \geq n_0$ (indukční hypotéza), a z toho dokážeme $P(k+1)$.</li>
+                        </ol>
+                    </div>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Indukce je jako řada domín — ukážeme, že první padne (bázový případ), a že každé padlé domino shodí to následující (indukční krok). Pak musí padnout všechny.</div>
+
+                    <h4>Silná indukce</h4>
+                    <p>V indukčním kroce předpokládáme, že $P(k)$ platí pro <em>všechna</em> $m$ kde $n_0 \leq m \leq k$ (ne jen pro $m = k$). Silnější hypotéza, ale stejně platná. Potřebná například pro Fibonacci nebo rekurzivní algoritmy.</p>
+
+                    <div class="ex-box"><strong>Příklady:</strong>
+                        <ul>
+                            <li><strong>Součet řady:</strong> $\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$. Bázový případ: $n=1$: $1 = \frac{1 \cdot 2}{2} = 1$ ✓. Krok: předpokládáme pro $k$, pak $\sum_{i=1}^{k+1} i = \frac{k(k+1)}{2} + (k+1) = \frac{(k+1)(k+2)}{2}$ ✓.</li>
+                            <li><strong>Správnost merge sort:</strong> Bázový případ: pole délky 1 je seřazené. Krok: merge dvou seřazených polí dá seřazené pole — dokazujeme indukcí na délce.</li>
+                            <li><strong>Strom:</strong> Každý strom s $n$ vrcholy má $n-1$ hran. Bázový případ $n=1$: 0 hran ✓. Krok: přidáme list (1 vrchol, 1 hrana) k stromu s $k$ vrcholy a $k-1$ hranami → $k+1$ vrcholů, $k$ hran ✓.</li>
+                        </ul>
+                    </div>
+
+                    <h4>Indukce a rekurze — duální pohledy</h4>
+                    <p>Indukce a rekurze jsou duální: rekurze definuje objekt (nebo algoritmus) pomocí menších případů top-down, indukce dokazuje vlastnosti od menších k větším bottom-up. Správnost rekurzivního algoritmu se dokazuje indukcí na velikosti vstupu.</p>
+
+                    <div class="warn-box"><strong>Pozor — nepravdivý bázový případ:</strong> Pokud je bázový případ špatný, celý důkaz se zhroutí i při správném indukčním kroku. Příklad: "Všechna přirozená čísla jsou sudá" — indukční krok (sudé + 2 = sudé) je správný, ale bázový případ $n=1$ je lichý → důkaz je neplatný.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Indukce: bázový případ + indukční krok (P(k) → P(k+1))</li>
+                            <li>Silná indukce: hypotéza platí pro všechna $m \leq k$, ne jen pro $k$</li>
+                            <li>Klíčový nástroj pro dokazování správnosti algoritmů a matematických tvrzení</li>
+                            <li>Duální k rekurzi — rekurze top-down, indukce bottom-up</li>
+                        </ul>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

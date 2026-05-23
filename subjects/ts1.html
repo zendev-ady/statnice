@@ -1,22 +1,962 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <title>TS1 - Testování softwaru | SZZ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS1 - Testování softwaru | SZZ Příprava</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
+                macros: { N: "\\mathbb{N}", R: "\\mathbb{R}", Z: "\\mathbb{Z}", Q: "\\mathbb{Q}", C: "\\mathbb{C}" }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-<body class="page-specialization">
-    <nav class="navbar navbar-dark bg-success fixed-top">
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="fas fa-arrow-left me-2"></i>Dashboard</a>
             <span class="navbar-text mx-auto"><strong>TS1</strong> - Testování softwaru</span>
-            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')"><i class="fas fa-adjust"></i></button>
+            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')">
+                <i class="fas fa-adjust"></i>
+            </button>
         </div>
     </nav>
-    <div class="container"><h1>Testování softwaru</h1><div class="alert alert-info mt-4"><i class="fas fa-info-circle"></i> Ve výstavbě</div></div>
-    <script src="subjects-nav.js"></script>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 d-none d-lg-block">
+                <nav class="topic-nav pt-4">
+                    <h6 class="text-muted text-uppercase fw-bold mb-3">Témata</h6>
+                    <ul class="nav flex-column">
+                        <li><a class="nav-link py-1" href="#topic-1">1. Testovací scénář</a></li>
+                        <li><a class="nav-link py-1" href="#topic-2">2. Třídy ekvivalence</a></li>
+                        <li><a class="nav-link py-1" href="#topic-3">3. Mezní podmínky</a></li>
+                        <li><a class="nav-link py-1" href="#topic-4">4. Testovací pyramida</a></li>
+                        <li><a class="nav-link py-1" href="#topic-5">5. Unit testy &amp; mockování</a></li>
+                        <li><a class="nav-link py-1" href="#topic-6">6. E2E testování</a></li>
+                        <li><a class="nav-link py-1" href="#topic-7">7. Testovací data</a></li>
+                        <li><a class="nav-link py-1" href="#topic-8">8. Párové testování</a></li>
+                        <li><a class="nav-link py-1" href="#topic-9">9. Druhy testů</a></li>
+                        <li><a class="nav-link py-1" href="#topic-10">10. Testovací strategie</a></li>
+                        <li><a class="nav-link py-1" href="#topic-11">11. Test Depth Level</a></li>
+                        <li><a class="nav-link py-1" href="#topic-12">12. Process Cycle Test</a></li>
+                        <li><a class="nav-link py-1" href="#topic-13">13. Organizace testů</a></li>
+                        <li><a class="nav-link py-1" href="#topic-14">14. Bug lifecycle</a></li>
+                        <li><a class="nav-link py-1" href="#topic-15">15. V-model</a></li>
+                        <li><a class="nav-link py-1" href="#topic-16">16. State transition testing</a></li>
+                        <li><a class="nav-link py-1" href="#topic-17">17. Testovací prostředí</a></li>
+                        <li><a class="nav-link py-1" href="#topic-18">18. Bug reporting</a></li>
+                        <li><a class="nav-link py-1" href="#topic-19">19. LLM v E2E testování</a></li>
+                        <li><a class="nav-link py-1" href="#topic-20">20. Pokrytí kódu</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="col-lg-9">
+                <h1 class="mb-4">Testování softwaru</h1>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-1">
+                    <h3>1. Testovací scénář – struktura</h3>
+
+                    <p>Testování musí být opakovatelné, aby různí testeři dostali stejný výsledek. To vyžaduje přesný zápis: co musí platit před testem, jaká data se použijí, jaké kroky se provedou a co se očekává. Tento zápis se nazývá <strong>testovací případ (test case)</strong>; sada příbuzných testovacích případů tvoří <strong>testovací scénář (test scenario / test script)</strong>.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <em>Testovací případ</em> je dokumentovaný soubor vstupů, podmínek spuštění a očekávaných výsledků, navržený tak, aby ověřil konkrétní požadavek nebo funkci systému.
+                    </div>
+
+                    <h4>Povinné části testovacího případu</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Část</th><th>Popis</th><th>Příklad</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>ID / Název</strong></td><td>Unikátní identifikátor a stručný popis</td><td><code>TC-LOGIN-001: Úspěšné přihlášení</code></td></tr>
+                            <tr><td><strong>Prerekvizity</strong></td><td>Podmínky, které musí platit před spuštěním testu (stav systému, uživatel, data)</td><td>Uživatel <em>adam@example.com</em> existuje v DB, aplikace běží</td></tr>
+                            <tr><td><strong>Vstupní data</strong></td><td>Konkrétní hodnoty, které test použije</td><td>email: <code>adam@example.com</code>, heslo: <code>Tajne123!</code></td></tr>
+                            <tr><td><strong>Kroky (steps)</strong></td><td>Sekvence akcí tester/systém, číslovaná a jednoznačná</td><td>1. Otevři /login, 2. Vyplň email, 3. Vyplň heslo, 4. Klikni Login</td></tr>
+                            <tr><td><strong>Aserce (expected result)</strong></td><td>Přesně definovaný očekávaný výsledek po každém kroku nebo na konci</td><td>Systém přesměruje na /dashboard, zobrazí „Vítej, Adam"</td></tr>
+                            <tr><td><strong>Kritérium selhání</strong></td><td>Jakákoli odchylka od očekávaného výsledku znamená selhání testu</td><td>Jiný status kód, chybová hláška, absence přesměrování</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> Prerekvizity jsou klíčové – zajistí, že test začíná ve správném kontextu a není třeba dělat zbytečné kroky navíc. Aserce by měly být co nejkonkrétnější: „systém zobrazí chybovou hlášku" nestačí; je potřeba specifikovat <em>jakou</em> hlášku.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> Testovací případ ≠ testovací scénář. Případ popisuje <em>jeden konkrétní průchod</em>; scénář je <em>skupina příbuzných případů</em> (např. „přihlášení" zahrnuje úspěch, špatné heslo, zablokovaný účet…).
+                    </div>
+
+                    <h4>Co z toho vyplývá</h4>
+                    <ul>
+                        <li>Dobře napsaný test lze zautomatizovat bez dalšího vysvětlování.</li>
+                        <li>Prerekvizity umožňují testovat kroky izolovaně – každý případ předpokládá čistý stav.</li>
+                        <li>Jasné aserce eliminují subjektivní posuzování testeři.</li>
+                    </ul>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Testovací případ = ID + prerekvizity + vstupní data + kroky + aserce.</li>
+                            <li>Prerekvizity zajišťují konzistentní výchozí stav.</li>
+                            <li>Aserce musí být konkrétní a jednoznačné.</li>
+                            <li>Selhání = jakákoli odchylka od očekávaného výsledku.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-2">
+                    <h3>2. Třídy ekvivalence</h3>
+
+                    <p>Testovat všechny možné vstupy je nemožné. Klíčový poznatek: systém zpracovává hodnoty ze stejné skupiny <em>stejným způsobem</em>. Stačí tedy otestovat jednoho zástupce z každé skupiny – ostatní budou mít stejné chování. Tyto skupiny se nazývají <strong>třídy ekvivalence</strong>.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <em>Třída ekvivalence</em> je podmnožina vstupního prostoru, u níž předpokládáme, že systém zpracovává všechny hodnoty v ní identicky. Chybu v jednom prvku třídy způsobí i jiný prvek ze stejné třídy.
+                    </div>
+
+                    <h4>Typy tříd</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Typ</th><th>Popis</th><th>Příklad (věk 18–65)</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Validní třída</strong></td><td>Hodnoty, které systém přijímá a zpracovává správně</td><td>25, 40, 60 – systém zaregistruje uživatele</td></tr>
+                            <tr><td><strong>Nevalidní třída</strong></td><td>Hodnoty mimo povolené rozmezí – systém by měl odmítnout s chybou</td><td>10, -5 (příliš mladý), 70, 150 (příliš starý)</td></tr>
+                            <tr><td><strong>Speciální třída</strong></td><td>Hraniční nebo speciální hodnoty (null, prázdný řetězec…)</td><td>0, null, prázdný řetězec</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Jak třídy určit</h4>
+                    <ol>
+                        <li>Identifikuj rozsah nebo podmínky platných vstupů ze specifikace.</li>
+                        <li>Každý rozsah tvoří jednu validní třídu.</li>
+                        <li>Hodnoty mimo rozsah tvoří nevalidní třídy (typicky dvě: pod minimem, nad maximem).</li>
+                        <li>Přidej speciální třídy: null, prázdné hodnoty, speciální znaky.</li>
+                        <li>Z každé třídy vyber jednoho zástupce pro testovací případ.</li>
+                    </ol>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Pole „měsíc" (1–12):<br>
+                        – Validní třída: {2, 7, 11}<br>
+                        – Nevalidní třída 1: {−3, 0} (pod minimem)<br>
+                        – Nevalidní třída 2: {13, 99} (nad maximem)<br>
+                        – Speciální: null, prázdný řetězec, „leden" (nesprávný typ)<br>
+                        Celkem 4 testy místo 12+ hodnot.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> Třídy ekvivalence nejsou jen o rozsazích čísel – platí i pro typy (string vs. int), formáty (validní email vs. chybějící @) nebo kategorie uživatelů (admin vs. guest).
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Rozdělíme vstupní prostor na skupiny – uvnitř skupiny se systém chová stejně.</li>
+                            <li>Testujeme jednoho zástupce z každé třídy (validní i nevalidní).</li>
+                            <li>Snižuje počet testů bez ztráty pokrytí chování.</li>
+                            <li>Úzce spojena s analýzou mezních hodnot (téma 3).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-3">
+                    <h3>3. Mezní podmínky (Boundary Value Analysis)</h3>
+
+                    <p>Zkušenost ukázala, že chyby se nejčastěji vyskytují <em>na hranicích</em> tříd ekvivalence — off-by-one chyby, &lt; vs. &lt;= a podobně. Analýza mezních hodnot (BVA) proto cíleně testuje hodnoty těsně na hranici a těsně za ní.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <em>Analýza mezních hodnot</em> je technika, při níž se testují hodnoty na hranici každé třídy ekvivalence: přesně na hranici, těsně pod ní a těsně nad ní.
+                    </div>
+
+                    <h4>Vztah k třídám ekvivalence</h4>
+                    <p>BVA rozšiřuje metodu tříd ekvivalence: tam kde třída ekvivalence vybere jen jednoho <em>typického</em> zástupce, BVA přidává testy na <em>okrajích</em> téže třídy.</p>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Věk 18–65.<br>
+                        BVA body: 17 (těsně pod min), <strong>18</strong> (min), 19, 64, <strong>65</strong> (max), 66 (těsně nad max).<br>
+                        Kde off-by-one chyba napíše <code>age &gt; 18</code> místo <code>age &gt;= 18</code>, test s hodnotou 18 ji odhalí.
+                    </div>
+
+                    <h4>Obecná pravidla BVA</h4>
+                    <ul>
+                        <li>Pro rozsah $[a, b]$ testuj: $a-1,\ a,\ a+1,\ b-1,\ b,\ b+1$.</li>
+                        <li>Celkem až 6 testů na jeden rozsah (místo jednoho u tříd ekvivalence).</li>
+                        <li>Pro diskrétní hodnoty nebo enumy testuj vždy první a poslední platnou hodnotu.</li>
+                    </ul>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> BVA a třídy ekvivalence jsou komplementární, ne alternativní. V praxi se používají společně – třídy ekvivalence pokrývají „střed" prostoru, BVA pokrývá okraje.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Chyby se soustřeďují na hranicích — BVA je cíleně testuje.</li>
+                            <li>Testujeme: těsně pod hranicí, na hranici, těsně nad hranicí.</li>
+                            <li>Doplňuje třídy ekvivalence, nenahrazuje je.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-4">
+                    <h3>4. Testovací pyramida</h3>
+
+                    <p>Čím výše v zásobníku testů, tím je test realističtější, ale také pomalejší, křehčí a dražší. Testovací pyramida říká, jak mnoho testů na každé úrovni psát, aby se tyto náklady optimalizovaly.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <em>Testovací pyramida</em> je model doporučující rozložení automatizovaných testů: na základně mnoho rychlých unit testů, uprostřed méně integračních testů, na vrcholu nejméně E2E testů.
+                    </div>
+
+                    <h4>Tři úrovně pyramidy</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Úroveň</th><th>Co testuje</th><th>Rychlost</th><th>Křehkost</th><th>Podíl</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Unit testy</strong></td><td>Jedna funkce / třída izolovaně</td><td>Milisekundy</td><td>Nízká</td><td>~70 %</td></tr>
+                            <tr><td><strong>Integrační testy</strong></td><td>Spolupráce komponent (DB, API, modul)</td><td>Sekundy</td><td>Střední</td><td>~20 %</td></tr>
+                            <tr><td><strong>E2E testy</strong></td><td>Celý systém z pohledu uživatele</td><td>Minuty</td><td>Vysoká</td><td>~10 %</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> Chybu na nejnižší možné úrovni je nejlevnější opravit. Unit test selže za 50 ms a ukáže přesně řádek; E2E test selže za 3 minuty a stěží napoví proč. Proto pyramida — ne obrácená pyramida nebo zmrzlina.
+                    </div>
+
+                    <h4>Kde zařadit scénáře</h4>
+                    <ul>
+                        <li><strong>Unit</strong>: výpočetní logika, transformace dat, validace vstupu</li>
+                        <li><strong>Integrační</strong>: dotazy do DB, volání externího API, komunikace mezi mikroslužbami</li>
+                        <li><strong>E2E</strong>: kritické uživatelské cesty (registrace, platba, přihlášení)</li>
+                    </ul>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> Anti-pattern „obrácená pyramida" (ice cream cone) – mnoho E2E, minimum unit testů. Výsledkem je pomalá zpětná vazba, křehká CI/CD pipeline a čas trávený laděním flaky testů.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Základna: unit testy (rychlé, izolované, mnoho).</li>
+                            <li>Střed: integrační testy (ověřují spolupráci komponent).</li>
+                            <li>Vrchol: E2E testy (málo, jen kritické cesty).</li>
+                            <li>Cíl: chyby zachytit co nejníže v pyramidě.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-5">
+                    <h3>5. Jednotkové testy – JUnit a mockování</h3>
+
+                    <p>Unit test ověřuje jednu konkrétní funkci/metodu/třídu v naprosté izolaci. Klíčové je slovo <em>izolace</em>: všechny závislosti (databáze, síť, jiné třídy) se nahradí náhradními objekty — <em>test doubles</em>.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <em>Jednotkový test (unit test)</em> ověřuje, že izolovaná jednotka kódu produkuje správný výstup pro daný vstup. Závislosti jsou nahrazeny test doubles.
+                    </div>
+
+                    <h4>Test Doubles — mock, stub, spy</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Typ</th><th>Co dělá</th><th>Kdy použít</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Stub</strong></td><td>Vrací pevné předem definované odpovědi, nereaguje na volání</td><td>Simulace DB odpovědi, nahrazení pomalé závislosti</td></tr>
+                            <tr><td><strong>Mock</strong></td><td>Kontroluje, že testovaný kód volá správné metody se správnými parametry</td><td>Ověření komunikace (volal se sendEmail?)</td></tr>
+                            <tr><td><strong>Spy</strong></td><td>Obaluje reálný objekt, část chování sleduje / přepisuje</td><td>Když chceme zachovat reálné chování, ale sledovat nebo přepsat jednu metodu</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box">
+                        <strong>Příklad (JUnit 5 + Mockito):</strong>
+                        <pre><code>@Test
+void loginSucceeds() {
+    UserRepository repo = mock(UserRepository.class);
+    when(repo.findByEmail("a@b.cz")).thenReturn(new User("a@b.cz", "hash"));
+
+    AuthService svc = new AuthService(repo);
+    boolean result = svc.login("a@b.cz", "secret");
+
+    assertTrue(result);
+    verify(repo).findByEmail("a@b.cz");  // mock ověří volání
+}</code></pre>
+                    </div>
+
+                    <h4>Specifika unit testů</h4>
+                    <ul>
+                        <li>Běží v milisekundách – lze spouštět při každém uložení souboru.</li>
+                        <li>Každý test musí být nezávislý – pořadí nesmí mít vliv.</li>
+                        <li>Pojmenování: <code>metoda_podmínka_očekávanýVýsledek</code>.</li>
+                        <li>Jeden test ověřuje jednu věc (jedno tvrzení nebo jeden logický celek).</li>
+                    </ul>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> Přílišné mockování může vést k tomu, že testy projdou, ale reálný kód je rozbitý. Mock ověřuje <em>interakci</em>, ne <em>výsledek</em>. Kombinuj s integračními testy.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Unit test = izolovaná jednotka kódu + nahrazené závislosti.</li>
+                            <li>Stub: pevné odpovědi; Mock: ověření volání; Spy: reálný objekt s dohledem.</li>
+                            <li>JUnit 5 + Mockito je standardní kombinace v Javě.</li>
+                            <li>Testy musí být nezávislé, rychlé a zaměřené na jednu věc.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-6">
+                    <h3>6. End-to-end (E2E) testování</h3>
+
+                    <p>E2E test simuluje reálného uživatele, který prochází celou aplikací od vstupu po výstup — přes UI, backend, databázi a třeba i platební bránu. Cílem je ověřit, že systém jako celek plní zamýšlený účel.</p>
+
+                    <h4>Metody (nástroje)</h4>
+                    <ul>
+                        <li><strong>Selenium / WebDriver</strong>: klasický, řídí prohlížeč přes WebDriver protokol; funguje cross-browser.</li>
+                        <li><strong>Cypress</strong>: moderní, běží přímo v prohlížeči; rychlejší feedback, ale jen Chromium.</li>
+                        <li><strong>Playwright</strong>: od Microsoftu; multi-browser, headless, very fast; stává se standardem.</li>
+                        <li><strong>Robotframework</strong>: keyword-driven, čitelné i pro ne-programátory.</li>
+                    </ul>
+
+                    <h4>Výhody a nevýhody</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Výhody</th><th>Nevýhody</th></tr></thead>
+                        <tbody>
+                            <tr><td>Testuje celý zásobník naráz – nic se nezmocuje</td><td>Pomalé (minuty na test)</td></tr>
+                            <tr><td>Nejblíže reálnému použití</td><td>Křehké (flaky) – stačí zpoždění UI</td></tr>
+                            <tr><td>Odhaluje integrační problémy</td><td>Těžké debugování – proč selhalo?</td></tr>
+                            <tr><td>Automates regresi celého flow</td><td>Drahá údržba při změnách UI</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Minimalizace nevýhod</h4>
+                    <ul>
+                        <li><strong>Page Object Model (POM)</strong>: UI selektory centralizovány na jednom místě — změna selektoru = změna na jednom místě.</li>
+                        <li><strong>Retry logika</strong>: automatické znovuspuštění nestabilního testu (ne víc než 2×).</li>
+                        <li><strong>Dedikované testovací prostředí</strong>: E2E neběží na produkci.</li>
+                        <li><strong>Testovat jen kritické cesty</strong>: ne vše, jen happy path + nejdůležitější error paths.</li>
+                        <li><strong>Paralelní spouštění</strong>: Playwright nativně podporuje.</li>
+                    </ul>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>E2E = simulace reálného uživatele přes celý zásobník.</li>
+                            <li>Výhoda: nejreálnější pohled; Nevýhoda: pomalé, křehké, drahé.</li>
+                            <li>Minimalizace: Page Object Model, retry, dedikované prostředí, jen kritické cesty.</li>
+                            <li>Nástroje: Playwright (moderní standard), Cypress, Selenium.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-7">
+                    <h3>7. Testovací data</h3>
+
+                    <p>Kvalita testů závisí na kvalitě dat. Špatně zvolená data pokryjí jen část stavového prostoru; produkční data v testech porušují GDPR a bezpečnost. Správa testovacích dat je proto samostatná disciplína.</p>
+
+                    <h4>Vytváření testovacích dat</h4>
+                    <ul>
+                        <li><strong>Manuální</strong>: tester ručně vytvoří záznamy v DB nebo přes UI.</li>
+                        <li><strong>Skripty / fixtures</strong>: SQL/JSON soubory naplněné testovacími záznamy, verzované v repozitáři.</li>
+                        <li><strong>Generátory</strong>: nástroje jako Faker generují realistická, ale fiktivní data (jména, emaily, IBAN).</li>
+                        <li><strong>Anonymizace produkčních dat</strong>: dump produkce s nahrazenými osobními údaji — realistická struktura, bez GDPR problémů.</li>
+                    </ul>
+
+                    <h4>Třídy ekvivalence v kontextu dat</h4>
+                    <p>Data se navrhují tak, aby pokryla každou třídu ekvivalence a hranice. Pro formulář s věkem 18–65 připravíš data: validní (25), pod minimem (15), nad maximem (70), hranice (18, 65), null.</p>
+
+                    <h4>Obnova stavu po testu (test isolation)</h4>
+                    <p>Každý test by měl začínat a končit ve stejném, definovaném stavu. Tři přístupy:</p>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Přístup</th><th>Jak funguje</th><th>Vhodné pro</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Database transaction rollback</strong></td><td>Test proběhne v transakci, která se po skončení vždy rollbackne</td><td>Unit / integrační testy</td></tr>
+                            <tr><td><strong>Before/After hooks</strong></td><td>setUp/tearDown metody vymažou a znovu naplní DB před každým testem</td><td>Integrační, E2E testy</td></tr>
+                            <tr><td><strong>Dedikované testovací prostředí + reset</strong></td><td>Po každém E2E běhu se prostředí resetuje do baseline stavu (snapshot VM, Docker reset)</td><td>E2E testy</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> Testy sdílející stav jsou zdrojem záhadných selhání. Test A uspěje, test B selže, ale jen pokud běží v tomto pořadí — a ani jeden test za to "nemůže". Vždy izoluj stav.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Testovací data pokrývají všechny třídy ekvivalence a hranice.</li>
+                            <li>Nikdy nepoužívej produkční data — GDPR + bezpečnost.</li>
+                            <li>Faker, fixtures, anonymizace jsou standardní přístupy.</li>
+                            <li>Každý test musí začínat a končit v definovaném stavu.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-8">
+                    <h3>8. Párové testování (Pairwise Testing)</h3>
+
+                    <p>Mnoho systémů má desítky vstupních parametrů, každý s několika hodnotami. Testovat všechny kombinace je kombinatoricky nereálné. Výzkum ale ukázal, že drtivá většina chyb je způsobena interakcí <em>právě dvou</em> parametrů — proto párové testování.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <em>Pairwise testing</em> je technika výběru testovacích případů tak, aby každá dvojice (pár) hodnot parametrů byla pokryta alespoň jedním testem.
+                    </div>
+
+                    <h4>K čemu slouží</h4>
+                    <ul>
+                        <li>Dramaticky redukuje počet testovacích případů při zachování vysokého pokrytí párových interakcí.</li>
+                        <li>Výzkum: 67 % selhání způsobuje 1 parametr, 93 % selhání zachytí 2-way (pairwise) pokrytí.</li>
+                        <li>Pro 10 parametrů po 3 hodnotách: plné pokrytí = 3¹⁰ = 59 049 testů; pairwise ≈ 18 testů.</li>
+                    </ul>
+
+                    <h4>Jak metoda funguje</h4>
+                    <ol>
+                        <li>Identifikuj všechny vstupní parametry a jejich hodnoty.</li>
+                        <li>Použij nástroj (PICT, AllPairs, Tesena Pairwise Tool) k vygenerování minimální sady testů.</li>
+                        <li>Sada zaručí, že každá dvojice (hodnota parametru A, hodnota parametru B) se vyskytne alespoň jednou.</li>
+                    </ol>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Testování kompatibility: OS (Win/Mac/Linux) × Prohlížeč (Chrome/Firefox/Safari) × Jazyk (CZ/EN).<br>
+                        Plné pokrytí = 3 × 3 × 2 = 18 kombinací.<br>
+                        Pairwise pokrytí ≈ 9 kombinací, přičemž každá dvojice (OS, Prohlížeč) i (OS, Jazyk) i (Prohlížeč, Jazyk) je testována.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> Páry jsou důležité, protože chyby v interakcích zpravidla pocházejí z podmínek jako <code>if browser == Firefox AND lang == CZ</code>. Trojice a čtveřice jsou vzácnější — v praxi nestojí za exponenciální nárůst testů.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Pairwise: každá dvojice hodnot parametrů pokryta alespoň jedním testem.</li>
+                            <li>93 % chyb odhalí 2-way pokrytí, plné N-way je zbytečně drahé.</li>
+                            <li>Ideální pro testování kompatibility (OS, browser, konfigurace).</li>
+                            <li>Nástroje: PICT (Microsoft), AllPairs, online generátory.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-9">
+                    <h3>9. Automatické testy, smoke testy, A/B testy, UAT testy</h3>
+
+                    <h4>Automatické testy</h4>
+                    <p>Testovací případ se spouští nástrojem bez lidské interakce. Výhoda: opakovatelnost, rychlost, integrace do CI/CD. Nevýhoda: počáteční investice do psaní a údržby. Vhodné pro: regresní testy, smoke testy, unit a integrační testy.</p>
+
+                    <div class="def-box">
+                        <strong>Smoke test:</strong> Rychlá, povrchní sada testů ověřující, že základní funkce aplikace po deploymentu vůbec fungují. Cíl: „hoří aplikace, nebo ne?" Pokud smoke testy selžou, nema cenu spouštět plnou testovací sadu.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad smoke testů po deploymentu:</strong> aplikace se spustí (HTTP 200 na /health), uživatel se může přihlásit, hlavní stránka se načte, kritická API vrátí smysluplnou odpověď.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>A/B test:</strong> Statistická metoda porovnávání dvou variant (A = kontrolní, B = nová) na reálných uživatelích. Cíl: empiricky zjistit, která varianta dosahuje lepšího výsledku (konverzní míra, klikání, retence). Není totéž co funkční testování — jde o experimentální validaci produktového rozhodnutí.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>UAT (User Acceptance Testing):</strong> Akceptační testování prováděné reálnými uživateli nebo zákazníkem. Ověřuje, zda systém splňuje obchodní požadavky a použitelnost z pohledu uživatele. Typicky poslední fáze před nasazením do produkce.
+                    </div>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Typ</th><th>Kdo testuje</th><th>Kdy</th><th>Cíl</th></tr></thead>
+                        <tbody>
+                            <tr><td>Smoke test</td><td>Automatizovaně</td><td>Po každém deploymentu</td><td>Základní funkčnost</td></tr>
+                            <tr><td>A/B test</td><td>Systém + reální uživatelé</td><td>V produkci</td><td>Porovnání variant</td></tr>
+                            <tr><td>UAT</td><td>Zákazník / byznys uživatelé</td><td>Před releasem</td><td>Akceptace byznysu</td></tr>
+                            <tr><td>Automatické testy</td><td>CI/CD systém</td><td>Při každém commitu</td><td>Regrese, funkčnost</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Automatické testy = opakovatelnost a rychlost, nutné pro CI/CD.</li>
+                            <li>Smoke testy = první check po deploymentu, rychlý fail-fast signál.</li>
+                            <li>A/B test = produktový experiment na reálných uživatelích.</li>
+                            <li>UAT = zákazník/byznys ověřuje, že systém splňuje jejich požadavky.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-10">
+                    <h3>10. Testovací strategie</h3>
+
+                    <p>Testovací strategie popisuje celkový přístup k testování v projektu — jaké techniky, jaké úrovně, v jakém pořadí, kdo testuje. Neexistuje jedna správná; výběr závisí na riziku, čase, doméně a týmu.</p>
+
+                    <h4>Přehled přístupů</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Přístup</th><th>Princip</th><th>Vhodné pro</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Black-box testing</strong></td><td>Tester nezná interní strukturu; testuje jen vstupy/výstupy</td><td>Akceptační testy, UAT, testy externích API</td></tr>
+                            <tr><td><strong>White-box testing</strong></td><td>Tester má přístup ke zdrojovému kódu; navrhuje testy podle vnitřní struktury</td><td>Unit testy, pokrytí kódu, security audit</td></tr>
+                            <tr><td><strong>Grey-box testing</strong></td><td>Kombinace – tester zná architekturu, ale ne implementaci</td><td>Integrační testy, API testování</td></tr>
+                            <tr><td><strong>Risk-based testing</strong></td><td>Prioritizace testů podle rizika: pravděpodobnost × dopad selhání</td><td>Projekty s omezeným časem/rozpočtem</td></tr>
+                            <tr><td><strong>Exploratory testing</strong></td><td>Tester simultánně navrhuje a provádí testy bez předpisu; hledá nečekané chování</td><td>Nové funkce, nezmapované oblasti systému</td></tr>
+                            <tr><td><strong>Regression testing</strong></td><td>Opakované spouštění testů po změně kódu — ověření, že nic nerozbilo</td><td>Každý commit/sprint</td></tr>
+                            <tr><td><strong>TDD (Test-Driven Development)</strong></td><td>Nejdřív napíš test, pak implementaci — test je specifikace</td><td>Agile, unit testování</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> Risk-based testing je nejdůležitější pro státnice. Ptej se: „Kde je největší riziko selhání a jaký by to mělo dopad?" Testuj nejrizikovější části nejdůkladněji. Není čas na 100% pokrytí — optimalizuj přínos testů.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Black-box: vstupy/výstupy bez znalosti vnitřku.</li>
+                            <li>White-box: znalost kódu, strukturální pokrytí.</li>
+                            <li>Risk-based: testuj nejvíc tam, kde je největší riziko.</li>
+                            <li>Exploratory: volný průzkum — odhalí nečekané chování.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-11">
+                    <h3>11. Test Depth Level (TDL)</h3>
+
+                    <p>TDL je kritérium pokrytí používané při process-oriented testování (testování na základě průchodů procesem / flowchartem). Udává, jak hluboko procházíme kombinace přechodů v diagramu průchodu.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <em>Test Depth Level $n$</em> zaručuje, že pro každý rozhodovací bod v procesu jsou otestovány všechny kombinace $n$ po sobě jdoucích cest (přechodů).
+                    </div>
+
+                    <h4>Úrovně TDL</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>TDL</th><th>Co pokrývá</th><th>Počet testů</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>TDL-1</strong></td><td>Každá cesta (hrana grafu) provedena alespoň jednou — edge coverage</td><td>Nízký</td></tr>
+                            <tr><td><strong>TDL-2</strong></td><td>Pro každý rozhodovací bod: všechny kombinace příchozí cesty s odchozí cestou — edge-pairs coverage</td><td>Střední</td></tr>
+                            <tr><td><strong>TDL-3</strong></td><td>Kombinace 3 po sobě jdoucích přechodů</td><td>Vysoký, v praxi vzácné</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> TDL je analogie n-switch coverage pro procesy. TDL-2 je praktická hranice — pokrývá většinu interakčních chyb bez explozivního nárůstu počtu testů. TDL-1 je minimum pro smysluplné testování; TDL-3+ se používá v bezpečnostně kritických systémech.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Flowchart procesu objednávky se dvěma rozhodovacími body: „zásoby dostupné?" a „platba provedena?". TDL-1 = otestuj každou větev alespoň jednou (4 testy). TDL-2 = otestuj každou kombinaci vstupní + výstupní větve každého rozhodovacího bodu.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>TDL určuje hloubku pokrytí přechodů v procesním flowchartu.</li>
+                            <li>TDL-1: každá hrana; TDL-2: každý pár sousedních hran.</li>
+                            <li>V praxi TDL-2 dává dostatečnou jistotu bez explozivního počtu testů.</li>
+                            <li>Ekvivalent n-switch coverage pro procesy.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-12">
+                    <h3>12. Process Cycle Test (PCT)</h3>
+
+                    <p>PCT je black-box technika navržená pro testování systémů, kde logika je definována procesními toky (workflow, ERP, BPM). Vychází ze struktury procesu — flowchartu — a ne ze specifikace funkcí.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <em>Process Cycle Test</em> je technika návrhu testů, při níž jsou testovací případy odvozeny ze struktury procesního toku (flowchart / procedurální diagram), nikoli z funkční specifikace.
+                    </div>
+
+                    <h4>Princip</h4>
+                    <ol>
+                        <li>Zmapuj procesní tok jako diagram s rozhodovacími body a větvemi.</li>
+                        <li>Identifikuj <em>path combinations</em>: každý link mezi akcí před rozhodovacím bodem a akcí po něm.</li>
+                        <li>Navrhni testy tak, aby pokryly vybraný TDL (typicky TDL-2).</li>
+                        <li>Každý testovací případ reprezentuje jeden průchod procesem od začátku do konce.</li>
+                    </ol>
+
+                    <h4>Kdy použít</h4>
+                    <ul>
+                        <li>ERP systémy, workflow enginy, BPM procesy.</li>
+                        <li>Systémy, kde chování závisí na stavu a historii průchodů.</li>
+                        <li>Když je procesní dokumentace k dispozici, ale detailní funkční specifikace není.</li>
+                    </ul>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> PCT se ptá: „Jaké průchody procesem jsou možné a jsou všechny správně implementovány?" Zatímco funkční testování se ptá „funguje funkce X správně?", PCT se ptá „funguje celý proces od objednávky po výdej správně v každém scénáři?"
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> PCT testuje vždy jen <em>jeden</em> proces naráz. Interakce mezi dvěma procesy se testuje jinak (integrační testování nebo test přechodu stavů).
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>PCT odvozuje testy ze struktury procesního flowchartu.</li>
+                            <li>Pracuje s kombinacemi přechodů (TDL-1 nebo TDL-2).</li>
+                            <li>Vhodné pro ERP, workflow, BPM — kde logika je v procesech, ne funkcích.</li>
+                            <li>Každý test = jeden kompletní průchod procesem.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-13">
+                    <h3>13. Organizace testů – test suite, test case</h3>
+
+                    <p>Desítky až tisíce testů je potřeba organizovat tak, aby bylo jasné, co se testuje, aby se testy daly spouštět selektivně a aby výsledky byly přehledné.</p>
+
+                    <div class="def-box">
+                        <strong>Test case:</strong> Atomická jednotka testování — jeden konkrétní scénář s jasně definovanými vstupy a očekávaným výsledkem.<br>
+                        <strong>Test suite:</strong> Kolekce příbuzných test cases, které logicky patří dohromady (např. všechny testy pro modul přihlašování).
+                    </div>
+
+                    <h4>Hierarchie organizace</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Úroveň</th><th>Popis</th><th>Příklad</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Test case</strong></td><td>Jeden atomický test</td><td><code>TC-001: Přihlášení s platným heslem</code></td></tr>
+                            <tr><td><strong>Test suite</strong></td><td>Skupina příbuzných test cases</td><td>Suite: Autentizace → [TC-001, TC-002, TC-003]</td></tr>
+                            <tr><td><strong>Test plan</strong></td><td>Plán testování pro celý projekt/release</td><td>Sprint 12 Test Plan: Co, kdo, kdy, jak</td></tr>
+                            <tr><td><strong>Test run</strong></td><td>Jedno provedení suite/plánu</td><td>Run ze dne 2026-05-23 po deploymentu v14.2</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Vztahy a best practices</h4>
+                    <ul>
+                        <li>Test case by měl být nezávislý na ostatních (žádné sdílení stavu).</li>
+                        <li>Suite seskupuje testy podle funkčnosti / modulu / úrovně (unit/integrační/E2E).</li>
+                        <li>V nástrojích jako JUnit nebo pytest jsou suity adresáře/třídy; v Playwright/Cypress jsou to bloky <code>describe()</code>.</li>
+                        <li>Každý test case má výsledek: Pass / Fail / Blocked / Skipped.</li>
+                    </ul>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Test case = atomický test; test suite = logická skupina test cases.</li>
+                            <li>Hierarchie: case → suite → plan → run.</li>
+                            <li>Test cases musí být nezávislé; suity pomáhají selektivně spouštět.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-14">
+                    <h3>14. Životní cyklus reportování a opravy chyby (Bug Lifecycle)</h3>
+
+                    <p>Nalezená chyba projde strukturovaným procesem od nahlášení po uzavření, aby bylo jasné, v jakém stavu je, kdo za ni odpovídá a co se s ní děje. Tento proces se nazývá bug lifecycle.</p>
+
+                    <h4>Stavy bugů</h4>
+                    <div class="formula-block">
+                        New → Assigned → In Progress → Fixed → Pending Retest → Verified → Closed
+                        <br>(nebo: Rejected / Duplicate / Won't Fix / Reopened)
+                    </div>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Stav</th><th>Popis</th><th>Zodpovědný</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>New</strong></td><td>Bug byl nahlášen, čeká na posouzení</td><td>QA / Tester</td></tr>
+                            <tr><td><strong>Assigned</strong></td><td>Bug přiřazen vývojáři k opravě</td><td>Team Lead / PM</td></tr>
+                            <tr><td><strong>In Progress</strong></td><td>Vývojář pracuje na opravě</td><td>Developer</td></tr>
+                            <tr><td><strong>Fixed</strong></td><td>Oprava dokončena, čeká na retestování</td><td>Developer</td></tr>
+                            <tr><td><strong>Pending Retest</strong></td><td>Tester musí ověřit opravu</td><td>QA / Tester</td></tr>
+                            <tr><td><strong>Verified</strong></td><td>Tester potvrdil, že bug je opravený</td><td>QA / Tester</td></tr>
+                            <tr><td><strong>Closed</strong></td><td>Bug uzavřen</td><td>QA / PM</td></tr>
+                            <tr><td><strong>Reopened</strong></td><td>Bug se znovu projevil po opravě</td><td>QA / Tester</td></tr>
+                            <tr><td><strong>Rejected / Won't Fix</strong></td><td>Bug není bug, nebo oprava není plánována</td><td>PM / Dev</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> Cyklus zajišťuje, že žádný bug není ztracen a každý prochází čtyřma očima — vývojář opraví, tester ověří. Stav „Reopened" je signál, že oprava nebyla kompletní nebo regrese.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad (JIRA):</strong> Bug TC-042 „Přihlášení vrací 500 při UTF-8 znacích" → New → Assigned (vývojář Jan) → Fixed → Pending Retest → Verified (tester Petra) → Closed.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Bug prochází stavovou mašinou od New po Closed.</li>
+                            <li>Klíčové přechody: Fixed (dev hotov) → Verified (tester ověřil) → Closed.</li>
+                            <li>Reopened = oprava neúspěšná nebo regrese.</li>
+                            <li>Nástroje: JIRA, Bugzilla, Redmine, GitHub Issues.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-15">
+                    <h3>15. V-model</h3>
+
+                    <p>V-model rozšiřuje vodopádový model vývoje o explicitní propojení každé vývojové fáze s odpovídající testovací fází. Vzniká tvar „V": levá větev = vývoj (specifikace → implementace), pravá větev = testování (unit → akceptace).</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <em>V-model</em> je metodologie vývoje softwaru, v níž každé vývojové fázi na levé větvi odpovídá testovací fáze na pravé větvi, přičemž testovací artefakty (plány, případy) se připravují souběžně s vývojem.
+                    </div>
+
+                    <h4>Diagram V-modelu</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Vývojová fáze (levá větev)</th><th>Testovací fáze (pravá větev)</th></tr></thead>
+                        <tbody>
+                            <tr><td>Analýza požadavků</td><td>Akceptační testy (UAT)</td></tr>
+                            <tr><td>Systémový návrh</td><td>Systémové testy</td></tr>
+                            <tr><td>Architekturální návrh</td><td>Integrační testy</td></tr>
+                            <tr><td>Detailní návrh / kódování</td><td>Jednotkové testy (Unit tests)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Výhody</h4>
+                    <ul>
+                        <li>Testování je plánováno od začátku projektu, ne jako afterthought.</li>
+                        <li>Jasná zodpovědnost: pro každou vývojovou fázi existuje odpovídající testovací fáze.</li>
+                        <li>Validace (správný produkt?) i verifikace (správně děláme produkt?) jsou explicitně pokryty.</li>
+                        <li>Chyby v požadavcích jsou odhaleny dříve, protože tester čte specifikaci hned.</li>
+                    </ul>
+
+                    <h4>Nevýhody</h4>
+                    <ul>
+                        <li>Rigidní — těžko reaguje na změny požadavků uprostřed projektu.</li>
+                        <li>Vhodný jen pro projekty s pevnými, dobře definovanými požadavky.</li>
+                        <li>Zpětná vazba od uživatele přichází pozdě (UAT je na konci).</li>
+                        <li>Nedostatečný pro agilní/iterativní vývoj.</li>
+                    </ul>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Vývoj řídicího softwaru pro medicínský přístroj — požadavky jsou pevné (regulatorní rámec), V-model je vhodný. Naopak pro SaaS startup s měnícími se požadavky je V-model nevhodný.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>V-model: každá vývojová fáze má odpovídající testovací fázi.</li>
+                            <li>Výhoda: testování plánováno od začátku, explicitní validace i verifikace.</li>
+                            <li>Nevýhoda: rigidní, špatně reaguje na změny, feedback pozdě.</li>
+                            <li>Vhodný pro: pevné požadavky, bezpečnostně kritické systémy.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-16">
+                    <h3>16. Test přechodu stavů – n-switch coverage</h3>
+
+                    <p>Systémy jako přihlašovací systém, e-commerce košík nebo stavový automat mají jasně definované stavy a přechody mezi nimi. Testování přechodu stavů ověřuje, zda systém správně reaguje na události v každém stavu.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <em>State transition testing</em> je technika, při níž jsou testovací případy odvozeny ze stavového diagramu systému — testuje se, zda každý přechod z jednoho stavu do druhého nastane za správných podmínek.
+                    </div>
+
+                    <h4>Stavový diagram</h4>
+                    <p>Obsahuje: <strong>stavy</strong> (uzly), <strong>události/podmínky</strong> (co přechod spouští), <strong>akce</strong> (co se stane při přechodu), <strong>cílový stav</strong>.</p>
+
+                    <div class="ex-box">
+                        <strong>Příklad — stav účtu:</strong>
+                        <ul>
+                            <li>Stav: Active, Locked, Suspended</li>
+                            <li>Active → Locked: 3 neúspěšná přihlášení</li>
+                            <li>Locked → Active: admin odemkne</li>
+                            <li>Active → Suspended: nečinnost 90 dní</li>
+                        </ul>
+                    </div>
+
+                    <h4>N-switch coverage</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Úroveň</th><th>Testuje</th><th>Počet testů</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>0-switch (all transitions)</strong></td><td>Každý přechod otestován alespoň jednou</td><td>Nízký</td></tr>
+                            <tr><td><strong>1-switch</strong></td><td>Všechny kombinace 2 po sobě jdoucích přechodů</td><td>Střední</td></tr>
+                            <tr><td><strong>N-switch</strong></td><td>Všechny kombinace N+1 po sobě jdoucích přechodů</td><td>Exponenciální</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> 0-switch (all-transitions) pokrytí je minimum — každý přechod se musí vyzkoušet. 1-switch odhalí chyby jako „po přechodu A→B nelze provést přechod B→C", které 0-switch přehlédne. V praxi 1-switch coverage bývá dostatečné.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> Nezapomínej testovat i <em>neplatné přechody</em> — systém by měl odmítnout přechod, který ve stavovém diagramu neexistuje (např. přechod ze stavu Locked do Suspended bez průchodu přes Active).
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>State transition testing: testy odvozené ze stavového diagramu.</li>
+                            <li>0-switch: každý přechod jednou; 1-switch: každý pár přechodů.</li>
+                            <li>Testuj i neplatné přechody — systém by je měl odmítnout.</li>
+                            <li>Vhodné pro: přihlašovací systémy, košíky, workflow, embedded SW.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-17">
+                    <h3>17. Testovací prostředí</h3>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> <em>Testovací prostředí</em> je infrastruktura (hardware, software, síť, data, konfigurace), v níž jsou spouštěny testovací případy. Je izolováno od produkce, aby testy neohrožovaly reálná data a provoz.
+                    </div>
+
+                    <h4>Typické prostředí v praxi</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Prostředí</th><th>Účel</th><th>Kdo používá</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Development (DEV)</strong></td><td>Vývojář testuje lokálně</td><td>Vývojáři</td></tr>
+                            <tr><td><strong>Testing / QA</strong></td><td>Tým QA provádí systémové testy</td><td>Testeři</td></tr>
+                            <tr><td><strong>Staging</strong></td><td>Produkci-like prostředí pro finální ověření před releasem</td><td>QA, PM, zákazník (UAT)</td></tr>
+                            <tr><td><strong>Production</strong></td><td>Reální uživatelé</td><td>Zákazníci</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Proč je testovací prostředí důležité</h4>
+                    <ul>
+                        <li>Izolace: chyba v testování nerozbije produkci.</li>
+                        <li>Opakovatelnost: stejné prostředí → stejné výsledky testů.</li>
+                        <li>Bezpečnost: testovací data neobsahují produkční osobní údaje.</li>
+                        <li>Konfigurace: prostředí musí co nejvěrněji simulovat produkci (stejná verze DB, stejné feature flags).</li>
+                    </ul>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> „Works on my machine" problém — test prošel v DEV, selhal v QA. Příčina: rozdílné verze závislostí, jiná konfigurace. Řešení: Docker, Infrastructure as Code (Terraform, Ansible), parity DEV/QA/Staging.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Testovací prostředí = infrastruktura izolovaná od produkce.</li>
+                            <li>DEV → QA → Staging → Production — každá fáze má jiný účel.</li>
+                            <li>Prostředí musí být co nejblíže produkci (parity).</li>
+                            <li>Řešení "works on my machine": Docker, IaC.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-18">
+                    <h3>18. Hlášení nalezených selhání (Bug Reporting)</h3>
+
+                    <p>Dobrý bug report umožní vývojáři reprodukovat chybu bez dalšího dotazování. Špatný report vede k pingpongu mezi testerem a vývojářem a plýtvání časem.</p>
+
+                    <h4>Obsah kvalitního bug reportu</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Pole</th><th>Popis</th><th>Příklad</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>ID / Název</strong></td><td>Unikátní ID a stručný popis chyby</td><td>BUG-234: Login selže při UTF-8 znacích v hesle</td></tr>
+                            <tr><td><strong>Závažnost (Severity)</strong></td><td>Technický dopad: Critical / Major / Minor / Trivial</td><td>Critical — uživatel se nemůže přihlásit</td></tr>
+                            <tr><td><strong>Priorita (Priority)</strong></td><td>Byznys priorita opravy: High / Medium / Low</td><td>High — přihlašování je kritická funkce</td></tr>
+                            <tr><td><strong>Kroky k reprodukci</strong></td><td>Přesné kroky vedoucí k chybě</td><td>1. Jdi na /login, 2. Zadej heslo s „č", 3. Klikni Login</td></tr>
+                            <tr><td><strong>Aktuální výsledek</strong></td><td>Co se stalo</td><td>Vrátí HTTP 500, konzole zobrazí encoding error</td></tr>
+                            <tr><td><strong>Očekávaný výsledek</strong></td><td>Co by se správně stát mělo</td><td>Přihlášení proběhne úspěšně</td></tr>
+                            <tr><td><strong>Prostředí</strong></td><td>Verze, OS, prohlížeč, build</td><td>Chrome 124, Windows 11, build v14.2</td></tr>
+                            <tr><td><strong>Přílohy</strong></td><td>Screenshot, video, logy</td><td>screenshot_error.png, console.log</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> Severity ≠ Priority. Závažný bug (celý systém nefunguje) může mít nízkou prioritu (testovací prostředí, žádní reální uživatelé). Kosmetická chyba (překlep) může mít vysokou prioritu (CEO prezentace zítra).
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> Nejčastější chyba: vágní kroky reprodukce. „Přihlaste se a zkuste přidat zboží" nestačí. Každý krok musí být atomický a jednoznačný, aby bug šel reprodukovat za 5 minut bez tazatele.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Bug report = kroky k reprodukci + aktuální výsledek + očekávaný výsledek + prostředí.</li>
+                            <li>Severity (technický dopad) ≠ Priority (byznys urgence).</li>
+                            <li>Kvalitní report = vývojář reprodukuje bez dotazování.</li>
+                            <li>Přílohy (screenshoty, logy) dramaticky zkracují debugging.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-19">
+                    <h3>19. Použití LLM v E2E testování – problémy</h3>
+
+                    <p>Velké jazykové modely (LLM) se nabízejí pro generování testovacích případů, analýzu výsledků nebo dokonce autonomní průchod E2E testů. Nicméně přinášejí specifické problémy, které klasické testování nezná.</p>
+
+                    <h4>Hlavní problémy</h4>
+
+                    <div class="def-box">
+                        <strong>Non-determinismus:</strong> Stejný prompt nevrátí vždy stejný výstup. I při <code>temperature=0</code> mohou různé běhy produkovat různé odpovědi kvůli sampling algoritmům a distribuované infrastruktuře. To je fundamentální problém pro testy, které musí být deterministické a opakovatelné.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Flaky testy:</strong> Test napsaný pomocí LLM (nebo testující LLM) může v jednom běhu projít a ve druhém selhat — bez jakékoli změny kódu. To je definice flaky testu a podkopává důvěru v testovací sadu.
+                    </div>
+
+                    <h4>Přehled problémů</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Problém</th><th>Popis</th><th>Možné řešení</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Non-determinismus</strong></td><td>LLM nevrátí stejný výstup pokaždé</td><td>Fixní seed, temperature=0, deterministické asserce (contains, not exact)</td></tr>
+                            <tr><td><strong>Halucination</strong></td><td>LLM vymyslí testovací případ, který neodpovídá specifikaci</td><td>Human review generovaných testů</td></tr>
+                            <tr><td><strong>Prompt sensitivity</strong></td><td>Malá změna promptu = dramaticky jiný výstup</td><td>Verzování promptů, regression testing promptů</td></tr>
+                            <tr><td><strong>Asserce na volný text</strong></td><td>Jak ověřit správnost LLM odpovědi? Přesná shoda selže kvůli variabilitě</td><td>LLM-as-judge, fuzzy matching, sémantická podobnost</td></tr>
+                            <tr><td><strong>Model drift</strong></td><td>Nová verze modelu chová jinak, testy selžou bez změny aplikace</td><td>Pinning verze modelu, snapshot testing</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box">
+                        <strong>Intuice:</strong> Testovat LLM je jako testovat člověka — nelze zaručit deterministické odpovědi. Proto se v LLM testování přechází od „exact match" k „behavioral evaluation": je odpověď sémanticky správná? Bezpečná? Relevantní?
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> E2E test chatbotu, který ověřuje odpověď na otázku „Jaká je hlavní město Francie?". Exact match „Paříž" selže, pokud LLM odpoví „Hlavní město Francie je Paříž." Řešení: aserce <code>contains("Paříž")</code> nebo LLM-as-judge.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>LLM jsou non-deterministické — klasické exact-match aserce nefungují spolehlivě.</li>
+                            <li>Flaky testy a prompt sensitivity jsou největší praktické problémy.</li>
+                            <li>Řešení: fuzzy aserce, LLM-as-judge, pinning verze modelu.</li>
+                            <li>Regression testing promptů je nová disciplína.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-20">
+                    <h3>20. Kritéria pokrytí kódu (Code Coverage)</h3>
+
+                    <p>Pokrytí kódu měří, jaká část zdrojového kódu byla vykonána při testování. Slouží jako indikátor (ne garance!) kvality testů — odhaluje <em>neotestované oblasti</em>, ne nutně chybějící test cases.</p>
+
+                    <h4>Typy pokrytí — od slabšího po silnější</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Kritérium</th><th>Co ověřuje</th><th>Příklad podmínky <code>if (a &amp;&amp; b)</code></th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Statement coverage</strong></td><td>Každý příkaz (statement) proveden alespoň jednou</td><td>Stačí projít větví kde podmínka = true</td></tr>
+                            <tr><td><strong>Branch coverage</strong></td><td>Každá větev rozhodnutí (true i false) provedena</td><td>Potřebujeme test kde podmínka = true A test kde = false</td></tr>
+                            <tr><td><strong>Condition coverage</strong></td><td>Každá atomická podmínka ($a$, $b$) nabude true i false</td><td>$a$=true/$a$=false, $b$=true/$b$=false nezávisle</td></tr>
+                            <tr><td><strong>MC/DC</strong></td><td>Každá atomická podmínka nezávisle ovlivňuje výsledek rozhodnutí</td><td>Pro každou podmínku: test kde ji změna změní výsledek celého výrazu</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="def-box">
+                        <strong>MC/DC (Modified Condition/Decision Coverage):</strong> Každá atomická podmínka musí nezávisle ovlivnit výsledek celého rozhodovacího výrazu. Vyžadováno standardy DO-178C (letecký SW), ISO 26262 (automotive), IEC 61508.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad MC/DC pro <code>if (a &amp;&amp; b)</code>:</strong><br>
+                        — Test 1: a=true, b=true → result=true<br>
+                        — Test 2: a=false, b=true → result=false (změna a změnila výsledek ✓)<br>
+                        — Test 3: a=true, b=false → result=false (změna b změnila výsledek ✓)<br>
+                        3 testy postačí pro MC/DC; plné condition coverage by vyžadovalo 4.
+                    </div>
+
+                    <h4>Kdy které použít</h4>
+                    <ul>
+                        <li><strong>Statement/Branch coverage</strong>: standardní komerční vývoj, cíl 80–90 %.</li>
+                        <li><strong>MC/DC</strong>: bezpečnostně kritické systémy (aviace, automotive, medicína).</li>
+                        <li>100 % pokrytí neznamená 100 % správnost — lze mít 100% statement coverage bez jediného smysluplného testu (prázdné asserce).</li>
+                    </ul>
+
+                    <div class="warn-box">
+                        <strong>Pozor:</strong> Code coverage je nutná, ale nedostatečná podmínka kvality. Lze mít 100% branch coverage a přitom netestovat žádnou chybovou situaci. Pokrytí ukazuje, co <em>není</em> testováno — ne to, zda testy jsou <em>správné</em>.
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Statement → Branch → Condition → MC/DC: od slabšího po silnější kritérium.</li>
+                            <li>MC/DC: každá podmínka nezávisle ovlivňuje výsledek; nutné v bezpečnostně kritických systémech.</li>
+                            <li>100 % pokrytí ≠ 100 % správnost; ukazuje jen co bylo spuštěno.</li>
+                            <li>Praktický cíl: 80–90 % branch coverage pro komerční projekty.</li>
+                        </ul>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
