@@ -4,33 +4,876 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LAG - Lineární algebra | SZZ Příprava</title>
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <script>window.MathJax={tex:{inlineMath:[['$','$']],macros:{N:"\\mathbb{N}",R:"\\mathbb{R}",Z:"\\mathbb{Z}"}}}</script>
+    <link rel="stylesheet" href="shared.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
+                macros: { N: "\\mathbb{N}", R: "\\mathbb{R}", Z: "\\mathbb{Z}", Q: "\\mathbb{Q}", C: "\\mathbb{C}" }
+            }
+        };
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
-    <style>
-        body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; padding-top: 70px; }
-        body.dark-mode { background-color: #1a1a1a; color: #e0e0e0; }
-        .container { max-width: 900px; }
-        h1 { color: #0d6efd; border-bottom: 3px solid #0d6efd; padding-bottom: 0.5rem; }
-        .alert-info { background-color: #e7f3ff; border-left: 4px solid #0d6efd; }
-        body.dark-mode .alert-info { background-color: #1a2a3a; color: #e0e0e0; }
-    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="fas fa-arrow-left me-2"></i>Dashboard</a>
             <span class="navbar-text mx-auto"><strong>LAG</strong> - Lineární algebra</span>
-            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')"><i class="fas fa-adjust"></i></button>
+            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')">
+                <i class="fas fa-adjust"></i>
+            </button>
         </div>
     </nav>
+
     <div class="container">
-        <h1 class="mb-4">Lineární algebra</h1>
-        <div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>Tato stránka je ve výstavbě.</div>
-    </div>
+        <div class="row">
+            <!-- Sidebar TOC -->
+            <div class="col-lg-3 d-none d-lg-block">
+                <nav class="topic-nav pt-4">
+                    <h6 class="text-muted text-uppercase fw-bold mb-3">Témata</h6>
+                    <ul class="nav flex-column">
+                        <li><a class="nav-link py-1" href="#topic-1">1. Soustavy lin. rovnic</a></li>
+                        <li><a class="nav-link py-1" href="#topic-2">2. Lineární zobrazení</a></li>
+                        <li><a class="nav-link py-1" href="#topic-3">3. Gaussova eliminace</a></li>
+                        <li><a class="nav-link py-1" href="#topic-4">4. Báze lin. prostoru</a></li>
+                        <li><a class="nav-link py-1" href="#topic-5">5. Determinant matice</a></li>
+                        <li><a class="nav-link py-1" href="#topic-6">6. Inverzní matice</a></li>
+                        <li><a class="nav-link py-1" href="#topic-7">7. Frobeniova věta</a></li>
+                        <li><a class="nav-link py-1" href="#topic-8">8. Hodnost matice</a></li>
+                        <li><a class="nav-link py-1" href="#topic-9">9. Lineární prostory</a></li>
+                        <li><a class="nav-link py-1" href="#topic-10">10. Matice</a></li>
+                        <li><a class="nav-link py-1" href="#topic-11">11. Matice lin. zobrazení</a></li>
+                        <li><a class="nav-link py-1" href="#topic-12">12. Souřadnice a přechod báze</a></li>
+                        <li><a class="nav-link py-1" href="#topic-13">13. Lin. nezávislé vektory</a></li>
+                        <li><a class="nav-link py-1" href="#topic-14">14. Matice rotace 2D/3D</a></li>
+                        <li><a class="nav-link py-1" href="#topic-15">15. Cramerova věta</a></li>
+                        <li><a class="nav-link py-1" href="#topic-16">16. Vlastní čísla a vektory</a></li>
+                        <li><a class="nav-link py-1" href="#topic-17">17. Diagonalizovatelnost</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Main content -->
+            <div class="col-lg-9">
+                <h1 class="mb-4">Lineární algebra</h1>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-1">
+                    <h3>1. Soustavy lineárních rovnic – řešení, podmínky existence</h3>
+
+                    <p>Hledáme stav, který vyhovuje několika podmínkám současně. Je to fundamentální problém informatiky — od alokace zdrojů po výpočet vah neuronové sítě. Zapíšeme ho maticově jako $A\mathbf{x} = \mathbf{b}$.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Soustava $m$ rovnic o $n$ neznámých:
+                        $$a_{11}x_1 + \cdots + a_{1n}x_n = b_1, \quad \ldots, \quad a_{m1}x_1 + \cdots + a_{mn}x_n = b_m$$
+                        Maticový zápis: $A\mathbf{x} = \mathbf{b}$, kde $A \in \R^{m\times n}$, $\mathbf{x} \in \R^n$, $\mathbf{b} \in \R^m$.
+                    </div>
+
+                    <h4>Tři možné situace</h4>
+                    <ul>
+                        <li><strong>Jediné řešení</strong> — podmínky se protnou v jednom bodě. Nastane, když $\text{rank}(A) = \text{rank}(A|\mathbf{b}) = n$.</li>
+                        <li><strong>Nekonečně mnoho řešení</strong> — podmínky jsou kompatibilní, ale nedourčují všechny proměnné. Nastane, když $\text{rank}(A) = \text{rank}(A|\mathbf{b}) < n$.</li>
+                        <li><strong>Žádné řešení</strong> — podmínky si odporují. Nastane, když $\text{rank}(A) \neq \text{rank}(A|\mathbf{b})$.</li>
+                    </ul>
+
+                    <div class="def-box">
+                        <strong>Homogenní vs. nehomogenní:</strong><br>
+                        <em>Homogenní:</em> $A\mathbf{x} = \mathbf{0}$ — vždy má alespoň triviální řešení $\mathbf{x} = \mathbf{0}$.<br>
+                        <em>Nehomogenní:</em> $A\mathbf{x} = \mathbf{b}$, $\mathbf{b} \neq \mathbf{0}$ — řešení nemusí existovat.<br><br>
+                        <strong>Obecné řešení:</strong> $\mathbf{x} = \mathbf{x}_p + \mathbf{x}_h$, kde $\mathbf{x}_p$ je jedno partikulární řešení a $\mathbf{x}_h \in \ker(A)$ je libovolné řešení homogenní soustavy.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Geometrická intuice ve 3D (tři roviny):</strong><br>
+                        <em>Jediné řešení:</em> Tři roviny se protínají v jednom bodě — jako roh místnosti.<br>
+                        <em>Nekonečně mnoho:</em> Tři roviny se protínají v jedné přímce.<br>
+                        <em>Žádné řešení:</em> Dvě roviny jsou rovnoběžné — žádný společný bod.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Signál ve výpočtu:</strong> Pokud po Gaussově eliminaci vznikne řádek tvaru $0 = c$ kde $c \neq 0$, soustava nemá řešení. Toto je klíčový moment ke sledování.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Řešení existuje ⟺ $\text{rank}(A) = \text{rank}(A|\mathbf{b})$ (Frobeniova věta)</li>
+                            <li>Počet volných proměnných = $n - \text{rank}(A)$</li>
+                            <li>Homogenní soustava má vždy nulové řešení</li>
+                            <li>Obecné řešení = partikulární + jádro (homogenní soustava)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-2">
+                    <h3>2. Lineární zobrazení – jádro, obraz, defekt, hodnost</h3>
+
+                    <p>Lineární zobrazení je funkce mezi lineárními prostory, která „respektuje" strukturu prostoru — sčítání a násobení skalárem. Matice je jen jeho zápis v konkrétní bázi.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Zobrazení $f: V \to W$ je <strong>lineární</strong>, pokud pro všechna $\mathbf{u}, \mathbf{v} \in V$ a skaláry $\alpha, \beta$ platí:
+                        $$f(\alpha\mathbf{u} + \beta\mathbf{v}) = \alpha f(\mathbf{u}) + \beta f(\mathbf{v})$$
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Jádro (Ker):</strong> $\ker(f) = \{\mathbf{v} \in V \mid f(\mathbf{v}) = \mathbf{0}\}$ — co zobrazení „slisuje" do nuly.<br><br>
+                        <strong>Obraz (Im):</strong> $\text{Im}(f) = \{f(\mathbf{v}) \mid \mathbf{v} \in V\}$ — kam zobrazení vůbec dosáhne.<br><br>
+                        <strong>Defekt:</strong> $\text{def}(f) = \dim(\ker f)$ — kolik dimenzí zobrazení ztratí.<br>
+                        <strong>Hodnost zobrazení:</strong> $\text{rank}(f) = \dim(\text{Im}\,f)$ — dimenze obrazu.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Věta o dimenzi (dimenzní rovnice):</strong>
+                        $$\dim(V) = \dim(\ker f) + \dim(\text{Im}\,f) = \text{def}(f) + \text{rank}(f)$$
+                        Jedno z nejdůležitějších tvrzení lineární algebry: „ztracená" dimenze přesně doplní dimenzi obrazu.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklady lineárních zobrazení:</strong><br>
+                        • <em>Rotace roviny</em> — lineární; $\ker = \{\mathbf{0}\}$, $\text{Im} = \R^2$<br>
+                        • <em>Projekce na rovinu</em> — lineární; jádro = kolmá přímka, obraz = rovina<br>
+                        • <em>Derivace $D: P_n \to P_{n-1}$</em> — lineární; $\ker D$ = konstantní polynomy<br>
+                        • <em>Nulové zobrazení</em> $f(\mathbf{v}) = \mathbf{0}$ — $\ker$ = celý prostor, $\text{Im} = \{\mathbf{0}\}$<br><br>
+                        <em>Nelineární protipříklad:</em> $f(x) = x^2$ — $f(x_1 + x_2) \neq f(x_1) + f(x_2)$.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Inženýrský vhled:</strong> Projekce 3D scény na 2D plochu (obraz na monitoru) je lineární zobrazení s defektem 1. Z výsledného stínu nelze zpětně rekonstruovat hloubku — zobrazení ztratilo informaci a <strong>nemá inverzi</strong>.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Lineární zobrazení zachovává lin. kombinace: $f(\alpha u + \beta v) = \alpha f(u) + \beta f(v)$</li>
+                            <li>Jádro = „co se ztratí", obraz = „kam se dostaneme"</li>
+                            <li>Dimenzní rovnice: $\dim V = \text{def}(f) + \text{rank}(f)$</li>
+                            <li>Bijektivní lineární zobrazení (ker = {0}, Im = W) = izomorfismus</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-3">
+                    <h3>3. Gaussova eliminace (GEM) – algoritmus, složitost</h3>
+
+                    <p>GEM je systematický algoritmus pro řešení soustav rovnic. Pomocí elementárních řádkových operací transformuje matici na schodovitý tvar — ekvivalentní, ale triviálně čitelnou soustavu.</p>
+
+                    <div class="def-box">
+                        <strong>Elementární řádkové operace (ERO) — nemění prostor řešení:</strong>
+                        <ol>
+                            <li>Prohození dvou řádků: $R_i \leftrightarrow R_j$</li>
+                            <li>Násobení řádku nenulovým skalárem: $R_i \leftarrow k \cdot R_i$, $k \neq 0$</li>
+                            <li>Přičtení násobku jiného řádku: $R_i \leftarrow R_i + k \cdot R_j$</li>
+                        </ol>
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Algoritmus — převod na horní schodovitý tvar (REF):</strong><br>
+                        1. Vyber sloupec s pivotem (první nenulový prvek v aktuálním sloupci)<br>
+                        2. Operací ERO-3 vynuluj všechny prvky <em>pod</em> pivotem<br>
+                        3. Přejdi na další sloupec a opakuj<br>
+                        4. Výsledek: horní schodovitý tvar → zpětná substituce dá řešení<br>
+                        5. (Gauss-Jordan) Eliminuj i <em>nad</em> pivotem → redukovaný schodovitý tvar (RREF), řešení se čte přímo.<br><br>
+                        <strong>Příklad:</strong>
+                        $$\left(\begin{array}{ccc|c}2&1&-1&8\\-3&-1&2&-11\\-2&1&2&-3\end{array}\right) \xrightarrow{\text{GEM}} \left(\begin{array}{ccc|c}2&1&-1&8\\0&1&1&2\\0&0&-1&1\end{array}\right)$$
+                        Zpětnou substitucí: $x_3 = -1$, $x_2 = 3$, $x_1 = 2$.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Časová složitost:</strong> $O(n^3)$ pro soustavu $n \times n$.<br>
+                        Pro každý ze $n$ pivotů eliminujeme $O(n)$ řádků, každá operace trvá $O(n)$ kroků.<br><br>
+                        GEM lze použít i pro: výpočet determinantu (součin pivotů), výpočet hodnosti, výpočet inverzní matice.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Co GEM dělá geometricky:</strong> ERO jsou lineární transformace, které nemění prostor řešení. GEM postupně „narovnává" soustavu do nejjednodušší ekvivalentní podoby — jako bychom chodili kolem téhož domu a hledali nejlepší vstupní dveře.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Numerická stabilita:</strong> Při implementaci v plovoucí desetinné čárce se používá <em>partial pivoting</em> — volíme pivot s největší absolutní hodnotou v daném sloupci. Zabrání dělení velmi malými čísly a nakupení zaokrouhlovacích chyb.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>GEM eliminuje proměnné pomocí ERO; výsledek = schodovitý tvar → zpětná substituce</li>
+                            <li>Složitost $O(n^3)$ — daleko lepší než Cramerovo pravidlo</li>
+                            <li>Slouží i k výpočtu determinantu, hodnosti a inverzní matice</li>
+                            <li>V praxi vždy s pivotingem pro numerickou stabilitu</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-4">
+                    <h3>4. Báze lineárního prostoru – definice, dimenze, kanonická báze</h3>
+
+                    <p>Báze je minimální „souřadnicový systém" prostoru — sada vektorů, ze které lze složit jakýkoliv vektor, a přitom každý z nich nese unikátní informaci.</p>
+
+                    <div class="def-box">
+                        <strong>Definice — báze:</strong> Množina $B = \{\mathbf{b}_1, \ldots, \mathbf{b}_n\}$ je <strong>bází</strong> lineárního prostoru $V$, pokud:
+                        <ol>
+                            <li>$B$ je <strong>lineárně nezávislá</strong> (žádný vektor není kombinací ostatních)</li>
+                            <li>$B$ <strong>generuje</strong> $V$: každý $\mathbf{v} \in V$ lze zapsat jako $\mathbf{v} = \alpha_1\mathbf{b}_1 + \cdots + \alpha_n\mathbf{b}_n$</li>
+                        </ol>
+                        <strong>Dimenze</strong> prostoru $\dim(V) = n$ = počet prvků libovolné báze (všechny báze mají stejnou velikost).
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Kanonická (standardní) báze $\R^n$:</strong>
+                        $$\mathbf{e}_1=(1,0,\ldots,0),\quad \mathbf{e}_2=(0,1,\ldots,0),\quad\ldots,\quad\mathbf{e}_n=(0,\ldots,0,1)$$
+                        V $\R^3$: osy $x$, $y$, $z$ — intuitivně přirozená volba.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklady prostorů a jejich bází:</strong><br>
+                        • $\R^2$: kanonická báze $\{(1,0),(0,1)\}$, dimenze 2. Alternativa: $\{(1,1),(1,-1)\}$.<br>
+                        • $P_n(\R)$: polynomy $\leq n$, báze $\{1, x, x^2, \ldots, x^n\}$, dimenze $n+1$.<br>
+                        • Matice $2\times2$: dimenze 4, báze jsou 4 matice s jednou jedničkou.<br>
+                        • Triviální prostor $\{\mathbf{0}\}$: dimenze 0 (prázdná báze).
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Inženýrský vhled:</strong> Znát chování systému na bázových vektorech = znát jeho chování na <em>celém</em> prostoru. V ML: dimenze báze = počet skutečně nezávislých příznaků. Lineárně závislé příznaky jsou redundantní — plýtvají pamětí i výkonem (PCA hledá efektivní bázi).
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Báze = lineárně nezávislá + generující množina</li>
+                            <li>Všechny báze prostoru mají stejný počet prvků = $\dim(V)$</li>
+                            <li>Kanonická báze $\R^n$: vektory $\mathbf{e}_i$ s jedničkou na $i$-té pozici</li>
+                            <li>Každý vektor má v dané bázi jednoznačné souřadnice</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-5">
+                    <h3>5. Determinant matice – definice, vlastnosti, metody výpočtu</h3>
+
+                    <p>Determinant je číslo přiřazené čtvercové matici, které kóduje, jak moc matice „natahuje" nebo „zplošťuje" prostor. Geometricky je to faktor změny objemu (plochy ve 2D).</p>
+
+                    <div class="def-box">
+                        <strong>Definice (Laplaceův rozvoj podle $i$-tého řádku):</strong>
+                        $$\det(A) = \sum_{j=1}^{n} (-1)^{i+j} a_{ij} \det(M_{ij})$$
+                        kde $M_{ij}$ je minor — matice vzniklá vyškrtnutím $i$-tého řádku a $j$-tého sloupce.<br><br>
+                        <strong>Pro $2\times2$:</strong> $\det\begin{pmatrix}a&b\\c&d\end{pmatrix} = ad - bc$<br><br>
+                        <strong>Pro $3\times3$ (Sarrusovo pravidlo):</strong> součet produktů tří diagonál mínus součet produktů tří protidiagonál.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Klíčové vlastnosti:</strong>
+                        <ul>
+                            <li>$\det(AB) = \det(A)\cdot\det(B)$ — multiplikativita</li>
+                            <li>$\det(A^T) = \det(A)$ — transpozice nemění determinant</li>
+                            <li>$\det(A^{-1}) = 1/\det(A)$</li>
+                            <li>Prohození dvou řádků → determinant změní znaménko</li>
+                            <li>Násobení řádku $k$-násobkem → determinant se $k$-násobí</li>
+                            <li>Přičtení násobku jiného řádku → determinant se <em>nezmění</em> (základ GEM)</li>
+                            <li>Řádky lineárně závislé ⟹ $\det(A) = 0$</li>
+                            <li>$\det(A) \neq 0$ ⟺ $A$ je regulární</li>
+                        </ul>
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Výpočet GEM (preferovaná metoda pro $n \geq 4$):</strong><br>
+                        1. Převeď matici na horní trojúhelníkový tvar $U$ pomocí ERO.<br>
+                        2. $\det(A) = \pm\, \prod_i u_{ii}$ (součin pivotů, znaménko podle počtu prohazování).<br><br>
+                        Trojúhelníková matice: $\det$ = prostý součin prvků na diagonále. Složitost $O(n^3)$.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Geometrický smysl:</strong> $|\det(A)|$ je faktor změny objemu. $\det = 1$: rotace (objem zachován). $\det = 2$: objem se zdvojnásobí. $\det = 0$: prostor se zploštil — ztratila se dimenze a matice nemá inverzi. Záporný determinant: orientace se obrátila (zrcadlení).
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Sarrusovo pravidlo platí POUZE pro $2\times2$ a $3\times3$.</strong> Časté chybné rozšíření na větší matice dává špatné výsledky.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>$\det(A) \neq 0$ ⟺ $A$ je regulární ⟺ soustava $A\mathbf{x}=\mathbf{b}$ má jediné řešení</li>
+                            <li>Geometricky: faktor změny objemu; $\det = 0$ → zploštění prostoru</li>
+                            <li>Pro výpočet v praxi: GEM $O(n^3)$, ne Laplace $O(n!)$</li>
+                            <li>Sarrusovo pravidlo jen pro $2\times2$ a $3\times3$</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-6">
+                    <h3>6. Inverzní matice – definice, výpočet</h3>
+
+                    <p>Inverzní matice je „zpětný chod" transformace. Pokud matice $A$ prostor deformuje, $A^{-1}$ ho vrátí do původního stavu — pokud to vůbec jde.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Čtvercová matice $A \in \R^{n\times n}$ je <strong>invertibilní (regulární)</strong>, pokud existuje $A^{-1}$ splňující:
+                        $$A \cdot A^{-1} = A^{-1} \cdot A = I_n$$
+                        $A^{-1}$ existuje právě tehdy, když $\det(A) \neq 0$.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Metoda 1 — GEM na rozšířené matici $(A \mid I_n)$:</strong><br>
+                        Postupujeme GEM dokud levá strana není $I_n$. Pravá strana je pak $A^{-1}$.<br><br>
+                        <strong>Příklad pro $2\times2$:</strong> $A = \begin{pmatrix}2&1\\5&3\end{pmatrix}$
+                        $$\left(\begin{array}{cc|cc}2&1&1&0\\5&3&0&1\end{array}\right) \xrightarrow{\text{GEM}} \left(\begin{array}{cc|cc}1&0&3&-1\\0&1&-5&2\end{array}\right)$$
+                        $A^{-1} = \begin{pmatrix}3&-1\\-5&2\end{pmatrix}$. Ověření: $\det(A) = 6-5 = 1 \neq 0$. ✓
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Metoda 2 — adjungovaná matice (vhodná jen pro malá $n$):</strong>
+                        $$A^{-1} = \frac{1}{\det(A)} \cdot \text{adj}(A)$$
+                        kde $\text{adj}(A)$ je transponovaná matice algebraických doplňků (kofaktorů).<br><br>
+                        <strong>Pro $2\times2$ — rychlý vzorec:</strong>
+                        $$\begin{pmatrix}a&b\\c&d\end{pmatrix}^{-1} = \frac{1}{ad-bc}\begin{pmatrix}d&-b\\-c&a\end{pmatrix}$$
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Singulární matice ($\det = 0$) nemá inverzi.</strong> Jako projekce stínu: z 2D stínu nelze rekonstruovat 3D hloubku. Pro $n \geq 4$ je adjungovaná metoda pomalejší než GEM — nepoužívat.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>$A^{-1}$ existuje ⟺ $\det(A) \neq 0$ ⟺ $A$ je regulární</li>
+                            <li>Výpočet: GEM na $(A\mid I)$ — preferovaná metoda pro libovolné $n$</li>
+                            <li>Pro $2\times2$: adjungovaný vzorec je rychlý ručně</li>
+                            <li>$(AB)^{-1} = B^{-1}A^{-1}$ — pořadí se otočí</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-7">
+                    <h3>7. Frobeniova věta – existence a tvar řešení</h3>
+
+                    <p>Frobeniova věta umožňuje rychle rozhodnout o existenci řešení bez nutnosti soustavu celou vyřešit. Stačí porovnat hodnosti dvou matic.</p>
+
+                    <div class="def-box">
+                        <strong>Frobeniova věta:</strong> Soustava $A\mathbf{x} = \mathbf{b}$ má řešení právě tehdy, když:
+                        $$\text{rank}(A) = \text{rank}(A|\mathbf{b})$$
+                        kde $(A|\mathbf{b})$ je <strong>rozšířená matice soustavy</strong> — matice $A$ s přidaným sloupcem $\mathbf{b}$.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Tvar řešení:</strong> Nechť $r = \text{rank}(A) = \text{rank}(A|\mathbf{b})$, $n$ = počet neznámých.<br>
+                        <ul>
+                            <li>$r = n$: <strong>jediné řešení</strong> (soustava je jednoznačně určená)</li>
+                            <li>$r < n$: <strong>nekonečně mnoho řešení</strong> s $n-r$ volnými proměnnými</li>
+                        </ul>
+                        Obecné řešení: $\mathbf{x} = \mathbf{x}_p + \mathbf{x}_h$, kde $\mathbf{x}_p$ je partikulární řešení a $\mathbf{x}_h \in \ker(A)$.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad — tři rovnice, tři neznámé:</strong>
+                        $$A = \begin{pmatrix}1&2&3\\2&4&6\\1&3&5\end{pmatrix}, \quad \mathbf{b} = \begin{pmatrix}1\\2\\3\end{pmatrix}$$
+                        Po GEM: $\text{rank}(A) = 2$ (2. řádek = $2\times$1. řádek).<br>
+                        Zkontrolujeme $\text{rank}(A|\mathbf{b})$: pokud také 2 → nekonečně řešení s 1 volnou proměnnou.<br>
+                        Pokud by $\text{rank}(A|\mathbf{b}) = 3$ → soustava nemá řešení.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Klíčový vhled:</strong> Hodnost matice $A$ říká, kolik „skutečných informací" podmínky nesou. Přidáme-li $\mathbf{b}$ a hodnost skočí, vektor $\mathbf{b}$ leží mimo sloupcový prostor $A$ — požadavek je nesplnitelný.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Řešení existuje ⟺ $\text{rank}(A) = \text{rank}(A|\mathbf{b})$</li>
+                            <li>Počet volných proměnných $= n - \text{rank}(A)$</li>
+                            <li>$\text{rank}(A) = n$: jediné řešení; $\text{rank}(A) < n$: nekonečně mnoho</li>
+                            <li>Obecné řešení = partikulární + homogenní (jádro)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-8">
+                    <h3>8. Hodnost matice – definice, určení, vztah k prostoru řešení</h3>
+
+                    <p>Hodnost (rank) je nejdůležitější číslo popisující matici — kolik nezávislých informací skutečně nese. Rozhoduje o existenci i počtu řešení soustavy.</p>
+
+                    <div class="def-box">
+                        <strong>Definice hodnosti:</strong> Hodnost matice $A$, značená $\text{rank}(A)$ nebo $h(A)$, je:
+                        <ul>
+                            <li>Počet lineárně nezávislých řádků (= počet lin. nezávislých sloupců)</li>
+                            <li>Dimenze sloupcového prostoru $\text{Col}(A)$</li>
+                            <li>Počet nenulových řádků v řádkovém schodovitém tvaru matice</li>
+                        </ul>
+                        Platí: $\text{rank}(A) \leq \min(m,n)$ pro $m\times n$ matici.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Výpočet pomocí GEM:</strong><br>
+                        Převedeme $A$ na schodovitý tvar a spočítáme nenulové řádky.<br><br>
+                        $$A = \begin{pmatrix}1&2&3\\2&4&6\\0&1&2\end{pmatrix} \xrightarrow{\text{GEM}} \begin{pmatrix}1&2&3\\0&1&2\\0&0&0\end{pmatrix}$$
+                        Dva nenulové řádky → $\text{rank}(A) = 2$.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Vztah k prostoru řešení (dimenzní rovnice):</strong>
+                        $$\dim(\ker A) = n - \text{rank}(A)$$
+                        Pro $m \times n$ matici $A$: „volné proměnné" = dimenze jádra.<br><br>
+                        <strong>Plná hodnost:</strong>
+                        <ul>
+                            <li>$\text{rank}(A) = m$ (plná hodnost řádků): $A\mathbf{x} = \mathbf{b}$ má řešení pro každé $\mathbf{b}$</li>
+                            <li>$\text{rank}(A) = n$ (plná hodnost sloupců): řešení je nejvýše jedno ($\ker A = \{\mathbf{0}\}$)</li>
+                            <li>$m = n$, $\text{rank}(A) = n$: regulární matice, vždy jediné řešení</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Hodnost = počet lin. nezávislých řádků = nenulové řádky po GEM</li>
+                            <li>$\dim(\ker A) = n - \text{rank}(A)$</li>
+                            <li>$\text{rank}(A) = \text{rank}(A^T)$ — hodnost řádkového a sloupcového prostoru je stejná</li>
+                            <li>Hodnost určuje povahu řešení soustavy (Frobeniova věta)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-9">
+                    <h3>9. Lineární prostory – definice, příklady</h3>
+
+                    <p>Lineární prostor formalizuje intuici o vektorech. Vektory nemusí být šipky — polynomy, matice, funkce jsou také vektory, pokud splňují správné axiomy.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Množina $V$ s operacemi $+$ a skalárního násobení (·) nad tělesem $\mathbb{F}$ (obvykle $\R$) je <strong>lineární (vektorový) prostor</strong>, pokud platí:
+                        <ul>
+                            <li>$(V,+)$ je komutativní grupa: uzavřenost, asociativita, neutrální prvek $\mathbf{0}$, inverzní prvky</li>
+                            <li>Skalární násobení: $\alpha(\mathbf{u}+\mathbf{v})=\alpha\mathbf{u}+\alpha\mathbf{v}$; $(\alpha+\beta)\mathbf{u}=\alpha\mathbf{u}+\beta\mathbf{u}$; $(\alpha\beta)\mathbf{u}=\alpha(\beta\mathbf{u})$; $1\cdot\mathbf{u}=\mathbf{u}$</li>
+                        </ul>
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklady lineárních prostorů:</strong><br>
+                        • $\R^n$ — $n$-rozměrné reálné vektory, $\dim = n$<br>
+                        • $P_n(\R)$ — polynomy stupně $\leq n$, $\dim = n+1$<br>
+                        • $\R^{m\times n}$ — matice $m\times n$, $\dim = mn$<br>
+                        • $C[a,b]$ — spojité funkce na intervalu, $\dim = \infty$<br>
+                        • $\{\mathbf{0}\}$ — triviální prostor, $\dim = 0$<br><br>
+                        <strong>Protipříklady (NENÍ lin. prostor):</strong><br>
+                        • První kvadrant $\{(x,y): x,y \geq 0\}$ — $(-1)\cdot(1,1) = (-1,-1)$ vypadne z množiny<br>
+                        • Polynomy stupně <em>přesně</em> $n$ — součet dvou takových polynomů může mít nižší stupeň
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Podprostor:</strong> Neprázdná podmnožina $W \subseteq V$ je <strong>podprostorem</strong>, pokud je uzavřena na lin. kombinace: $\forall\,\mathbf{u},\mathbf{v}\in W,\,\alpha,\beta\in\mathbb{F}: \alpha\mathbf{u}+\beta\mathbf{v}\in W$.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Proč axiomy:</strong> Potřebujeme univerzální jazyk pro vícerozměrná data. Axiomy zaručují, že lin. kombinace „neuytekou" z množiny a výpočty jsou konzistentní — bez ohledu na to, jestli pracujeme s čísly, polynomy nebo obrázky.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Lineární prostor = množina s operacemi +, · splňující 8 axiomů</li>
+                            <li>Musí obsahovat nulový vektor, uzavřen na lin. kombinace</li>
+                            <li>Příklady: $\R^n$, polynomy, matice, spojité funkce</li>
+                            <li>Podprostor = podmnožina uzavřená na lin. kombinace</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-10">
+                    <h3>10. Matice – definice, operace, regulární vs. singulární</h3>
+
+                    <p>Matice je zápis lineárního zobrazení v konkrétní bázi. Operace s maticemi odpovídají operacím se zobrazeními — násobení matic je skládání transformací.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Matice $A \in \R^{m\times n}$ je obdélníkové pole $m\cdot n$ čísel. Prvek na $i$-tém řádku a $j$-tém sloupci: $a_{ij}$.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Operace:</strong><br>
+                        <em>Sčítání:</em> $(A+B)_{ij} = a_{ij}+b_{ij}$ — pouze pro matice stejných rozměrů.<br>
+                        <em>Skalární násobení:</em> $(\alpha A)_{ij} = \alpha a_{ij}$.<br>
+                        <em>Násobení matic</em> $A\in\R^{m\times k}$, $B\in\R^{k\times n}$ → $AB\in\R^{m\times n}$:
+                        $$(AB)_{ij} = \sum_{l=1}^k a_{il}\,b_{lj}$$
+                        Vnitřní rozměry musí souhlasit ($k = k$).<br>
+                        <em>Transpozice:</em> $(A^T)_{ij} = a_{ji}$ — prohazujeme řádky a sloupce.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Násobení matic NENÍ komutativní:</strong> Obecně $AB \neq BA$. Odpovídá tomu, že pořadí transformací záleží (nejprve $B$, pak $A$: výsledek je $A(B\mathbf{x})$).
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Regulární vs. singulární matice</strong> (jen pro čtvercové $n\times n$):<br>
+                        <strong>Regulární:</strong> $\det(A) \neq 0$ ⟺ $\text{rank}(A) = n$ ⟺ $\exists\,A^{-1}$ ⟺ sloupce jsou lin. nezávislé.<br>
+                        <strong>Singulární:</strong> $\det(A) = 0$ ⟺ $\text{rank}(A) < n$ ⟺ $A^{-1}$ neexistuje ⟺ prostor se zploštil.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Speciální typy matic:</strong><br>
+                        • <em>Jednotková</em> $I_n$: jedničky na diagonále, nuly jinde ($AI = IA = A$)<br>
+                        • <em>Trojúhelníková</em> (horní/dolní): nuly pod/nad diagonálou; $\det$ = součin prvků na diagonále<br>
+                        • <em>Diagonální</em>: nenulové jen na diagonále<br>
+                        • <em>Symetrická</em>: $A = A^T$ (kovarianční matice v ML)<br>
+                        • <em>Ortogonální</em>: $A^T = A^{-1}$, $\det = \pm1$ (rotace, zrcadlení)
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Matice = zápis lin. zobrazení; násobení = skládání zobrazení</li>
+                            <li>Násobení není komutativní; vnitřní rozměry musí souhlasit</li>
+                            <li>Regulární: $\det \neq 0$, plná hodnost, existuje inverze</li>
+                            <li>Singulární: $\det = 0$, prostor zploštěl, nelze invertovat</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-11">
+                    <h3>11. Matice lineárního zobrazení – konstrukce, operace</h3>
+
+                    <p>Každé lineární zobrazení lze zapsat jako matici — ale jen vzhledem ke zvolené bázi. Stejné zobrazení vypadá v různých bázích jinak, jako tentýž fyzikální zákon v různých souřadnicových systémech.</p>
+
+                    <div class="def-box">
+                        <strong>Konstrukce matice zobrazení:</strong> Nechť $f: V \to W$, $B_V = \{\mathbf{b}_1,\ldots,\mathbf{b}_n\}$ báze $V$, $B_W = \{\mathbf{c}_1,\ldots,\mathbf{c}_m\}$ báze $W$.<br><br>
+                        Matici $[f]_{B_V}^{B_W} \in \R^{m\times n}$ sestrojíme takto:<br>
+                        <em>Zobrazíme každý bázový vektor $\mathbf{b}_j$ a souřadnice výsledku $f(\mathbf{b}_j)$ v bázi $B_W$ zapíšeme jako $j$-tý sloupec matice.</em>
+                        $$[f]_{B_V}^{B_W} = \Big([f(\mathbf{b}_1)]_{B_W} \;\Big|\; [f(\mathbf{b}_2)]_{B_W} \;\Big|\; \cdots \;\Big|\; [f(\mathbf{b}_n)]_{B_W}\Big)$$
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad — derivace polynomů:</strong><br>
+                        $f = \frac{d}{dx}: P_2 \to P_1$, báze $B = \{1, x, x^2\}$ pro $P_2$ a $\{1, x\}$ pro $P_1$.<br>
+                        $f(1) = 0 = 0\cdot1 + 0\cdot x$ → sloupec $(0,0)^T$<br>
+                        $f(x) = 1 = 1\cdot1 + 0\cdot x$ → sloupec $(1,0)^T$<br>
+                        $f(x^2) = 2x = 0\cdot1 + 2\cdot x$ → sloupec $(0,2)^T$
+                        $$[f] = \begin{pmatrix}0&1&0\\0&0&2\end{pmatrix}$$
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Operace s maticemi zobrazení:</strong><br>
+                        <em>Skládání:</em> $[f \circ g] = [f]\cdot[g]$ — násobení matic.<br>
+                        <em>Změna báze:</em> Přejdeme-li na bázi $B'$, matice zobrazení se transformuje: $[f]_{B'} = P^{-1}[f]_B\,P$, kde $P$ je matice přechodu.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Klíčový vhled:</strong> Matice není absolutní — vždy závisí na bázi. Proto hledáme vlastní čísla a vlastní vektory: ty definují „přirozenou bázi", kde má matice nejjednodušší (diagonální) tvar a výpočty jsou nejefektivnější.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Sloupce matice zobrazení = souřadnice obrazů bázových vektorů</li>
+                            <li>Skládání zobrazení ↔ násobení matic</li>
+                            <li>Stejné zobrazení, jiná báze → jiná (podobná) matice</li>
+                            <li>Matice závisí na volbě báze zdrojového i cílového prostoru</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-12">
+                    <h3>12. Souřadnice vektoru v bázi, přechod mezi bázemi</h3>
+
+                    <p>Stejný vektor lze popsat různými souřadnicemi v různých bázích — jako tentýž bod na mapě lze vyjádřit v GPS nebo v souřadnicích od místní věže. Přechod mezi bázemi je jen změna „jazyka".</p>
+
+                    <div class="def-box">
+                        <strong>Souřadnice vektoru:</strong> Nechť $B = \{\mathbf{b}_1,\ldots,\mathbf{b}_n\}$ je báze $V$. Každý $\mathbf{v} \in V$ lze jednoznačně zapsat:
+                        $$\mathbf{v} = \alpha_1\mathbf{b}_1 + \cdots + \alpha_n\mathbf{b}_n$$
+                        Koeficienty $[\mathbf{v}]_B = (\alpha_1,\ldots,\alpha_n)^T$ jsou <strong>souřadnice vektoru $\mathbf{v}$ v bázi $B$</strong>.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Matice přechodu $P_{B \to B'}$:</strong> Převádí souřadnice z báze $B$ do $B'$:
+                        $$[\mathbf{v}]_{B'} = P_{B \to B'} \cdot [\mathbf{v}]_B$$
+                        Sloupcemi $P_{B \to B'}$ jsou souřadnice vektorů staré báze $B$ vyjádřené v nové bázi $B'$.<br>
+                        Přechod zpět: $P_{B' \to B} = (P_{B \to B'})^{-1}$.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad v $\R^2$:</strong><br>
+                        Kanonická báze $E = \{\mathbf{e}_1,\mathbf{e}_2\}$, nová báze $B = \{(1,1)^T,(1,-1)^T\}$.<br>
+                        Matice přechodu z $B$ do $E$ (sloupce = vektory $B$ v souřadnicích $E$):
+                        $$P = \begin{pmatrix}1&1\\1&-1\end{pmatrix}, \quad P^{-1} = \frac{1}{2}\begin{pmatrix}1&1\\1&-1\end{pmatrix}$$
+                        Vektor $\mathbf{v} = (3,1)^T$ v bázi $B$: $[\mathbf{v}]_B = P^{-1}(3,1)^T = (2,1)^T$<br>
+                        Ověření: $2\cdot(1,1)^T + 1\cdot(1,-1)^T = (3,1)^T$. ✓
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Pozor na orientaci:</strong> $P_{B \to B'}$ vs. $P_{B' \to B}$ se snadno zaměňují. Vždy ověřte: souřadnice $\times$ matice přechodu = souřadnice v cílové bázi.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Souřadnice vektoru = koeficienty rozkladu v dané bázi (jednoznačné)</li>
+                            <li>Matice přechodu převádí souřadnice; sloupce = vektory staré báze ve nové</li>
+                            <li>Přechod zpět: $P^{-1}$</li>
+                            <li>Matice zobrazení se mění změnou báze: $[f]_{B'} = P^{-1}[f]_B P$</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-13">
+                    <h3>13. Lineárně nezávislé vektory – definice, ověření</h3>
+
+                    <p>Lineárně nezávislé vektory jsou takové, kde každý nese unikátní informaci — žádný nelze sestavit z ostatních. Jsou základem báze.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Vektory $\mathbf{v}_1,\ldots,\mathbf{v}_k$ jsou <strong>lineárně nezávislé (LN)</strong>, pokud:
+                        $$\alpha_1\mathbf{v}_1 + \alpha_2\mathbf{v}_2 + \cdots + \alpha_k\mathbf{v}_k = \mathbf{0} \implies \alpha_1 = \alpha_2 = \cdots = \alpha_k = 0$$
+                        (Jedinou lin. kombinací dávající nulový vektor je triviální.)<br><br>
+                        <strong>Lineárně závislé:</strong> Existují koeficienty $\alpha_i$, ne všechny nulové, splňující výše uvedenou rovnici — jeden vektor lze vyjádřit kombinací ostatních.
+                    </div>
+
+                    <h4>Jak ověřit lineární nezávislost</h4>
+                    <div class="ex-box">
+                        <strong>Metoda 1 — determinant</strong> (pro $n$ vektorů v $\R^n$):<br>
+                        Zapíšeme vektory jako sloupce matice $A$. $\det(A) \neq 0$ ⟺ LN.<br><br>
+                        <strong>Metoda 2 — GEM</strong> (obecná, pro libovolný počet vektorů):<br>
+                        Vektory zapíšeme jako řádky, provedeme GEM. Počet nenulových řádků = počet LN vektorů.<br><br>
+                        <strong>Příklad:</strong> $\mathbf{v}_1=(1,2,3)$, $\mathbf{v}_2=(4,5,6)$, $\mathbf{v}_3=(7,8,9)$
+                        $$\begin{pmatrix}1&2&3\\4&5&6\\7&8&9\end{pmatrix} \xrightarrow{\text{GEM}} \begin{pmatrix}1&2&3\\0&-3&-6\\0&0&0\end{pmatrix}$$
+                        Jeden nulový řádek → $\text{rank} = 2 < 3$ → vektory jsou <em>lineárně závislé</em>.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Jednoduchá pravidla:</strong><br>
+                        • Nulový vektor: vždy lineárně závislý (s libovolným dalším vektorem)<br>
+                        • Dva vektory: závislé ⟺ jeden je násobkem druhého (rovnoběžné)<br>
+                        • Více vektorů než $\dim(V)$: vždy závislé
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>LN: pouze triviální lin. kombinace dá $\mathbf{0}$</li>
+                            <li>Ověření: GEM (rank = počet vektorů?) nebo determinant</li>
+                            <li>$k > \dim(V)$ vektorů: vždy závislé</li>
+                            <li>Báze = maximální LN množina = minimální generující množina</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-14">
+                    <h3>14. Matice rotace 2D/3D – příklad výpočtu inverzní matice</h3>
+
+                    <p>Matice rotace jsou prototypem „hodné" matice — jejich inverze je triviální (pouhá transpozice) a v praxi tvoří základ renderování 3D grafiky.</p>
+
+                    <div class="def-box">
+                        <strong>Rotace v $\R^2$ o úhel $\theta$ (proti směru hodinových ručiček):</strong>
+                        $$R(\theta) = \begin{pmatrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{pmatrix}$$
+                        Vlastnosti: $\det(R) = \cos^2\theta + \sin^2\theta = 1$ → vždy regulární.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Rotace v $\R^3$ kolem souřadnicových os:</strong>
+                        $$R_x(\theta) = \begin{pmatrix}1&0&0\\0&\cos\theta&-\sin\theta\\0&\sin\theta&\cos\theta\end{pmatrix}, \quad R_z(\theta) = \begin{pmatrix}\cos\theta&-\sin\theta&0\\\sin\theta&\cos\theta&0\\0&0&1\end{pmatrix}$$
+                        Skládání rotací: $R_{xyz} = R_z R_y R_x$ (pořadí záleží!).
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Inverzní matice rotace — klíčová vlastnost ortogonálních matic:</strong>
+                        $$R^{-1} = R^T$$
+                        Matice rotace jsou ortogonální: $R^T R = I$. Inverze = pouhá transpozice, bez výpočtu determinantů nebo GEM.
+                        $$R(\theta)^{-1} = R(-\theta) = \begin{pmatrix}\cos\theta & \sin\theta\\-\sin\theta & \cos\theta\end{pmatrix}$$
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad — rotace bodu v 2D:</strong><br>
+                        Otočíme bod $P = (1,0)$ o $90°$:
+                        $$R(90°)\begin{pmatrix}1\\0\end{pmatrix} = \begin{pmatrix}0&-1\\1&0\end{pmatrix}\begin{pmatrix}1\\0\end{pmatrix} = \begin{pmatrix}0\\1\end{pmatrix}$$
+                        Bod se přesunul z $(1,0)$ na $(0,1)$ — čtvrt otáčky doleva. ✓<br><br>
+                        <strong>Inverze:</strong> $R^{-1} = R^T = R(-90°) = \begin{pmatrix}0&1\\-1&0\end{pmatrix}$. Otočení zpět.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Inženýrský vhled:</strong> V 3D grafice (OpenGL, herní enginy) se každý snímek násobí tisíce vrcholů maticemi rotace. Díky $R^{-1} = R^T$ je zpětná transformace téměř zadarmo — čistě paměťová operace. Proto jsou ortogonální matice tak ceněné v numerické matematice.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>$R_{2D}(\theta) = \begin{pmatrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{pmatrix}$, $\det = 1$</li>
+                            <li>Ortogonální matice: $R^T R = I$, $\det = \pm1$</li>
+                            <li>Inverze rotace: $R^{-1} = R^T = R(-\theta)$ — pouhá transpozice</li>
+                            <li>3D: tři matice pro osy $x$, $y$, $z$; skládáme násobením (pořadí záleží)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-15">
+                    <h3>15. Cramerova věta – formulace, porovnání s GEM</h3>
+
+                    <p>Cramerovo pravidlo dává elegantní uzavřený vzorec pro řešení soustavy rovnic. Teoreticky krásné, prakticky nevhodné pro větší soustavy — pochopení tohoto rozdílu je přesně to, co komise chtějí slyšet.</p>
+
+                    <div class="def-box">
+                        <strong>Cramerovo pravidlo:</strong> Pro soustavu $A\mathbf{x} = \mathbf{b}$ s regulární čtvercovou maticí $A$ ($\det(A) \neq 0$) je $i$-tá neznámá:
+                        $$x_i = \frac{\det(A_i)}{\det(A)}$$
+                        kde $A_i$ je matice vzniklá nahrazením $i$-tého sloupce $A$ vektorem $\mathbf{b}$.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad — soustava $2\times2$:</strong>
+                        $$\begin{cases}2x + y = 5\\ x + 3y = 10\end{cases}, \quad A = \begin{pmatrix}2&1\\1&3\end{pmatrix}, \quad \det(A) = 5$$
+                        $$x_1 = \frac{\det\begin{pmatrix}5&1\\10&3\end{pmatrix}}{5} = \frac{15-10}{5} = 1, \quad x_2 = \frac{\det\begin{pmatrix}2&5\\1&10\end{pmatrix}}{5} = \frac{20-5}{5} = 3$$
+                    </div>
+
+                    <h4>Srovnání Cramer vs. GEM</h4>
+                    <div class="def-box">
+                        <table class="table table-bordered table-sm mt-2">
+                            <thead class="table-light"><tr><th>Vlastnost</th><th>Cramerovo pravidlo</th><th>GEM</th></tr></thead>
+                            <tbody>
+                                <tr><td>Složitost</td><td>$O(n^4)$ při výpočtu det. GEMem</td><td>$O(n^3)$</td></tr>
+                                <tr><td>Použitelnost</td><td>Jen regulární čtvercové soustavy</td><td>Libovolná soustava</td></tr>
+                                <tr><td>Výstup</td><td>Uzavřený analytický vzorec</td><td>Algoritmus, schodovitý tvar</td></tr>
+                                <tr><td>Praktičnost</td><td>Vhodné pro $n=2,3$ ručně</td><td>Standardní metoda pro $n > 3$</td></tr>
+                                <tr><td>Teoretická hodnota</td><td>Dokazuje existenci a analytický tvar řešení</td><td>Konstruktivní, řeší všechny případy</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Kdy Cramer NELZE použít:</strong> Singulární matice ($\det = 0$), obdélníkové soustavy, případ bez řešení nebo nekonečně mnoha řešení. GEM zvládne všechny situace; Cramer jen jednu.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Cramer: $x_i = \det(A_i)/\det(A)$, jen pro regulární čtvercové soustavy</li>
+                            <li>Složitost $O(n^4)$ vs. GEM $O(n^3)$ — pro velká $n$ nevhodné</li>
+                            <li>Prakticky jen pro $n = 2, 3$ nebo pro analytické výrazy</li>
+                            <li>GEM je univerzálnější a výpočetně efektivnější</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-16">
+                    <h3>16. Vlastní čísla a vlastní vektory – definice, charakteristický polynom</h3>
+
+                    <p>Vlastní vektory jsou „speciální směry" transformace — matice je jen natáhne nebo smrskne, ale nezmění jejich směr. Vlastní číslo říká, o kolik. Odhalují vnitřní DNA každé transformace.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Číslo $\lambda \in \C$ je <strong>vlastní číslo</strong> matice $A \in \R^{n\times n}$, pokud existuje nenulový vektor $\mathbf{v} \neq \mathbf{0}$ splňující:
+                        $$A\mathbf{v} = \lambda\mathbf{v}$$
+                        Vektor $\mathbf{v}$ se nazývá <strong>vlastní vektor</strong> příslušný $\lambda$.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Charakteristický polynom:</strong><br>
+                        Z $A\mathbf{v} = \lambda\mathbf{v}$ plyne $(A - \lambda I)\mathbf{v} = \mathbf{0}$. Pro nenulové řešení musí $\det(A-\lambda I) = 0$.<br><br>
+                        $$p(\lambda) = \det(A - \lambda I)$$
+                        Polynom stupně $n$ v $\lambda$. Jeho kořeny jsou vlastní čísla $A$.<br><br>
+                        <strong>Postup výpočtu:</strong>
+                        <ol>
+                            <li>Sestav $A - \lambda I$ (odečti $\lambda$ od diagonálních prvků)</li>
+                            <li>Vypočítej determinant → $p(\lambda)$</li>
+                            <li>Vyřeš $p(\lambda) = 0$ → vlastní čísla $\lambda_i$</li>
+                            <li>Pro každé $\lambda_i$ vyřeš $(A - \lambda_i I)\mathbf{v} = \mathbf{0}$ → vlastní vektory</li>
+                        </ol>
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad pro $2\times2$:</strong>
+                        $$A = \begin{pmatrix}4&1\\2&3\end{pmatrix}$$
+                        $$p(\lambda) = \det\begin{pmatrix}4-\lambda&1\\2&3-\lambda\end{pmatrix} = (4-\lambda)(3-\lambda)-2 = \lambda^2-7\lambda+10 = (\lambda-2)(\lambda-5)$$
+                        Vlastní čísla: $\lambda_1 = 2$, $\lambda_2 = 5$.<br><br>
+                        Pro $\lambda_1=2$: $(A-2I)\mathbf{v}=\mathbf{0}$ → $\begin{pmatrix}2&1\\2&1\end{pmatrix}\mathbf{v}=\mathbf{0}$ → $\mathbf{v}_1 = (1,-2)^T$<br>
+                        Pro $\lambda_2=5$: $\begin{pmatrix}-1&1\\2&-2\end{pmatrix}\mathbf{v}=\mathbf{0}$ → $\mathbf{v}_2 = (1,1)^T$
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Algebraická a geometrická násobnost:</strong><br>
+                        <em>Algebraická násobnost</em> $\lambda_i$: kolikrát je kořenem $p(\lambda)$.<br>
+                        <em>Geometrická násobnost</em> $\lambda_i$: $\dim(\ker(A-\lambda_i I))$ — dimenze vlastního podprostoru.<br>
+                        Vždy: geometrická $\leq$ algebraická násobnost.<br><br>
+                        <strong>Užitečné vztahy:</strong> $\sum_i \lambda_i = \text{tr}(A)$ (stopa), $\prod_i \lambda_i = \det(A)$.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Inženýrský vhled:</strong> Google PageRank hledá vlastní vektor stochastické matice přechodů příslušný $\lambda = 1$. Tento vektor reprezentuje dlouhodobou stabilitu — rozdělení pravděpodobnosti, které se už nemění. Celý žebříček výsledků vyhledávání je jeden vlastní vektor obrovské matice.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>$A\mathbf{v} = \lambda\mathbf{v}$: vlastní vektor nemění směr, jen se natáhne o faktor $\lambda$</li>
+                            <li>Vlastní čísla = kořeny $\det(A - \lambda I) = 0$</li>
+                            <li>Vlastní vektory: řešení $(A - \lambda_i I)\mathbf{v} = \mathbf{0}$</li>
+                            <li>$\sum\lambda_i = \text{tr}(A)$; $\prod\lambda_i = \det(A)$</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-17">
+                    <h3>17. Diagonalizovatelná matice – podmínky diagonalizovatelnosti</h3>
+
+                    <p>Diagonalizace odhaluje „přirozené souřadnice" transformace. V bázi vlastních vektorů se matice chová jako pouhé nezávislé škálování každé osy — to dramaticky zjednodušuje mocniny a exponenciály matic.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Matice $A \in \R^{n\times n}$ je <strong>diagonalizovatelná</strong>, pokud existuje regulární $P$ a diagonální $D$ tak, že:
+                        $$A = P D P^{-1}$$
+                        Sloupce $P$ jsou vlastní vektory $A$; diagonální prvky $D$ jsou příslušná vlastní čísla.
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Podmínky diagonalizovatelnosti:</strong>
+                        <ul>
+                            <li>$A$ je diagonalizovatelná ⟺ má $n$ lineárně nezávislých vlastních vektorů</li>
+                            <li>$A$ má $n$ navzájem různých vlastních čísel ⟹ diagonalizovatelná (postačující)</li>
+                            <li>Pro každé vlastní číslo: geometrická násobnost = algebraická násobnost ⟺ diagonalizovatelná</li>
+                            <li>Symetrická matice ($A = A^T$) je vždy diagonalizovatelná (s ortogonální $P$)</li>
+                        </ul>
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad diagonalizace:</strong><br>
+                        Z předchozího: $A = \begin{pmatrix}4&1\\2&3\end{pmatrix}$, $\lambda_1=2$, $\lambda_2=5$, $\mathbf{v}_1=(1,-2)^T$, $\mathbf{v}_2=(1,1)^T$.
+                        $$P = \begin{pmatrix}1&1\\-2&1\end{pmatrix}, \quad D = \begin{pmatrix}2&0\\0&5\end{pmatrix}, \quad A = PDP^{-1}$$
+                        <strong>Mocnění matice:</strong>
+                        $$A^{100} = P\begin{pmatrix}2^{100}&0\\0&5^{100}\end{pmatrix}P^{-1}$$
+                        Místo 100 maticových násobení ($O(n^3)$ každé) stačí dvě skalární mocniny!
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Protipříklad — nediagonalizovatelná matice:</strong>
+                        $$A = \begin{pmatrix}1&1\\0&1\end{pmatrix}$$
+                        $p(\lambda) = (\lambda-1)^2 = 0$ → $\lambda = 1$ s alg. násobností 2.<br>
+                        $\ker(A-I) = \ker\begin{pmatrix}0&1\\0&0\end{pmatrix}$ má dimenzi 1 (geom. násobnost 1 $<$ alg. násobnost 2).<br>
+                        Nejsou 2 lin. nezávislé vlastní vektory → <strong>matice není diagonalizovatelná</strong>. (Jordanova forma.)
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Inženýrský vhled:</strong> Diagonalizace = „rozkládání systému na nezávislé součásti". V analýze vibrací jsou vlastní vektory modální tvary (jak systém přirozeně kmitá) a vlastní čísla jsou frekvence. Inženýr navrhuje stroj tak, aby pracovní frekvence nebyla rovna žádné vlastní frekvenci — jinak rezonance a katastrofa.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí:</strong>
+                        <ul>
+                            <li>$A = PDP^{-1}$: sloupce $P$ = vlastní vektory, diagonála $D$ = vlastní čísla</li>
+                            <li>Diagonalizovatelná ⟺ existuje $n$ lin. nezávislých vlastních vektorů</li>
+                            <li>$n$ různých vl. čísel ⟹ automaticky diagonalizovatelná</li>
+                            <li>Klíčová výhoda: $A^k = PD^k P^{-1}$ — mocnění přes mocnění skalárů na diagonále</li>
+                        </ul>
+                    </div>
+                </section>
+
+            </div><!-- /col-lg-9 -->
+        </div><!-- /row -->
+    </div><!-- /container -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

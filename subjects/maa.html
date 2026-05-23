@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAA - Matematická analýza | SZZ Příprava</title>
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
+    <link rel="stylesheet" href="shared.css">
+
     <script>
         window.MathJax = {
             tex: {
@@ -18,43 +19,337 @@
         };
     </script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
-    <style>
-        body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; padding-top: 70px; }
-        body.dark-mode { background-color: #1a1a1a; color: #e0e0e0; }
-        .container { max-width: 900px; }
-        .topic-section { margin-bottom: 3rem; }
-        h1 { color: #0d6efd; border-bottom: 3px solid #0d6efd; padding-bottom: 0.5rem; }
-        h3 { color: #0d6efd; border-bottom: 2px solid #0d6efd; padding-bottom: 0.5rem; margin: 2rem 0 1rem; }
-        .alert-info { background-color: #e7f3ff; border-left: 4px solid #0d6efd; }
-        body.dark-mode .alert-info { background-color: #1a2a3a; color: #e0e0e0; }
-    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="fas fa-arrow-left me-2"></i>Dashboard</a>
-            <span class="navbar-text mx-auto"><strong>MAA</strong> - Matematická analýza</span>
-            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')">
+            <span class="navbar-text mx-auto"><strong>MAA</strong> – Matematická analýza</span>
+            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')" title="Přepnout dark mode">
                 <i class="fas fa-adjust"></i>
             </button>
         </div>
     </nav>
-    
-    <div class="container">
-        <h1 class="mb-4">Matematická analýza</h1>
-        
-        <div class="alert alert-info">
-            <i class="fas fa-info-circle me-2"></i>
-            Tato stránka je ve výstavbě. Poznámky budou postupně doplňovány.
-        </div>
-        
-        <section class="topic-section">
-            <h3>Derivace a integrály</h3>
-            <p><em>Obsah bude doplněn...</em></p>
-        </section>
-    </div>
-    
+
+    <div class="container py-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <nav class="topic-nav">
+                    <strong class="d-block mb-2 text-muted" style="font-size:0.8rem;text-transform:uppercase;letter-spacing:.05em">Obsah</strong>
+                    <ul class="nav flex-column">
+                        <li><a class="nav-link py-1" href="#topic-1">1. Funkce, limita a spojitost</a></li>
+                        <li><a class="nav-link py-1" href="#topic-2">2. Derivace</a></li>
+                        <li><a class="nav-link py-1" href="#topic-3">3. Integrální počet</a></li>
+                        <li><a class="nav-link py-1" href="#topic-4">4. Posloupnosti a řady</a></li>
+                        <li><a class="nav-link py-1" href="#topic-5">5. Shrnutí</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Main content -->
+            <div class="col-lg-9">
+                <h1 class="mb-2">Matematická analýza</h1>
+                <p class="text-muted mb-4">Celá matematická analýza stojí na jedné myšlence: <strong>limita</strong> – přechod od průměrného k okamžitému a od konečného k nekonečnému.</p>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-1">
+                    <h3>1. Funkce, limita a spojitost</h3>
+
+                    <h4>Funkce jedné proměnné</h4>
+                    <div class="def-box">
+                        <strong>Definice:</strong> Funkce je předpis, který každému vstupu $x$ z definičního oboru přiřadí <strong>právě jeden</strong> výstup $y = f(x)$.
+                    </div>
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Algoritmus, který dostane čas jako vstup a vrátí teplotu objektu jako výstup – každý okamžik má právě jednu teplotu.
+                    </div>
+
+                    <h4>Prostá a inverzní funkce</h4>
+                    <div class="def-box">
+                        <strong>Definice:</strong> Funkce je <strong>prostá (injektivní)</strong>, pokud pro různé vstupy vždy dostaneme různé výstupy:
+                        $$x_1 \neq x_2 \implies f(x_1) \neq f(x_2)$$
+                    </div>
+                    <div class="warn-box">
+                        <strong>Protipříklad:</strong> $y = x^2$ není prostá: vstup $2$ i vstup $-2$ dají stejný výstup $4$.
+                    </div>
+                    <div class="def-box">
+                        <strong>Definice:</strong> Pokud je funkce prostá, existuje k ní <strong>inverzní funkce</strong> $f^{-1}$, která vrací původní vstup ze zadaného výstupu.
+                    </div>
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Šifrovací funkce hesla <em>musí</em> být prostá – jinak by nebylo možné zašifrovaný text dešifrovat zpět na původní heslo.
+                    </div>
+
+                    <h4>Limita funkce</h4>
+                    <div class="def-box">
+                        <strong>Definice:</strong> $\lim_{x \to a} f(x) = L$ znamená: funkce se blíží k hodnotě $L$, když se vstup $x$ blíží k $a$.
+                        Neptáme se „kde jsme?", ale „<strong>kam směřujeme?</strong>"
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Formální ε-δ definice (Weierstrass):</strong>
+                        $\lim_{x \to a} f(x) = L$ právě tehdy, když:
+                        $$\forall \varepsilon > 0 \;\exists\, \delta > 0 : \; 0 < |x - a| < \delta \implies |f(x) - L| < \varepsilon$$
+                    </div>
+                    <div class="ex-box">
+                        <strong>Intuice – hra na toleranci:</strong> Zákazník požaduje přesnost výstupu ±ε. Vy (inženýr) musíte pro <em>jakýkoliv</em> ε najít takové δ, aby stačilo nastavit vstup s přesností ±δ. Pokud to vždy zvládnete, limita existuje.
+                    </div>
+
+                    <h4>L'Hospitalovo pravidlo</h4>
+                    <div class="thm-box">
+                        <strong>Věta:</strong> Pokud $\lim_{x \to a} f(x) = \lim_{x \to a} g(x) = 0$ nebo $\pm\infty$, pak platí:
+                        $$\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}$$
+                        (derivujeme čitatel a jmenovatel <em>zvlášť</em>, ne jako podíl!)
+                    </div>
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Porovnání rychlosti algoritmů: pokud $x^2$ i $e^x$ obě rostou do nekonečna, L'Hospital (přes derivace) ukáže, že exponenciála vždy "vyhraje" závod.
+                    </div>
+
+                    <h4>Spojitost funkce</h4>
+                    <div class="def-box">
+                        <strong>Definice:</strong> Funkce $f$ je v bodě $a$ <strong>spojitá</strong>, pokud platí současně:
+                        <ol class="mt-1 mb-0">
+                            <li>$f(a)$ je definováno</li>
+                            <li>$\lim_{x \to a} f(x)$ existuje</li>
+                            <li>$\lim_{x \to a} f(x) = f(a)$</li>
+                        </ol>
+                        Zjednodušeně: graf lze nakreslit <strong>jedním tahem</strong>.
+                    </div>
+                    <div class="warn-box">
+                        <strong>Protipříklad:</strong> Zůstatek na bankovním účtu – po odeslání platby graf okamžitě "uskočí" dolů. V tom místě není spojitý.
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-2">
+                    <h3>2. Diferenciální počet – Derivace</h3>
+
+                    <h4>Definice derivace</h4>
+                    <div class="def-box">
+                        <strong>Definice:</strong> Derivace je <strong>okamžitá rychlost změny</strong> funkce. Definuje se jako limita podílu přírůstku:
+                        $$f'(x_0) = \lim_{h \to 0} \frac{f(x_0 + h) - f(x_0)}{h}$$
+                    </div>
+                    <div class="ex-box">
+                        <strong>Geometrie:</strong> Derivace = <strong>směrnice tečny</strong> ke grafu v daném bodě (sklon kopce právě tady).
+                    </div>
+                    <div class="ex-box">
+                        <strong>Fyzika:</strong> Derivace polohy = <strong>okamžitá rychlost</strong> (co ukazuje tachometr, ne průměr za celou cestu).
+                    </div>
+
+                    <h4>Derivace a spojitost</h4>
+                    <div class="thm-box">
+                        <strong>Věta:</strong> Pokud má funkce v bodě derivaci, <strong>musí být v tom bodě spojitá</strong>. (Opačná implikace neplatí!)
+                    </div>
+                    <div class="warn-box">
+                        <strong>Protipříklad:</strong> $y = |x|$ je spojitá (nakreslíte ji jedním tahem), ale v bodě $x = 0$ derivace neexistuje – ve špičce „V" nelze nakreslit jednoznačnou tečnu.
+                    </div>
+
+                    <h4>Pravidla derivování</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm summary-table">
+                            <thead>
+                                <tr><th>Pravidlo</th><th>Vzorec</th><th>Poznámka</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Součet</td><td>$(f + g)' = f' + g'$</td><td>Každý člen zvlášť</td></tr>
+                                <tr><td>Součin</td><td>$(f \cdot g)' = f'g + fg'$</td><td>Leibnizovo pravidlo</td></tr>
+                                <tr><td>Podíl</td><td>$\left(\dfrac{f}{g}\right)' = \dfrac{f'g - fg'}{g^2}$</td><td>$g \neq 0$</td></tr>
+                                <tr><td>Složená funkce</td><td>$(f(g(x)))' = f'(g(x)) \cdot g'(x)$</td><td>Řetízkové pravidlo</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="ex-box">
+                        <strong>Řetízkové pravidlo – „loupání cibule":</strong> derivujeme vnější funkci a vynásobíme derivací vnitřní.
+                        Např. $(\sin(x^2))' = \cos(x^2) \cdot 2x$.
+                    </div>
+
+                    <h4>Průběh funkce pomocí derivací</h4>
+                    <div class="def-box">
+                        <strong>1. derivace – monotonie a extrémy:</strong><br>
+                        $f' > 0$ → funkce roste<br>
+                        $f' < 0$ → funkce klesá<br>
+                        $f' = 0$ → lokální extrém (maximum / minimum)
+                    </div>
+                    <div class="def-box">
+                        <strong>2. derivace – konvexita a inflexní body:</strong><br>
+                        $f'' > 0$ → konvexní (miskovitá)<br>
+                        $f'' < 0$ → konkávní (kopulovitá)<br>
+                        $f'' = 0$ → inflexní bod (změna konvexity)
+                    </div>
+                    <div class="ex-box">
+                        <strong>Intuice:</strong> Inflexní bod = okamžik, kdy otáčíte volant do rovné polohy při přechodu z jedné zatáčky do druhé.
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-3">
+                    <h3>3. Integrální počet</h3>
+
+                    <h4>Primitivní funkce a neurčitý integrál</h4>
+                    <div class="def-box">
+                        <strong>Definice:</strong> Funkce $F(x)$ je <strong>primitivní funkcí</strong> k $f(x)$, pokud $F'(x) = f(x)$.
+                        Množina všech primitivních funkcí se nazývá <strong>neurčitý integrál</strong>:
+                        $$\int f(x)\,dx = F(x) + C$$
+                    </div>
+                    <div class="ex-box">
+                        <strong>Proč +C?</strong> Derivací jakékoliv konstanty je 0. Ať auto stálo v Praze (0 km) nebo v Brně (200 km), tvar ujeté dráhy je stejný. Při integraci musíme tuto neznámou konstantu vrátit zpět.
+                    </div>
+
+                    <h4>Linearita integrálu</h4>
+                    <div class="thm-box">
+                        <strong>Vlastnost:</strong> Integrál je <strong>lineární operátor</strong> – platí dvě základní pravidla:
+                        $$\int (f(x) + g(x))\,dx = \int f(x)\,dx + \int g(x)\,dx$$
+                        $$\int c \cdot f(x)\,dx = c \cdot \int f(x)\,dx$$
+                    </div>
+                    <div class="ex-box">
+                        <strong>K čemu to je:</strong> Složitý problém rozsekneme na nezávislé části, každou vyřešíme zvlášť a výsledky sečteme. Totéž platí pro derivaci.
+                    </div>
+
+                    <h4>Metody výpočtu neurčitého integrálu</h4>
+                    <div class="def-box">
+                        <strong>Substituce:</strong> Opak řetízkového pravidla. Vnitřní složitý výraz nahradíme novou proměnnou $t$, abychom dostali tabulkový tvar.<br>
+                        <small class="text-muted">Použití: $\int 2x\,e^{x^2}\,dx$ → substituce $t = x^2$</small>
+                    </div>
+                    <div class="def-box">
+                        <strong>Per partes:</strong> Opak pravidla pro součin:
+                        $$\int u\,v'\,dx = u\,v - \int u'\,v\,dx$$
+                        <small class="text-muted">Použití: součin nesourodých funkcí, např. $x \cdot e^x$.</small>
+                    </div>
+
+                    <h4>Určitý integrál (Riemann)</h4>
+                    <div class="def-box">
+                        <strong>Definice:</strong> Určitý integrál je konkrétní číslo – <strong>obsah plochy</strong> pod křivkou $f(x)$ od $a$ do $b$.
+                        Definuje se jako limita součtu ploch obdélníčků s šířkou $\Delta x \to 0$:
+                        $$\int_a^b f(x)\,dx = \lim_{n \to \infty} \sum_{k=1}^n f(x_k)\,\Delta x$$
+                    </div>
+                    <div class="ex-box">
+                        <strong>Riemannova myšlenka:</strong> Plochu pod křivkou rozsekneme na obdélníčky, sečteme jejich obsahy. Čím užší obdélníčky (limita), tím přesnější výsledek – nakonec nekonečně mnoho nekonečně tenkých obdélníčků dá přesnou plochu.
+                    </div>
+
+                    <h4>Nevlastní integrál</h4>
+                    <div class="def-box">
+                        <strong>Definice:</strong> Integrál s nekonečnou mezí: počítáme jako limitu pro $b \to \infty$:
+                        $$\int_a^{\infty} f(x)\,dx = \lim_{b \to \infty} \int_a^b f(x)\,dx$$
+                    </div>
+                    <div class="ex-box">
+                        <strong>Intuice:</strong> I útvar „nekonečně dlouhý" může mít konečný obsah – pokud se dostatečně rychle zužuje (zmenšuje).
+                    </div>
+
+                    <h4>Newton-Leibnizova věta</h4>
+                    <div class="thm-box">
+                        <strong>Věta – most mezi derivací a integrálem:</strong> Pro výpočet obsahu plochy nemusíme sčítat obdélníčky – stačí najít primitivní funkci:
+                        $$\int_a^b f(x)\,dx = F(b) - F(a)$$
+                    </div>
+                    <div class="ex-box">
+                        <strong>Proč je to geniální:</strong> Rozebrání (derivace) a složení (integrál) jsou jen dvě strany téže mince. Věta říká, že jsou si navzájem inverzní operace.
+                    </div>
+
+                    <h4>Využití integrálů</h4>
+                    <div class="ex-box">
+                        <strong>Geometrie:</strong> Výpočet ploch, objemů a délek křivek.
+                    </div>
+                    <div class="ex-box">
+                        <strong>Statistika:</strong> Hustota pravděpodobnosti – celková plocha pod PDF křivkou je vždy 1 (100 %).
+                    </div>
+                    <div class="ex-box">
+                        <strong>Fyzika:</strong> Dráha z rychlosti, práce ze síly, elektrický náboj z proudu.
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-4">
+                    <h3>4. Posloupnosti a řady</h3>
+
+                    <h4>Posloupnost a její limita</h4>
+                    <div class="def-box">
+                        <strong>Definice:</strong> <strong>Posloupnost</strong> je nekonečný, seřazený seznam čísel $(a_n)_{n=1}^{\infty}$.
+                        Posloupnost <strong>konverguje</strong> k hodnotě $L$, pokud:
+                        $$\lim_{n \to \infty} a_n = L$$
+                    </div>
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Posloupnost $1, \frac{1}{2}, \frac{1}{3}, \frac{1}{4}, \dots$ konverguje k 0. Čísla se stále blíží k nule, ale nikdy jí nedosáhnou.
+                    </div>
+
+                    <h4>Řada a konvergence</h4>
+                    <div class="def-box">
+                        <strong>Definice:</strong> <strong>Řada</strong> vznikne sčítáním členů posloupnosti:
+                        $$\sum_{n=1}^{\infty} a_n = a_1 + a_2 + a_3 + \dots$$
+                        Řada <strong>konverguje</strong>, pokud součet nekonečně mnoha členů dává konečné číslo.
+                    </div>
+                    <div class="ex-box">
+                        <strong>Intuice:</strong> Dortem dělíme takto: nejprve polovinu, pak čtvrtinu, pak osminu... Sčítáme nekonečně mnoho kousků, ale dohromady dají přesně 1 dort.
+                        $$\frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \dots = 1$$
+                    </div>
+
+                    <h4>Kritéria konvergence</h4>
+                    <div class="thm-box">
+                        <strong>Podílové kritérium:</strong> Spočítáme $L = \lim_{n \to \infty} \left|\dfrac{a_{n+1}}{a_n}\right|$<br><br>
+                        $L < 1$ → řada konverguje<br>
+                        $L > 1$ → řada diverguje<br>
+                        $L = 1$ → nelze rozhodnout
+                    </div>
+                    <div class="thm-box">
+                        <strong>Odmocninové kritérium:</strong> Spočítáme $L = \lim_{n \to \infty} \sqrt[n]{|a_n|}$<br><br>
+                        $L < 1$ → řada konverguje<br>
+                        $L > 1$ → řada diverguje<br>
+                        $L = 1$ → nelze rozhodnout
+                    </div>
+                    <div class="ex-box">
+                        <strong>Jak fungují:</strong> Obě kritéria fungují jako „detektor": porovnávají naši řadu s ideální geometrickou řadou. Pokud se přidávané kousky zmenšují dostatečně rychle (výsledek &lt; 1), řada konverguje.
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-5">
+                    <h3>5. Velké shrnutí</h3>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover summary-table">
+                            <thead>
+                                <tr>
+                                    <th>Nástroj</th>
+                                    <th>Klíčová myšlenka</th>
+                                    <th>Vztah s ostatními</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Limita</strong></td>
+                                    <td>Přechod od průměrného k okamžitému, od konečného k nekonečnému</td>
+                                    <td>Základ definice derivace i integrálu</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Derivace</strong></td>
+                                    <td>Okamžitá rychlost změny; rozkládá realitu na nejmenší okamžiky</td>
+                                    <td>Inverzní operace k integrálu (N-L věta)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Integrál</strong></td>
+                                    <td>Sčítá nekonečně malé střípky → celková hodnota</td>
+                                    <td>Inverzní operace k derivaci (N-L věta)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Řady</strong></td>
+                                    <td>Lze sečíst nekonečně mnoho čísel a dostat konečný výsledek</td>
+                                    <td>Konvergence ↔ limita posloupnosti částečných součtů</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="thm-box">
+                        <strong>Hlavní závěr:</strong>
+                        <ol class="mb-0">
+                            <li><strong>Derivace</strong> rozloží funkci na okamžité změny a měří rychlost.</li>
+                            <li><strong>Integrál</strong> z nekonečně malých střípků skládá zpět celkové hodnoty (plochu, dráhu).</li>
+                            <li><strong>Newton-Leibnizova věta</strong> dokazuje, že rozebrání a složení jsou jen dvě strany téže mince.</li>
+                        </ol>
+                    </div>
+                </section>
+
+            </div><!-- /col-lg-9 -->
+        </div><!-- /row -->
+    </div><!-- /container -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
