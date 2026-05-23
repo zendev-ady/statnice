@@ -2,20 +2,439 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <title>PRA - Pravděpodobnost a statistika | SZZ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRA - Pravděpodobnost a statistika | SZZ Příprava</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
+                macros: { N: "\\mathbb{N}", R: "\\mathbb{R}", Z: "\\mathbb{Z}", Q: "\\mathbb{Q}", C: "\\mathbb{C}" }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-primary fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="fas fa-arrow-left me-2"></i>Dashboard</a>
             <span class="navbar-text mx-auto"><strong>PRA</strong> - Pravděpodobnost a statistika</span>
-            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')"><i class="fas fa-adjust"></i></button>
+            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')">
+                <i class="fas fa-adjust"></i>
+            </button>
         </div>
     </nav>
-    <div class="container"><h1>Pravděpodobnost a statistika</h1><div class="alert alert-info mt-4"><i class="fas fa-info-circle"></i> Ve výstavbě</div></div>
+
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar TOC -->
+            <div class="col-lg-3 d-none d-lg-block">
+                <nav class="topic-nav pt-4">
+                    <h6 class="text-muted text-uppercase fw-bold mb-3">Témata</h6>
+                    <ul class="nav flex-column">
+                        <li><a class="nav-link py-1" href="#topic-1">1. Podmíněná pravděpodobnost</a></li>
+                        <li><a class="nav-link py-1" href="#topic-2">2. Věta o úplné pravděpodobnosti</a></li>
+                        <li><a class="nav-link py-1" href="#topic-3">3. Bayesova věta</a></li>
+                        <li><a class="nav-link py-1" href="#topic-4">4. Náhodná veličina</a></li>
+                        <li><a class="nav-link py-1" href="#topic-5">5. Distribuční funkce</a></li>
+                        <li><a class="nav-link py-1" href="#topic-6">6. Hustota pravděpodobnosti</a></li>
+                        <li><a class="nav-link py-1" href="#topic-7">7. Střední hodnota</a></li>
+                        <li><a class="nav-link py-1" href="#topic-8">8. Rozptyl</a></li>
+                        <li><a class="nav-link py-1" href="#topic-9">9. Diskrétní rozdělení</a></li>
+                        <li><a class="nav-link py-1" href="#topic-10">10. Spojitá rozdělení</a></li>
+                        <li><a class="nav-link py-1" href="#topic-11">11. Statistická rozdělení</a></li>
+                        <li><a class="nav-link py-1" href="#topic-12">12. Náhodný vektor</a></li>
+                        <li><a class="nav-link py-1" href="#topic-13">13. Korelace vs. nezávislost</a></li>
+                        <li><a class="nav-link py-1" href="#topic-14">14. Transformace NV</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Main content -->
+            <div class="col-lg-9">
+                <h1 class="mb-4">Pravděpodobnost a statistika</h1>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-1">
+                    <h3>1. Podmíněná pravděpodobnost</h3>
+
+                    <p>Pravděpodobnost jevu $A$ za předpokladu, že nastal jev $B$. Klíčová myšlenka: víme-li o světě víc, zmenšíme náš "základní prostor" — ptáme se jen uvnitř jevu $B$.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Pro $P(B) > 0$ definujeme podmíněnou pravděpodobnost jako
+                        $$P(A \mid B) = \frac{P(A \cap B)}{P(B)}$$
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Jaká je šance, že má pacient rakovinu plic ($A$)? Malá, řekněme 0,5 %. Ale víme-li navíc, že je silný kuřák ($B$), pravděpodobnost $P(A \mid B)$ skokově vzroste — protože jsme přešli z celé populace jen na podmnožinu kuřáků.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Insight:</strong> Z definice okamžitě plyne pravidlo násobení: $P(A \cap B) = P(A \mid B) \cdot P(B)$. To je základ pro odvození Bayesovy věty.
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-2">
+                    <h3>2. Věta o úplné pravděpodobnosti</h3>
+
+                    <p>Někdy neumíme spočítat šanci jevu přímo, ale umíme ji rozložit na dílčí scénáře. Věta říká: celková pravděpodobnost je vážený průměr přes všechny scénáře.</p>
+
+                    <div class="thm-box">
+                        <strong>Věta:</strong> Nechť $B_1, B_2, \ldots, B_n$ tvoří úplný systém jevů (jsou disjunktní a jejich sjednocení je celý prostor). Pak
+                        $$P(A) = \sum_{i=1}^{n} P(A \mid B_i) \cdot P(B_i)$$
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Výroba čipů. Stroj 1 vyrábí 30 % čipů (zmetkovitost 1 %), stroj 2 vyrábí 70 % čipů (zmetkovitost 3 %). Jaká je celková šance, že náhodně vybraný čip je zmetek?
+                        $$P(\text{zmetek}) = 0{,}01 \cdot 0{,}30 + 0{,}03 \cdot 0{,}70 = 0{,}003 + 0{,}021 = 0{,}024 = 2{,}4\,\%$$
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-3">
+                    <h3>3. Bayesova věta</h3>
+
+                    <p>Způsob, jak "obrátit" podmíněnou pravděpodobnost. Víme, jak vstup ovlivňuje výstup — ale chceme vědět, co nám výstup říká o vstupu. Jde o aktualizaci přesvědčení na základě nového důkazu.</p>
+
+                    <div class="thm-box">
+                        <strong>Věta (odvození):</strong> Využijeme symetrie průniku $P(A \cap B) = P(A \mid B)\cdot P(B) = P(B \mid A)\cdot P(A)$:
+                        $$P(B \mid A) = \frac{P(A \mid B)\cdot P(B)}{P(A)}$$
+                        Ve jmenovateli se typicky použije věta o úplné pravděpodobnosti.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad – falešně pozitivní test:</strong> Test na nemoc je pozitivní u 99 % nemocných a falešně pozitivní u 1 % zdravých. Nemoc má 0,1 % populace. Test vyjde pozitivně — jaká je reálná šance nemoci?
+                        <br><br>
+                        $P(\text{nem.}) = 0{,}001$, $P(+ \mid \text{nem.}) = 0{,}99$, $P(+ \mid \text{zdravý}) = 0{,}01$
+                        $$P(\text{nem.} \mid +) = \frac{0{,}99 \cdot 0{,}001}{0{,}99 \cdot 0{,}001 + 0{,}01 \cdot 0{,}999} \approx 9\,\%$$
+                        Přestože je test velmi přesný, kvůli nízké základní prevalenci nemoci je pozitivní výsledek z 91 % falešný!
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Insight:</strong> Terminologie: $P(B)$ je tzv. <em>apriorní</em> pravděpodobnost (před pozorováním), $P(B \mid A)$ je <em>aposteriorní</em> pravděpodobnost (po pozorování důkazu $A$).
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-4">
+                    <h3>4. Náhodná veličina</h3>
+
+                    <p>Abychom mohli s výsledky experimentů počítat, musíme je převést na čísla. Náhodná veličina je tímto "překladačem".</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Náhodná veličina (NV) $X$ je funkce $X: \Omega \to \R$, která každému elementárnímu jevu přiřadí reálné číslo.
+                    </div>
+
+                    <table class="table table-bordered summary-table mt-3">
+                        <thead>
+                            <tr><th>Typ</th><th>Hodnoty</th><th>Příklad</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Diskrétní</strong></td>
+                                <td>Oddělené (celé počty)</td>
+                                <td>Počet zákazníků, počet vad</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Spojitá</strong></td>
+                                <td>Libovolná reálná hodnota v intervalu</td>
+                                <td>Výška, teplota, čas</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-5">
+                    <h3>5. Distribuční funkce</h3>
+
+                    <p>"Nastřádaná" (kumulativní) pravděpodobnost. Odpovídá na otázku: jak je pravděpodobné, že veličina nabude hodnoty <em>nejvýše</em> $t$?</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> $F(t) = P(X \le t)$ pro všechna $t \in \R$.
+                    </div>
+
+                    <h4>Klíčové vlastnosti</h4>
+                    <ul>
+                        <li>$F(t) \in [0, 1]$ pro všechna $t$; $\lim_{t \to -\infty} F(t) = 0$, $\lim_{t \to +\infty} F(t) = 1$.</li>
+                        <li>$F$ je neklesající (pravděpodobnost se přidává, nikdy neubývá).</li>
+                        <li>Diskrétní NV: schodovitý graf (skoky v bodech, kde $P(X = x_i) > 0$).</li>
+                        <li>Spojitá NV: plynulá křivka (typicky esovitá).</li>
+                    </ul>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-6">
+                    <h3>6. Hustota pravděpodobnosti</h3>
+
+                    <p>Spojitá veličina má nekonečně mnoho hodnot, takže $P(X = c) = 0$ pro každé konkrétní $c$. Hustota popisuje, kde je pravděpodobnost "nahuštěna".</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> Hustota $f(t)$ je derivace distribuční funkce: $f(t) = F'(t)$.
+                        Naopak: $F(t) = \int_{-\infty}^{t} f(x)\,dx$.
+                        Pravděpodobnost na intervalu: $P(a \le X \le b) = \int_a^b f(x)\,dx$.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Insight:</strong> Hustota sama o sobě <em>není</em> pravděpodobností (může být větší než 1). Pravděpodobnost je vždy plocha pod křivkou hustoty. Nutně platí $\int_{-\infty}^{+\infty} f(x)\,dx = 1$.
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-7">
+                    <h3>7. Střední hodnota $E(X)$</h3>
+
+                    <p>"Těžiště" pravděpodobnosti. Hodnota, kterou bychom průměrně dostali při nekonečném opakování experimentu.</p>
+
+                    <div class="def-box">
+                        <strong>Výpočet:</strong>
+                        <ul class="mb-0">
+                            <li>Diskrétní: $E(X) = \sum_i x_i \cdot P(X = x_i)$</li>
+                            <li>Spojitá: $E(X) = \int_{-\infty}^{+\infty} x \cdot f(x)\,dx$</li>
+                        </ul>
+                    </div>
+
+                    <div class="thm-box">
+                        <strong>Linearita střední hodnoty:</strong> $E(aX + b) = a\,E(X) + b$
+                        <br>Pro nezávislé veličiny navíc: $E(X \cdot Y) = E(X) \cdot E(Y)$.
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad:</strong> Plat v eurech má střední hodnotu $E(X) = 3000$ €. Kurz je 25 Kč/€. Očekávaný plat v korunách: $E(25X) = 25 \cdot 3000 = 75\,000$ Kč.
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-8">
+                    <h3>8. Rozptyl $\text{var}(X)$</h3>
+
+                    <p>Míra "roztaženosti" rozdělení — jak moc hodnoty kolísají kolem střední hodnoty. Kvantifikuje riziko nebo nejistotu.</p>
+
+                    <div class="def-box">
+                        <strong>Definice:</strong> $\text{var}(X) = E\!\left[(X - E(X))^2\right]$
+                        <br>Praktický vzorec: $\text{var}(X) = E(X^2) - \left(E(X)\right)^2$
+                        <br>Směrodatná odchylka: $\sigma = \sqrt{\text{var}(X)}$ (stejné jednotky jako $X$).
+                    </div>
+
+                    <div class="thm-box">
+                        <strong>Vlastnosti:</strong>
+                        <ul class="mb-0">
+                            <li>$\text{var}(aX + b) = a^2\,\text{var}(X)$ — posunutí rozptyl nezmění, násobek ho změní kvadraticky.</li>
+                            <li>Pro nezávislé veličiny: $\text{var}(X + Y) = \text{var}(X) + \text{var}(Y)$.</li>
+                        </ul>
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Upozornění:</strong> Rozptyl <em>není</em> lineární operátor! Na rozdíl od střední hodnoty platí $\text{var}(2X) = 4\,\text{var}(X)$, ne $2\,\text{var}(X)$.
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-9">
+                    <h3>9. Diskrétní rozdělení</h3>
+
+                    <p>Přehled hlavních diskrétních rozdělení — kdy je použít a jak vznikají.</p>
+
+                    <h4>Alternativní (Bernoulliho)</h4>
+                    <p>Jeden pokus, dva výsledky: úspěch (1) s pravděpodobností $p$, neúspěch (0) s $1-p$. Stavební kámen všech dalších diskrétních rozdělení.</p>
+                    <div class="ex-box"><strong>Příklad:</strong> Hod mincí, kontrola jednoho výrobku (zmetek / v pořádku).</div>
+
+                    <h4>Binomické $\text{Bin}(n, p)$</h4>
+                    <p>Opakujeme $n$ nezávislých Bernoulliho pokusů. Ptáme se: <em>kolikrát z $n$ pokusů nastal úspěch?</em></p>
+                    <div class="formula-block">$$P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}$$</div>
+                    <div class="ex-box"><strong>Příklad:</strong> Ze 100 čipů (zmetkovitost 1 %) — jaká je šance, že právě 3 jsou vadné?</div>
+                    <div class="warn-box"><strong>Upozornění:</strong> Předpoklad: výběr <em>s vracením</em> (nebo populace je tak velká, že odebrání jednoho prvku pravděpodobnost prakticky nezmění).</div>
+
+                    <h4>Hypergeometrické</h4>
+                    <p>Výběr <em>bez vracení</em> z malé konečné populace — pravděpodobnost se mění s každým tahem.</p>
+                    <div class="ex-box"><strong>Příklad:</strong> V krabici je 10 součástek, 2 vadné. Vytáhnu 3 na kontrolu — jaká je šance, že odhalím alespoň jednu vadnou? (Sportka.)</div>
+
+                    <h4>Geometrické</h4>
+                    <p>Opakujeme pokusy, dokud nepřijde <em>první úspěch</em>. Ptáme se: <em>kolik pokusů potřebujeme?</em></p>
+                    <div class="ex-box"><strong>Příklad:</strong> Kolikrát musím hodit kostkou, než mi padne šestka? Kolik e-mailů pošlu, než zákazník odpoví?</div>
+                    <div class="insight-box"><strong>Insight:</strong> Jediné diskrétní rozdělení <em>bez paměti</em>: minulé neúspěchy nijak neovlivní pravděpodobnost příštího úspěchu.</div>
+
+                    <h4>Poissonovo $\text{Poi}(\lambda)$</h4>
+                    <p>Modeluje <em>počet výskytů vzácných událostí</em> za jednotku času nebo prostoru. Vzniká jako limitní případ binomického rozdělení ($n \to \infty$, $p \to 0$, $np = \lambda$).</p>
+                    <div class="formula-block">$$P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad E(X) = \text{var}(X) = \lambda$$</div>
+                    <div class="ex-box"><strong>Příklad:</strong> Počet zákazníků vstupujících do obchodu za hodinu. Počet překlepů na stránce textu. Počet aut projíždějících křižovatkou.</div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí — kdy které:</strong>
+                        <ul class="mb-0">
+                            <li><strong>Kolik úspěchů z $n$ pokusů (s vracením)?</strong> → Binomické</li>
+                            <li><strong>Kolik úspěchů z $n$ pokusů (bez vracení)?</strong> → Hypergeometrické</li>
+                            <li><strong>Kolik pokusů do prvního úspěchu?</strong> → Geometrické</li>
+                            <li><strong>Kolik událostí nastane za čas?</strong> → Poissonovo</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-10">
+                    <h3>10. Spojitá rozdělení</h3>
+
+                    <h4>Rovnoměrné $U(a, b)$</h4>
+                    <p>Rozdělení "naprosté nevědomosti" — všechny hodnoty v intervalu $[a, b]$ jsou stejně pravděpodobné. Hustota je konstantní obdélník výšky $\frac{1}{b-a}$.</p>
+                    <div class="ex-box"><strong>Příklad:</strong> Čekání na metro, které jezdí každých 10 minut — příchod je náhodný, čekám 0–10 minut se stejnou šancí. Zaokrouhlovací chyby.</div>
+
+                    <h4>Exponenciální $\text{Exp}(\lambda)$</h4>
+                    <p>Doba čekání na <em>první událost</em> v Poissonově procesu. Úzce spjata s Poissonovým rozdělením: pokud počet událostí za čas je Poisson($\lambda$), pak doba mezi nimi je Exp($\lambda$).</p>
+                    <div class="formula-block">$$f(t) = \lambda e^{-\lambda t}, \quad t \ge 0, \qquad E(X) = \frac{1}{\lambda}, \quad \text{var}(X) = \frac{1}{\lambda^2}$$</div>
+                    <div class="ex-box"><strong>Příklad:</strong> Čas mezi příjezdy autobusů. Doba do poruchy elektronické součástky (tranzistor "nestárne").</div>
+                    <div class="insight-box"><strong>Insight:</strong> Exponenciální rozdělení je spojitý analog geometrického — oba jsou <em>bez paměti</em>. $P(X > s + t \mid X > s) = P(X > t)$: součástce je jedno, jak dlouho už pracuje.</div>
+
+                    <h4>Normální $N(\mu, \sigma^2)$</h4>
+                    <p>Zvonová křivka. Naprosto dominantní v praxi díky <strong>Centrální limitní větě (CLV)</strong>: součet (průměr) dostatečně mnoha nezávislých veličin má přibližně normální rozdělení, bez ohledu na jejich původní rozdělení.</p>
+                    <div class="formula-block">$$f(x) = \frac{1}{\sigma\sqrt{2\pi}}\exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$</div>
+                    <div class="ex-box"><strong>Příklad:</strong> Výška lidí (součet vlivu mnoha genů a stravy). Chyba měření přístroje. Výsledky IQ testů.</div>
+
+                    <h4>Lognormální</h4>
+                    <p>Veličina, jejíž <em>logaritmus</em> je normálně rozdělen. Na rozdíl od normálního rozdělení je asymetrická (dlouhý pravý "ocas") a nenabývá záporných hodnot.</p>
+                    <div class="ex-box"><strong>Příklad:</strong> Ceny akcií (nemohou klesnout pod nulu, ale růst mohou neomezeně). Rozdělení bohatství ve společnosti. Doba opravy systému.</div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí — kdy které:</strong>
+                        <ul class="mb-0">
+                            <li><strong>Čekání na událost v Poissonově procesu?</strong> → Exponenciální</li>
+                            <li><strong>Součet mnoha malých vlivů?</strong> → Normální (CLV)</li>
+                            <li><strong>Multiplikativní vlivy, kladné hodnoty s asymetrií?</strong> → Lognormální</li>
+                            <li><strong>Naprostá neznalost v intervalu?</strong> → Rovnoměrné</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-11">
+                    <h3>11. Statistická rozdělení (odvozená z normálního)</h3>
+
+                    <p>V praxi neznáme přesné parametry populace a pracujeme s malými vzorky. Tato rozdělení říkají, jak se chovají různé statistiky vzorku.</p>
+
+                    <h4>Pearsonovo $\chi^2$ rozdělení</h4>
+                    <div class="def-box">
+                        <strong>Jak vznikne:</strong> Jsou-li $Z_1, \ldots, Z_k$ nezávislé veličiny $N(0,1)$, pak $\sum_{i=1}^k Z_i^2 \sim \chi^2(k)$.
+                    </div>
+                    <p>Hodnoty jsou vždy kladné (jde o součet čtverců). <strong>K čemu:</strong> Testování dobré shody (zda naměřená data odpovídají modelu), testování nezávislosti v kontingenčních tabulkách, odhadování rozptylu.</p>
+
+                    <h4>Studentovo $t$-rozdělení</h4>
+                    <div class="def-box">
+                        <strong>Jak vznikne:</strong> Podíl $N(0,1)$ a odmocniny z $\chi^2/k$ (normalizovaně). Tvar zvonu, ale s <em>tlustšími chvosty</em> než normální rozdělení.
+                    </div>
+                    <p><strong>K čemu:</strong> Klíčové pro praxi! Používáme místo normálního rozdělení, když máme <strong>malý vzorek</strong> (typicky $n < 30$) a <strong>neznáme rozptyl populace</strong>. Tlustší chvosty kompenzují nejistotu z malého vzorku. Se rostoucím $k$ konverguje k $N(0,1)$.</p>
+                    <div class="ex-box"><strong>Příklad:</strong> Testujeme, zda nový lék snižuje tlak na základě 12 pacientů. Neznáme rozptyl populace → použijeme $t$-test.</div>
+
+                    <h4>Fisherovo-Snedecorovo $F$-rozdělení</h4>
+                    <div class="def-box">
+                        <strong>Jak vznikne:</strong> Podíl dvou nezávislých veličin $\chi^2(d_1)/d_1$ a $\chi^2(d_2)/d_2$. Kladné, asymetrické.
+                    </div>
+                    <p><strong>K čemu:</strong> Porovnávání rozptylů dvou skupin, analýza rozptylu (ANOVA) — testujeme, zda má změna faktoru vliv na výsledek.</p>
+                    <div class="ex-box"><strong>Příklad:</strong> Jsou dva stroje ve výrobě stejně přesné? $F$-test porovná jejich rozptyly. ANOVA: má hnojivo vliv na výnos?</div>
+
+                    <div class="summary-box">
+                        <strong>Shrnutí logiky odvozených rozdělení:</strong>
+                        <ul class="mb-0">
+                            <li><strong>Neznáme rozptyl, malý vzorek, testujeme průměr?</strong> → $t$-rozdělení</li>
+                            <li><strong>Testujeme shodu dat s modelem nebo nezávislost?</strong> → $\chi^2$ rozdělení</li>
+                            <li><strong>Porovnáváme rozptyly dvou skupin?</strong> → $F$-rozdělení</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-12">
+                    <h3>12. Náhodný vektor</h3>
+
+                    <p>V praxi sledujeme více veličin najednou — výška a váha pacienta, teplota a tlak. Náhodný vektor je $n$-tice náhodných veličin $\mathbf{X} = (X_1, \ldots, X_n)$.</p>
+
+                    <div class="def-box">
+                        <strong>Sdružená distribuční funkce:</strong> $F(x_1, \ldots, x_n) = P(X_1 \le x_1, \ldots, X_n \le x_n)$
+                    </div>
+
+                    <div class="def-box">
+                        <strong>Marginální (okrajová) distribuce:</strong> Chceme-li sledovat jen jednu složku, "zintegrujeme" přes ostatní. Například $F_X(x) = \lim_{y \to +\infty} F(x, y)$.
+                    </div>
+
+                    <h4>Nezávislost složek</h4>
+                    <div class="thm-box">
+                        <strong>Věta:</strong> $X$ a $Y$ jsou nezávislé právě tehdy, když
+                        $$F(x, y) = F_X(x) \cdot F_Y(y) \quad \text{pro všechna } x, y$$
+                        Ekvivalentně pro hustoty: $f(x,y) = f_X(x) \cdot f_Y(y)$.
+                    </div>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Dvě kostky — číslo na první kostce je nezávislé na čísle druhé. Výška a IQ člověka jsou přibližně nezávislé.</div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-13">
+                    <h3>13. Korelace vs. nezávislost</h3>
+
+                    <p>Jeden z nejčastějších chytáků u státnic. Korelace měří pouze <em>lineární</em> závislost, nezávislost je silnější pojem.</p>
+
+                    <div class="def-box">
+                        <strong>Kovariance:</strong> $\text{cov}(X, Y) = E[(X - E(X))(Y - E(Y))] = E(XY) - E(X)E(Y)$
+                        <br><strong>Korelační koeficient:</strong> $\rho(X,Y) = \dfrac{\text{cov}(X,Y)}{\sqrt{\text{var}(X)\,\text{var}(Y)}} \in [-1, 1]$
+                    </div>
+
+                    <div class="thm-box">
+                        <strong>Vztah:</strong> Nezávislost $\Rightarrow$ nulová korelace. Obráceně to <em>neplatí</em>.
+                    </div>
+
+                    <div class="warn-box">
+                        <strong>Protipříklad (klasický):</strong> $X$ nabývá hodnot $\{-1, 0, 1\}$ rovnoměrně, $Y = X^2$.
+                        <br>$E(X) = 0$, $E(XY) = E(X^3) = 0$ → $\text{cov}(X, Y) = 0$, tedy $\rho = 0$.
+                        <br>Přesto jsou $X$ a $Y$ <em>zcela závislé</em> — když znám $X$, znám přesně $Y$. Závislost je kvadratická (tvaru "U"), ne lineární.
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Insight:</strong> Korelace = 0 neznamená nezávislost. Říká jen, že mezi veličinami není <em>lineární</em> vztah. Může existovat silná nelineární závislost.
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <section class="topic-section" id="topic-14">
+                    <h3>14. Transformace náhodné veličiny</h3>
+
+                    <p>Známe chování veličiny $X$ (napětí na rezistoru), ale zajímá nás $Y = g(X)$ (výkon $\sim X^2$). Jak najít nové rozdělení?</p>
+
+                    <div class="thm-box">
+                        <strong>Metoda distribuční funkce (universální postup):</strong>
+                        <ol class="mb-0">
+                            <li>Definice: $F_Y(t) = P(Y \le t) = P(g(X) \le t)$.</li>
+                            <li>Nerovnici algebraicky vyjádříme přes $X$.</li>
+                            <li>Výsledek zapíšeme pomocí $F_X$.</li>
+                            <li>Hustotu $f_Y$ získáme derivací: $f_Y(t) = F_Y'(t)$.</li>
+                        </ol>
+                    </div>
+
+                    <div class="ex-box">
+                        <strong>Příklad: $Y = X^2$</strong>
+                        <ol class="mb-0">
+                            <li>$F_Y(t) = P(X^2 \le t)$</li>
+                            <li>Pro $t < 0$: $F_Y(t) = 0$ (kvadrát je vždy $\ge 0$).</li>
+                            <li>Pro $t \ge 0$: $P(-\sqrt{t} \le X \le \sqrt{t}) = F_X(\sqrt{t}) - F_X(-\sqrt{t})$.</li>
+                            <li>Hustota: $f_Y(t) = \dfrac{f_X(\sqrt{t}) + f_X(-\sqrt{t})}{2\sqrt{t}}$ pro $t > 0$.</li>
+                        </ol>
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Insight:</strong> Tento postup nevyžaduje pamatování vzorce — plyne z čisté logiky definice distribuční funkce. Na státnicích ukažte tento myšlenkový postup krok za krokem.
+                    </div>
+
+                    <div class="summary-box">
+                        <strong>Celkový příběh předmětu:</strong> <strong>Náhodná veličina</strong> zdigitalizuje experiment. <strong>Distribuční funkce a hustota</strong> popíšou, kde se hodnoty nacházejí. <strong>Střední hodnota</strong> ukáže střed, <strong>rozptyl</strong> říká, jak moc se to hýbe. <strong>Podmíněná pravděpodobnost, Bayes a úplná pravděpodobnost</strong> umožní skládat informace dohromady. <strong>Konkrétní rozdělení</strong> jsou pak nástroje pro různé typy reálných situací.
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="subjects-nav.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
