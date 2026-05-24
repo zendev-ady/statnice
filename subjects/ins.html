@@ -8,28 +8,536 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
 </head>
-<body class="page-specialization">
+<body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="fas fa-arrow-left me-2"></i>Dashboard</a>
             <span class="navbar-text mx-auto"><strong>INS</strong> - Informační systémy</span>
-            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')"><i class="fas fa-adjust"></i></button>
+            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')">
+                <i class="fas fa-adjust"></i>
+            </button>
         </div>
     </nav>
+
     <div class="container">
         <div class="row">
             <div class="col-lg-3 d-none d-lg-block">
                 <nav class="topic-nav pt-4">
                     <h6 class="text-muted text-uppercase fw-bold mb-3">Témata</h6>
-                    <p class="text-muted small fst-italic">Ve výstavbě</p>
+                    <ul class="nav flex-column">
+                        <li><a class="nav-link py-1" href="#topic-1">1. Životní cyklus SW projektu</a></li>
+                        <li><a class="nav-link py-1" href="#topic-2">2. Tradiční metodiky</a></li>
+                        <li><a class="nav-link py-1" href="#topic-3">3. Implementace IS</a></li>
+                        <li><a class="nav-link py-1" href="#topic-4">4. Business procesy</a></li>
+                        <li><a class="nav-link py-1" href="#topic-5">5. Business analýza</a></li>
+                        <li><a class="nav-link py-1" href="#topic-6">6. Stavový diagram vs. diagram aktivit</a></li>
+                        <li><a class="nav-link py-1" href="#topic-7">7. WBS, Gantt, SWOT</a></li>
+                    </ul>
                 </nav>
             </div>
+
             <div class="col-lg-9">
                 <h1 class="mb-4">Informační systémy</h1>
-                <div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>Tato stránka je ve výstavbě. Použij /notes ins pro vygenerování obsahu.</div>
+
+                <!-- ==================== TOPIC 1 ==================== -->
+                <section class="topic-section" id="topic-1">
+                    <h3>1. Řízení softwarových projektů – fáze SW projektu, životní cyklus</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> Softwarový projekt je časově omezené úsilí s definovanými cíli, zdroji a výstupy, jehož účelem je vytvořit nebo modifikovat softwarový systém. Životní cyklus projektu (SDLC – Software Development Life Cycle) popisuje sekvenci fází, jimiž projekt prochází od nápadu až po ukončení.</div>
+
+                    <h4>Proč životní cyklus?</h4>
+                    <p>Bez struktury sklouzne SW projekt do chaosu – každý dělá co chce, změny se nasazují bez testování, nikdo neví, co je hotové. SDLC přináší disciplínu: každá fáze má jasné vstupy, výstupy a kritéria přechodu do další fáze.</p>
+
+                    <h4>Fáze životního cyklu SW projektu</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead>
+                            <tr><th>Fáze</th><th>Hlavní aktivity</th><th>Klíčový výstup</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Iniciace</strong></td><td>Definice problému, feasibility study, jmenování PM</td><td>Project Charter, studie proveditelnosti</td></tr>
+                            <tr><td><strong>Plánování</strong></td><td>WBS, harmonogram, rozpočet, rizika, tým</td><td>Project Management Plan</td></tr>
+                            <tr><td><strong>Analýza a design</strong></td><td>Sběr požadavků, architektura, prototypy</td><td>Specifikace požadavků (SRS), návrh architektury</td></tr>
+                            <tr><td><strong>Implementace</strong></td><td>Vývoj, code review, unit testy</td><td>Zdrojový kód, dokumentace</td></tr>
+                            <tr><td><strong>Testování</strong></td><td>Integrační testy, UAT, opravy chyb</td><td>Test report, akceptační protokol</td></tr>
+                            <tr><td><strong>Nasazení</strong></td><td>Migrace dat, školení, go-live</td><td>Provozní systém</td></tr>
+                            <tr><td><strong>Provoz a údržba</strong></td><td>Monitoring, opravy, rozvoj</td><td>Servisní smlouva, nové verze</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Fáze nejsou nutně striktně sekvenční – moderní přístupy je překrývají nebo opakují (iterace). I u vodopádu se v praxi občas vrací – klíčové je mít explicitní kritéria přechodu (gate review), aby tým věděl, kdy je fáze opravdu hotová.</div>
+
+                    <h4>Specifika SW projektů oproti jiným projektům</h4>
+                    <ul>
+                        <li>Požadavky se mění v průběhu projektu – zákazník neví přesně, co chce, dokud to nevidí</li>
+                        <li>Nehmotný produkt – obtížné měřit „hotovost"</li>
+                        <li>Technická komplexita – skryté závislosti, technický dluh</li>
+                        <li>Lidský faktor – produktivita vývojářů se liší i 10×</li>
+                        <li>Integrace s existujícími systémy – legacy problémy</li>
+                    </ul>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Projekt implementace CRM systému ve firmě: Iniciace – vedení rozhodne, že potřebuje nový CRM. Plánování – PM sestaví tým, odhadne 8 měsíců a 2 mil. Kč. Analýza – business analytik zmapuje procesy obchodního oddělení. Design – architekti navrhnou integraci s ERP. Implementace – vývojáři 4 měsíce kódují. Testování – obchodníci testují UAT. Nasazení – postupný rollout po pobočkách. Provoz – helpdesk řeší tickety.</div>
+
+                    <div class="warn-box"><strong>Pozor:</strong> Projektový trojúhelník (scope–time–cost) je nutné vyvažovat. Změna v jednom rozměru nutně ovlivní ostatní. Přidání funkcionality (scope) bez posunu termínu (time) znamená buď vyšší náklady (cost), nebo nižší kvalitu.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>SDLC dává projektu strukturu – jasné fáze s definovanými vstupy/výstupy</li>
+                            <li>Typické fáze: iniciace → plánování → analýza/design → implementace → testování → nasazení → provoz</li>
+                            <li>SW projekty jsou specifické: měnící se požadavky, nehmotnost produktu, technická komplexita</li>
+                            <li>Metodika určuje, jak jsou fáze propojeny – sekvenčně (waterfall), iterativně (RUP), inkrementálně (agile)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ==================== TOPIC 2 ==================== -->
+                <section class="topic-section" id="topic-2">
+                    <h3>2. Tradiční metodiky řízení projektů</h3>
+
+                    <div class="insight-box"><strong>Intuice:</strong> „Tradiční" metodiky předpokládají, že požadavky jsou stabilní a definovatelné předem. Oproti agilním přístupům vyžadují důkladné plánování na začátku a kontrolu odchylek od plánu. Vhodné pro projekty s jasným zadáním, regulatorními požadavky nebo fyzickými výstupy.</div>
+
+                    <h4>Vodopádový model (Waterfall)</h4>
+                    <div class="def-box"><strong>Definice:</strong> Sekvenční model vývoje, kde každá fáze musí být zcela dokončena před zahájením následující. Výstup jedné fáze je vstupem další.</div>
+
+                    <p>Fáze vodopádu: Požadavky → Analýza → Návrh → Implementace → Testování → Nasazení → Údržba</p>
+
+                    <div class="thm-box"><strong>Klíčové vlastnosti:</strong>
+                        <ul>
+                            <li>Každá fáze má formální review a schválení (gate)</li>
+                            <li>Zpětný postup je velmi nákladný – proto „vodopád" (voda neteče nahoru)</li>
+                            <li>Silná dokumentace v každé fázi</li>
+                            <li>Zákazník vidí výsledek až na konci</li>
+                        </ul>
+                    </div>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Výhody</th><th>Nevýhody</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td>Jednoduchý, snadno pochopitelný<br>Jasně definované milníky<br>Dobrý pro pevné požadavky<br>Snadné plánování kapacit</td>
+                                <td>Pozdní zpětná vazba od zákazníka<br>Změny jsou drahé<br>Nefunguje, pokud jsou požadavky nejasné<br>Riziko „velkého třesku" při nasazení</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box"><strong>Příklad použití waterfallu:</strong> Vývoj embedded systému pro řídicí jednotku auta – požadavky jsou pevně dané normami, hardware je fixní, bezpečnostní certifikace vyžaduje kompletní dokumentaci každé fáze.</div>
+
+                    <h4>RUP – Rational Unified Process</h4>
+                    <div class="def-box"><strong>Definice:</strong> RUP je iterativní a inkrementální metodika vývoje SW, propojená s UML notací. Organizuje projekt do čtyř fází, přičemž každá fáze se skládá z jedné nebo více iterací.</div>
+
+                    <p>RUP je postaven na dvou dimenzích:</p>
+                    <ul>
+                        <li><strong>Horizontální (čas):</strong> čtyři fáze projektu</li>
+                        <li><strong>Vertikální (obsah):</strong> šest inženýrských a tři podpůrné disciplíny (workflows)</li>
+                    </ul>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Fáze</th><th>Účel</th><th>Klíčový milník</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Inception (Zahájení)</strong></td><td>Vymezení scope, feasibility, obchodní případ</td><td>Life Cycle Objective (LCO)</td></tr>
+                            <tr><td><strong>Elaboration (Příprava)</strong></td><td>Architektura, hlavní use cases, rizika</td><td>Life Cycle Architecture (LCA)</td></tr>
+                            <tr><td><strong>Construction (Budování)</strong></td><td>Iterativní vývoj zbývající funkcionality</td><td>Initial Operational Capability (IOC)</td></tr>
+                            <tr><td><strong>Transition (Předání)</strong></td><td>Beta testování, školení, nasazení</td><td>Product Release</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box"><strong>Intuice:</strong> RUP je iterativní – v každé iteraci se projde všemi disciplínami (analýza, design, implementace, test), ale s různou intenzitou. V Elaboration dominuje architektura, v Construction dominuje implementace. Díky tomu se rizika řeší dříve než vodopád.</div>
+
+                    <div class="warn-box"><strong>Pozor:</strong> RUP je framework, ne hotový recept – je třeba ho přizpůsobit (tailoring) konkrétnímu projektu. Ve své plné podobě je velice těžkopádný (stovky artefaktů), proto se v praxi používá zredukovaná verze. Je předchůdcem moderních agilních přístupů.</div>
+
+                    <h4>Srovnání Waterfall vs. RUP</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th></th><th>Waterfall</th><th>RUP</th></tr></thead>
+                        <tbody>
+                            <tr><td>Přístup</td><td>Sekvenční</td><td>Iterativní</td></tr>
+                            <tr><td>Požadavky</td><td>Pevné předem</td><td>Upřesňují se v iteracích</td></tr>
+                            <tr><td>Zpětná vazba</td><td>Na konci</td><td>Průběžně</td></tr>
+                            <tr><td>Dokumentace</td><td>Velmi silná</td><td>Silná, ale cílená</td></tr>
+                            <tr><td>Vhodné pro</td><td>Malé projekty, fixní požadavky</td><td>Velké projekty, komplexní systémy</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Waterfall: striktně sekvenční, fáze se neopakují, vhodný pro stabilní požadavky</li>
+                            <li>RUP: iterativní, 4 fáze (inception/elaboration/construction/transition), propojeno s UML</li>
+                            <li>Obě metodiky kladou důraz na dokumentaci a formální milníky (gates)</li>
+                            <li>Hlavní rozdíl: kdy a jak zákazník dostává zpětnou vazbu</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ==================== TOPIC 3 ==================== -->
+                <section class="topic-section" id="topic-3">
+                    <h3>3. Implementace IS – kroky, průběžné činnosti, přechod do podpory a údržby</h3>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Implementace IS není jen „napsání kódu". Je to komplexní proces zahrnující analýzu, konfiguraci, migraci dat, školení a nakonec předání do rukou uživatelů. Každý krok má svou logiku – vynechání jednoho se zpravidla prodraží v dalším.</div>
+
+                    <h4>Kroky implementace IS</h4>
+
+                    <div class="def-box"><strong>1. Předimplementační analýza (AS-IS analýza)</strong><br>
+                    Zmapování stávajících procesů a systémů. Cílem je pochopit, jak věci fungují <em>teď</em>, a identifikovat gap mezi současným a požadovaným stavem (TO-BE).</div>
+
+                    <div class="def-box"><strong>2. Sběr a specifikace požadavků</strong><br>
+                    Rozhovory se stakeholdery, workshopy, analýza dokumentů. Výstupem je SRS (Software Requirements Specification) nebo BRS (Business Requirements Specification).</div>
+
+                    <div class="def-box"><strong>3. Design a architektura</strong><br>
+                    Návrh datového modelu, integračních rozhraní, bezpečnostní architektury. Rozhodnutí o platformě (cloud/on-premise), technologickém stacku.</div>
+
+                    <div class="def-box"><strong>4. Vývoj / konfigurace</strong><br>
+                    Samotný vývoj (u custom SW) nebo konfigurace a parametrizace (u krabicového SW jako SAP/ERP). Zahrnuje kódování, unit testy, code review.</div>
+
+                    <div class="def-box"><strong>5. Integrace a testování</strong><br>
+                    Integrační testy (napojení na ostatní systémy), systémové testy, výkonnostní testy. Klíčové je UAT (User Acceptance Testing) – zákazník ověřuje, že systém splňuje jeho požadavky.</div>
+
+                    <div class="def-box"><strong>6. Migrace dat</strong><br>
+                    Přenos dat ze starého systému do nového. Čistění dat (deduplication, validace), mapování datových struktur, testovací migrace, ostrá migrace.</div>
+
+                    <div class="def-box"><strong>7. Školení uživatelů</strong><br>
+                    Klíčoví uživatelé (superuseři), administrátoři, běžní uživatelé. Příprava manuálů a helpdesk skriptů.</div>
+
+                    <div class="def-box"><strong>8. Nasazení (Go-Live)</strong><br>
+                    Přechod z testovacího do produkčního prostředí. Strategie: <em>big bang</em> (vše najednou), <em>phased rollout</em> (postupně po lokalitách/modulech), <em>pilot</em> (nejprve jedna skupina).</div>
+
+                    <h4>Průběžné činnosti (po celou dobu implementace)</h4>
+                    <ul>
+                        <li><strong>Řízení změn (Change Management):</strong> Každá změna požadavků musí projít formálním procesem – posouzení dopadu, schválení, naplánování</li>
+                        <li><strong>Řízení rizik:</strong> Pravidelná aktualizace risk registru, eskalace kritických rizik</li>
+                        <li><strong>Komunikace se stakeholdery:</strong> Status reporty, steering committee meetings</li>
+                        <li><strong>Řízení kvality:</strong> Code review, testovací plán, defect tracking</li>
+                        <li><strong>Dokumentace:</strong> Průběžná aktualizace technické i uživatelské dokumentace</li>
+                        <li><strong>Projektový controlling:</strong> Sledování čerpání rozpočtu a plnění harmonogramu (earned value)</li>
+                    </ul>
+
+                    <h4>Přechod do podpory a údržby</h4>
+                    <p>Přechod není okamžitý – probíhá v několika krocích:</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Etapa</th><th>Popis</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Hypercare (post-go-live)</strong></td><td>Implementační tým je fyzicky přítomen, okamžitá reakce na problémy, typicky 1–4 týdny po go-live</td></tr>
+                            <tr><td><strong>Stabilizace</strong></td><td>Postupný přechod na standardní support, opravy kritických bugů, ladění výkonu</td></tr>
+                            <tr><td><strong>Akceptace</strong></td><td>Zákazník podepíše akceptační protokol – formální předání systému, konec záruky/garance</td></tr>
+                            <tr><td><strong>Provoz a údržba</strong></td><td>Řídí se servisní smlouvou (SLA); zahrnuje opravy, legislativní updaty, minor vylepšení</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Typy údržby</h4>
+                    <ul>
+                        <li><strong>Korektivní:</strong> Oprava chyb nalezených v produkci</li>
+                        <li><strong>Adaptivní:</strong> Přizpůsobení změnám prostředí (nová verze OS, legislativa)</li>
+                        <li><strong>Perfektivní:</strong> Zlepšení výkonu, přidání nových funkcí</li>
+                        <li><strong>Preventivní:</strong> Refactoring, archivace, aby se předešlo budoucím problémům</li>
+                    </ul>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Nasazení ERP systému v průmyslovém podniku – big bang nasazení v pondělí ráno. Týden před go-live proběhla ostrá migrace dat. První dva týdny jsou konzultanti denně na místě (hypercare). Po měsíci zákazník podepíše akceptaci a přejde na standardní SLA s 8-hodinovou dobou reakce na kritické incidenty.</div>
+
+                    <div class="warn-box"><strong>Pozor:</strong> Údržba typicky stojí 15–20 % ročních nákladů na vývoj a pokračuje roky. Je to největší část celkových nákladů na vlastnictví (TCO – Total Cost of Ownership). Projekty, které to podcení, pak nemají peníze na rozvoj.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Implementace IS: analýza → požadavky → design → vývoj/konfigurace → testování → migrace dat → školení → nasazení</li>
+                            <li>Průběžné činnosti: change management, řízení rizik, komunikace, controlling</li>
+                            <li>Přechod do provozu: hypercare → stabilizace → akceptace → standardní podpora dle SLA</li>
+                            <li>4 typy údržby: korektivní, adaptivní, perfektivní, preventivní</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ==================== TOPIC 4 ==================== -->
+                <section class="topic-section" id="topic-4">
+                    <h3>4. Business procesy – typy, stavy</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> Business proces je strukturovaná posloupnost aktivit (kroků), která přijímá vstupy a produkuje výstup přinášející hodnotu zákazníkovi nebo organizaci. Procesy propojují lidi, systémy a zdroje za účelem dosažení obchodního cíle.</div>
+
+                    <h4>Proč procesy?</h4>
+                    <p>Bez explicitně definovaných procesů každý zaměstnanec dělá věci po svém. Definice procesů umožňuje: standardizaci, měření výkonu (KPI), automatizaci (BPM systémy), identifikaci úzkých míst a neustálé zlepšování (BPI).</p>
+
+                    <h4>Typy business procesů</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Typ</th><th>Popis</th><th>Příklad</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Hlavní procesy (Core)</strong></td>
+                                <td>Tvoří přímo hodnotu pro zákazníka, jsou jádrem podnikání</td>
+                                <td>Vyřízení objednávky, výroba produktu, poskytnutí služby</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Podpůrné procesy (Support)</strong></td>
+                                <td>Zajišťují fungování hlavních procesů, samy o sobě hodnotu netvoří</td>
+                                <td>HR (nábor), IT podpora, účetnictví, facility management</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Řídící procesy (Management)</strong></td>
+                                <td>Řízení, kontrola, strategické plánování</td>
+                                <td>Rozpočtování, audit, řízení kvality, strategické plánování</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Mysli na firmu jako na továrnu. Hlavní proces = výrobní linka (přímo tvoří produkt). Podpůrný proces = údržba strojů (aby linka mohla jet). Řídící proces = management factory (říká, co a kdy se vyrábí).</div>
+
+                    <h4>Stavy business procesu</h4>
+                    <p>Každý proces (nebo instance procesu) se nachází v jednom z možných stavů. Typický životní cyklus instance procesu:</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Stav</th><th>Popis</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Nový / Připravený</strong></td><td>Instance byla vytvořena, čeká na spuštění</td></tr>
+                            <tr><td><strong>Běžící / Aktivní</strong></td><td>Aktuálně se zpracovává</td></tr>
+                            <tr><td><strong>Čekající</strong></td><td>Blokováno – čeká na vstup, schválení nebo splnění podmínky</td></tr>
+                            <tr><td><strong>Pozastavený</strong></td><td>Dočasně přerušen (administrativně nebo chybou)</td></tr>
+                            <tr><td><strong>Dokončený</strong></td><td>Úspěšně zakončen, výstup byl předán</td></tr>
+                            <tr><td><strong>Zrušený / Ukončený chybou</strong></td><td>Výjimečná situace, proces nebyl dokončen normálně</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Modelování procesů</h4>
+                    <p>Nejrozšířenější notace pro modelování business procesů:</p>
+                    <ul>
+                        <li><strong>BPMN (Business Process Model and Notation):</strong> Standard OMG, grafická notace, podpora automatizace</li>
+                        <li><strong>UML Diagram aktivit:</strong> Vhodný pro SW kontext (viz téma 6)</li>
+                        <li><strong>EPC (Event-driven Process Chain):</strong> Používaný v SAP/ARIS</li>
+                        <li><strong>Vývojový diagram:</strong> Nejjednodušší, universální</li>
+                    </ul>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Proces „Zpracování objednávky" v e-shopu: Zákazník vytvoří objednávku (Nová) → Systém ověří platbu (Aktivní) → Čeká na potvrzení platby (Čekající) → Platba přijata, připravuje se balík (Aktivní) → Odesláno (Dokončený). Alternativní cesta: platba zamítnuta → Zrušený.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Business proces = strukturovaná posloupnost aktivit přinášející hodnotu</li>
+                            <li>3 typy: hlavní (core – tvoří hodnotu), podpůrné (support – podmínky pro core), řídící (management)</li>
+                            <li>Stavy instance: nový → aktivní → čekající → dokončený (nebo zrušený)</li>
+                            <li>Modelování: BPMN (standard), UML diagram aktivit (SW kontext), EPC (SAP)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ==================== TOPIC 5 ==================== -->
+                <section class="topic-section" id="topic-5">
+                    <h3>5. Business analýza</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> Business analýza je disciplína identifikace obchodních potřeb a navrhování řešení obchodních problémů. Business analytik (BA) funguje jako most mezi byznysem (zákazník, uživatelé) a IT (vývojáři, architekti).</div>
+
+                    <h4>Proč business analýza?</h4>
+                    <p>Studie opakovaně ukazují, že nejčastější příčinou neúspěchu IT projektů jsou špatně pochopené požadavky. BA zajistí, že se staví správná věc (effectiveness), než aby se jen dobře stavěla věc špatná (efficiency). Komunikace tvoří ~80 % práce BA.</p>
+
+                    <h4>Klíčové kroky business analýzy</h4>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Krok</th><th>Co se děje</th><th>Techniky</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>1. Analýza kontextu</strong></td><td>Pochopení organizace, trhu, regulace, existujících systémů</td><td>SWOT, PESTLE, stakeholder mapa</td></tr>
+                            <tr><td><strong>2. Identifikace stakeholderů</strong></td><td>Kdo bude systém používat, kdo ho ovlivní, kdo ho schvaluje</td><td>Stakeholder register, RACI matice</td></tr>
+                            <tr><td><strong>3. Sběr požadavků</strong></td><td>Elicitace – vytažení požadavků ze stakeholderů</td><td>Rozhovory, workshopy, pozorování, prototypy, ankety</td></tr>
+                            <tr><td><strong>4. Analýza a prioritizace</strong></td><td>Třídění, deduplication, konflikty, prioritizace (MoSCoW)</td><td>Use case diagramy, user stories, process mapy</td></tr>
+                            <tr><td><strong>5. Gap analýza</strong></td><td>Porovnání AS-IS (současný stav) vs. TO-BE (cílový stav)</td><td>Process mapping, fit-gap analýza</td></tr>
+                            <tr><td><strong>6. Dokumentace požadavků</strong></td><td>Formalizace do dokumentu, který podepíší všechny strany</td><td>BRS (Business Requirements Spec), SRS, use cases</td></tr>
+                            <tr><td><strong>7. Validace a správa požadavků</strong></td><td>Požadavky se mění – traceability, change management</td><td>Traceability matrix, change log</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Typy požadavků</h4>
+                    <ul>
+                        <li><strong>Funkční požadavky:</strong> Co systém musí dělat – „systém musí umožnit uživateli přihlásit se pomocí e-mailu"</li>
+                        <li><strong>Nefunkční požadavky (NFR):</strong> Jak to musí dělat – výkon (response time &lt;2s), dostupnost (99,9 %), bezpečnost, škálovatelnost</li>
+                        <li><strong>Obchodní požadavky:</strong> Proč projekt existuje – obchodní cíle, KPI, ROI</li>
+                        <li><strong>Požadavky na přechod:</strong> Migrace dat, školení, paralelní provoz</li>
+                    </ul>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Funkční požadavky popisují CO systém dělá (features). NFR popisují JAK to dělá (quality attributes). Zákazníci mají tendenci zapomínat na NFR – až po go-live zjistí, že systém sice funguje, ale je pomalý nebo nespolehlivý.</div>
+
+                    <div class="ex-box"><strong>Příklad:</strong> BA analyzuje požadavky pro nový zákaznický portál banky. AS-IS: zákazníci musí jít na pobočku nebo volat na linku. TO-BE: samoobslužný portál. Gap: chybí online identifikace, integrace s core bankovním systémem. Stakeholdeři: zákazníci, pobočkoví pracovníci (pracovní místa!), compliance (AML/GDPR), IT architekti. Funkční požadavky: přihlášení, zobrazení účtu, platba. NFR: dostupnost 99,95 %, šifrování TLS 1.3, response time &lt;1s.</div>
+
+                    <div class="warn-box"><strong>Pozor:</strong> BA musí rozlišovat mezi tím, co stakeholder <em>říká</em> (stated need), co <em>chce</em> (desired outcome) a co <em>potřebuje</em> (real need). Klasický příklad: zákazník říká „chci rychlejší koně" – skutečná potřeba je „rychlejší přeprava".</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>BA = most mezi byznysem a IT; hlavní úkol: zajistit, že se staví správná věc</li>
+                            <li>Kroky: kontext → stakeholdeři → sběr požadavků → gap analýza → dokumentace → validace</li>
+                            <li>Typy požadavků: funkční, nefunkční, obchodní, přechodové</li>
+                            <li>Klíčové nástroje: rozhovory, workshopy, use cases, BPMN, traceability matrix</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ==================== TOPIC 6 ==================== -->
+                <section class="topic-section" id="topic-6">
+                    <h3>6. Stavový diagram vs. diagram aktivit</h3>
+
+                    <p>Oba diagramy jsou součástí UML (Unified Modeling Language) a slouží k modelování dynamického chování systému. Liší se však tím, <em>na co se zaměřují</em>.</p>
+
+                    <h4>Stavový diagram (State Machine Diagram)</h4>
+                    <div class="def-box"><strong>Definice:</strong> Stavový diagram modeluje <strong>životní cyklus jednoho objektu (entity)</strong> – jaké stavy může nabývat a za jakých podmínek přechází mezi nimi. Zaměřuje se na to, <em>v jakém stavu objekt je</em>, nikoliv na tok práce.</div>
+
+                    <h4>Základní prvky stavového diagramu</h4>
+                    <ul>
+                        <li><strong>Stav (State):</strong> Stabilní situace objektu – zaokrouhlený obdélník (např. „Objednávka přijata")</li>
+                        <li><strong>Přechod (Transition):</strong> Šipka ze stavu do stavu, spuštěná událostí</li>
+                        <li><strong>Událost (Event / Trigger):</strong> Co způsobí přechod (např. „platba_přijata")</li>
+                        <li><strong>Podmínka (Guard):</strong> Logická podmínka pro přechod v hranatých závorkách [množství &gt; 0]</li>
+                        <li><strong>Akce (Action):</strong> Co se provede při přechodu / vstupu do stavu / výstupu ze stavu</li>
+                        <li><strong>Počáteční stav:</strong> Plný kruh (●)</li>
+                        <li><strong>Koncový stav:</strong> Kruh v kruhu (◎)</li>
+                    </ul>
+
+                    <div class="ex-box"><strong>Příklad – životní cyklus objednávky:</strong><br>
+                    ● → <em>Nová</em> --[zaplacena]-→ <em>Zaplacená</em> --[odeslána]-→ <em>Odeslaná</em> --[doručena]-→ <em>Doručená</em> → ◎<br>
+                    <em>Nová</em> --[zrušena zákazníkem]-→ <em>Zrušená</em> → ◎</div>
+
+                    <div class="insight-box"><strong>Kdy použít stavový diagram:</strong> Když potřebuješ modelovat životní cyklus entity (objednávka, ticket, uživatelský účet, pojistná smlouva). Otázka, na kterou odpovídá: „Jaké stavy může tento objekt mít a co způsobí přechod?"</div>
+
+                    <h4>Diagram aktivit (Activity Diagram)</h4>
+                    <div class="def-box"><strong>Definice:</strong> Diagram aktivit modeluje <strong>tok práce nebo procesu</strong> – posloupnost kroků (akcí), větvení, souběžnost a synchronizaci. Je graficky podobný vývojovému diagramu, ale navíc podporuje paralelní toky a swimlanes.</div>
+
+                    <h4>Základní prvky diagramu aktivit</h4>
+                    <ul>
+                        <li><strong>Aktivita (Activity):</strong> Zaokrouhlený obdélník – konkrétní akce/krok</li>
+                        <li><strong>Tok řízení (Control Flow):</strong> Šipka mezi aktivitami</li>
+                        <li><strong>Rozhodovací uzel (Decision):</strong> Kosočtverec – větvení (if/else)</li>
+                        <li><strong>Fork / Join:</strong> Silná horizontální čára – rozdělení/sloučení paralelních toků</li>
+                        <li><strong>Swimlane (Plavecká dráha):</strong> Sloupce/řádky přiřazující aktivity zodpovědným rolím/systémům</li>
+                        <li><strong>Počáteční / Koncový uzel:</strong> Stejné symboly jako u stavového diagramu</li>
+                    </ul>
+
+                    <div class="ex-box"><strong>Příklad – proces zpracování objednávky (swimlanes):</strong><br>
+                    [Zákazník] Vytvoření objednávky → [Systém] Ověření platby → ◇(OK/NOK)<br>
+                    → [NOK] Notifikace zákazníka → ◎<br>
+                    → [OK] Parallela: [Sklad] Příprava zboží || [Účetnictví] Vystavení faktury → Join → [Logistika] Odeslání → ◎</div>
+
+                    <div class="insight-box"><strong>Kdy použít diagram aktivit:</strong> Když modeluješ business proces nebo algoritmus – tok akcí přes více aktérů nebo systémů. Otázka: „Co se děje a v jakém pořadí?"</div>
+
+                    <h4>Klíčové rozdíly</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th></th><th>Stavový diagram</th><th>Diagram aktivit</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Zaměření</strong></td><td>Stav jednoho objektu</td><td>Tok procesu / algoritmu</td></tr>
+                            <tr><td><strong>Základní element</strong></td><td>Stav (stabilní situace)</td><td>Aktivita (akce, krok)</td></tr>
+                            <tr><td><strong>Trigger přechodu</strong></td><td>Událost (event)</td><td>Dokončení předchozí aktivity</td></tr>
+                            <tr><td><strong>Souběžnost</strong></td><td>Omezená (vnoření)</td><td>Fork/Join – explicitní paralelismus</td></tr>
+                            <tr><td><strong>Swimlanes</strong></td><td>Ne (nebo výjimečně)</td><td>Ano – klíčová feature</td></tr>
+                            <tr><td><strong>Typické použití</strong></td><td>Životní cyklus entity, protokoly, UI</td><td>Business procesy, use case realizace, algoritmy</td></tr>
+                            <tr><td><strong>Analogie</strong></td><td>Stavový automat (FSM)</td><td>Vývojový diagram na steroidech</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="warn-box"><strong>Pozor:</strong> Diagramy aktivit jsou variací stavových diagramů (v UML jsou oba „behavioral diagrams"), ale mají odlišný účel. Stav v state machine diagramu = čeká na událost. Aktivita v activity diagramu = aktivně něco dělá. Záměna je běžná chyba.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Stavový diagram: životní cyklus objektu, stavy + přechody triggery/podmínkami</li>
+                            <li>Diagram aktivit: tok procesu/algoritmu, akce + větvení + paralelismus (fork/join) + swimlanes</li>
+                            <li>Klíčová otázka: modeluji <em>stav entity</em> → state diagram; modeluji <em>průběh procesu</em> → activity diagram</li>
+                            <li>Oba jsou UML behavioral diagramy, ale v praxi se používají v různých kontextech</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ==================== TOPIC 7 ==================== -->
+                <section class="topic-section" id="topic-7">
+                    <h3>7. WBS, Ganttův diagram, SWOT analýza – použití při implementaci</h3>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Tyhle tři nástroje tvoří základ projektového plánování. WBS odpovídá na <em>co</em> se bude dělat, Gantt na <em>kdy</em>, SWOT na <em>proč</em> to má nebo nemá smysl a na <em>jaká rizika</em> si dát pozor.</div>
+
+                    <h4>WBS – Work Breakdown Structure</h4>
+                    <div class="def-box"><strong>Definice:</strong> WBS je hierarchická dekompozice celkového rozsahu projektu na menší, zvladatelné části (pracovní balíky). Každý uzel ve stromě reprezentuje deliverable nebo skupinu deliverables – nikoli aktivity.</div>
+
+                    <h4>Jak WBS vytvořit</h4>
+                    <ul>
+                        <li>Top-down dekompozice: od celého projektu k pracovním balíkům</li>
+                        <li>Pravidlo 100 %: součet dílčích prvků musí pokrýt 100 % scope rodiče (nic nechybí, nic nepřebývá)</li>
+                        <li>Leaf nodes = <strong>Pracovní balíky (Work Packages)</strong>: dostatečně malé pro odhad, přiřazení a sledování</li>
+                        <li>Každý prvek má unikátní WBS kód (1.0, 1.1, 1.1.1 …)</li>
+                    </ul>
+
+                    <div class="ex-box"><strong>Příklad WBS pro implementaci IS:</strong><br>
+                    1. Implementace CRM<br>
+                    &nbsp;&nbsp;1.1 Analýza a design<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;1.1.1 Business analýza<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;1.1.2 Technická architektura<br>
+                    &nbsp;&nbsp;1.2 Vývoj<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;1.2.1 Modul zákazníků<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;1.2.2 Modul obchodních příležitostí<br>
+                    &nbsp;&nbsp;1.3 Testování<br>
+                    &nbsp;&nbsp;1.4 Nasazení a školení</div>
+
+                    <div class="thm-box"><strong>K čemu je WBS dobrý:</strong>
+                        <ul>
+                            <li>Základ pro odhad nákladů a doby trvání</li>
+                            <li>Přiřazení odpovědnosti (každý balík má vlastníka)</li>
+                            <li>Sledování plnění (co % je hotové)</li>
+                            <li>Základ pro Ganttův diagram</li>
+                            <li>Komunikace scope se zákazníkem – co je a co není v projektu</li>
+                        </ul>
+                    </div>
+
+                    <h4>Ganttův diagram</h4>
+                    <div class="def-box"><strong>Definice:</strong> Ganttův diagram je pruhový časový harmonogram zobrazující úkoly na časové ose. Každý řádek = jedna úloha; délka pruhu = doba trvání; poloha = kdy začíná a končí.</div>
+
+                    <h4>Klíčové prvky Ganttova diagramu</h4>
+                    <ul>
+                        <li><strong>Úlohy (Tasks):</strong> Odvozené z WBS pracovních balíků</li>
+                        <li><strong>Závislosti (Dependencies):</strong> Finish-to-Start (A musí skončit před B), Start-to-Start atd.</li>
+                        <li><strong>Milníky (Milestones):</strong> Klíčové body projektu (diamant ◆) – typicky gates, delivery, akceptace</li>
+                        <li><strong>Kritická cesta (Critical Path):</strong> Nejdelší cesta závislostí – zpoždění zde = zpoždění projektu</li>
+                        <li><strong>Baseline:</strong> Původní plán vs. aktuální stav – tracking odchylek</li>
+                    </ul>
+
+                    <div class="insight-box"><strong>WBS vs. Gantt:</strong> WBS říká CO se bude dělat (struktura deliverables). Gantt říká KDY to bude hotové (časová osa). V praxi: nejdříve udělej WBS, pak z pracovních balíků vytvoř Gantt.</div>
+
+                    <div class="ex-box"><strong>Příklad:</strong> V Ganttovi pro implementaci IS je vidět: Analýza (týden 1–3) → Design (týden 3–6, překryv) → Vývoj (týden 5–16) || Testovací prostředí (týden 5–7) → Testování (týden 15–19) → Nasazení (týden 20). Milník: ◆ Go-Live (konec týdne 20). Kritická cesta: Analýza → Design → Vývoj → Testování → Nasazení.</div>
+
+                    <h4>SWOT analýza</h4>
+                    <div class="def-box"><strong>Definice:</strong> SWOT je strategický analytický nástroj hodnotící čtyři dimenze: <strong>S</strong>trengths (Silné stránky), <strong>W</strong>eaknesses (Slabé stránky), <strong>O</strong>pportunities (Příležitosti), <strong>T</strong>hreats (Hrozby).</div>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th></th><th>Vnitřní (interní)</th><th>Vnější (externí)</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Pozitivní</strong></td><td><strong>S</strong>trengths – na co se opřít</td><td><strong>O</strong>pportunities – co využít</td></tr>
+                            <tr><td><strong>Negativní</strong></td><td><strong>W</strong>eaknesses – co zlepšit/zmírnit</td><td><strong>T</strong>hreats – před čím se bránit</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>SWOT při implementaci IS</h4>
+                    <p>SWOT se typicky použije v iniciační fázi projektu nebo při rozhodování o pořízení/změně IS.</p>
+                    <div class="ex-box"><strong>Příklad SWOT pro zavedení nového ERP:</strong><br>
+                    <strong>S:</strong> Zkušený IT tým, existující infrastruktura, podpora top managementu<br>
+                    <strong>W:</strong> Nekvalitní data v legacy systému, nízká IT gramotnost uživatelů, těsný rozpočet<br>
+                    <strong>O:</strong> Automatizace procesů sníží náklady, nový systém umožní expanzi na nové trhy, integrace s e-shopem<br>
+                    <strong>T:</strong> Odpor zaměstnanců ke změně, závislost na dodavateli (vendor lock-in), bezpečnostní rizika při migraci dat</div>
+
+                    <div class="thm-box"><strong>SWOT → strategie:</strong>
+                        <ul>
+                            <li><strong>SO (Maxi-Maxi):</strong> Využij silné stránky k získání příležitostí – agresivní rozvoj</li>
+                            <li><strong>WO (Mini-Maxi):</strong> Překonej slabiny, abys využil příležitosti – investice do vzdělání</li>
+                            <li><strong>ST (Maxi-Mini):</strong> Použij silné stránky k odvrácení hrozeb – diversifikace</li>
+                            <li><strong>WT (Mini-Mini):</strong> Minimalizuj slabiny a vyhni se hrozbám – defenzivní strategie</li>
+                        </ul>
+                    </div>
+
+                    <h4>Vztah WBS, Gantt a SWOT v projektu IS</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Nástroj</th><th>Fáze projektu</th><th>Odpovídá na</th></tr></thead>
+                        <tbody>
+                            <tr><td>SWOT</td><td>Iniciace, plánování</td><td>Proč / Má smysl? / Jaká rizika?</td></tr>
+                            <tr><td>WBS</td><td>Plánování</td><td>Co se bude dělat? (scope)</td></tr>
+                            <tr><td>Gantt</td><td>Plánování, monitoring</td><td>Kdy? Kdo? V jakém pořadí?</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>WBS: hierarchická dekompozice scope na pracovní balíky; základ pro plánování a controlling</li>
+                            <li>Gantt: pruhový harmonogram s úlohami, závislostmi, milníky a kritickou cestou; sledování kdy</li>
+                            <li>SWOT: S/W (interní) + O/T (externí); použití v iniciaci pro posouzení smysluplnosti projektu a identifikaci rizik</li>
+                            <li>Pořadí v projektu: SWOT (rozhodnutí) → WBS (scope) → Gantt (harmonogram)</li>
+                        </ul>
+                    </div>
+                </section>
+
             </div>
         </div>
     </div>
+
     <script src="subjects-nav.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

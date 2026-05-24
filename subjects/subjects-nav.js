@@ -61,13 +61,23 @@
         wrap.id = 'subjects-nav-panel';
         wrap.style.cssText = 'margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--sn-border,#dee2e6);';
 
-        // Header — link zpět na dashboard
+        // Header — link zpět na dashboard + kartičky
         const header = document.createElement('h6');
-        header.style.cssText = 'font-size:0.7rem;text-transform:uppercase;font-weight:700;letter-spacing:.05em;margin-bottom:.5rem;';
+        header.style.cssText = 'font-size:0.7rem;text-transform:uppercase;font-weight:700;letter-spacing:.05em;margin-bottom:.4rem;';
         header.innerHTML = `<a href="../index.html" class="text-decoration-none" style="color:inherit;">
             <i class="fas fa-th-list me-1"></i>Rozcestník
         </a>`;
         wrap.appendChild(header);
+
+        const cardsLink = document.createElement('a');
+        cardsLink.href = '../cards.html';
+        cardsLink.style.cssText = `display:flex;align-items:center;gap:.4rem;padding:.18rem .45rem;
+            border-radius:4px;text-decoration:none;font-size:.78rem;line-height:1.35;
+            color:inherit;transition:background .15s;margin-bottom:.5rem;`;
+        cardsLink.innerHTML = '<i class="fas fa-layer-group" style="font-size:.7rem;width:1rem;text-align:center;opacity:.7;"></i><span>Kartičky</span>';
+        cardsLink.addEventListener('mouseenter', () => { cardsLink.style.background = 'rgba(128,128,128,.1)'; });
+        cardsLink.addEventListener('mouseleave', () => { cardsLink.style.background = ''; });
+        wrap.appendChild(cardsLink);
 
         // Skupiny
         const groups = [

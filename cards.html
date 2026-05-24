@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kartičky | SZZ Příprava</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 60px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        #sidebar {
+            position: sticky;
+            top: 70px;
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+
+        .flash-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.15s, box-shadow 0.15s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .flash-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            color: inherit;
+        }
+        .flash-card-top {
+            height: 4px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .tag-pill {
+            font-size: 0.68rem;
+            padding: 1px 7px;
+            border-radius: 10px;
+            background: rgba(128,128,128,0.15);
+            display: inline-block;
+            margin: 1px;
+        }
+
+        .filter-btn {
+            font-size: 0.78rem;
+            padding: 0.22rem 0.6rem;
+            border-radius: 20px;
+            text-align: left;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            opacity: 0.3;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(13,110,253,0.45);
+            z-index: 1000;
+            border: none;
+        }
+
+        body.dark-mode .flash-card {
+            background: #2d2d2d;
+        }
+        body.dark-mode .card {
+            background: #2d2d2d;
+            border-color: #444;
+            color: #e0e0e0;
+        }
+        body.dark-mode .card-footer {
+            background: transparent;
+            border-color: #444;
+        }
+        body.dark-mode .form-control,
+        body.dark-mode .form-select {
+            background: #2d2d2d;
+            border-color: #555;
+            color: #e0e0e0;
+        }
+        body.dark-mode .form-control::placeholder {
+            color: #888;
+        }
+        body.dark-mode .modal-content {
+            background: #2a2a2a;
+            color: #e0e0e0;
+        }
+        body.dark-mode .modal-header,
+        body.dark-mode .modal-footer {
+            border-color: #444;
+        }
+        body.dark-mode .btn-close {
+            filter: invert(1);
+        }
+        body.dark-mode .filter-btn.btn-outline-secondary {
+            border-color: #555;
+            color: #ccc;
+        }
+        body.dark-mode .filter-btn.btn-outline-secondary:hover {
+            background: #333;
+        }
+        body.dark-mode .tag-pill {
+            background: rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" style="height:60px;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-arrow-left me-2"></i>Dashboard
+            </a>
+            <span class="navbar-text text-white fw-bold mx-auto">
+                <i class="fas fa-layer-group me-2"></i>Kartičky
+            </span>
+            <button class="btn btn-link text-white" id="themeToggle" title="Přepnout motiv">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container-fluid px-3 px-lg-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 d-none d-lg-block">
+                <div id="sidebar" class="pt-3 pe-2">
+                    <input type="text" class="form-control form-control-sm mb-3" id="searchInput" placeholder="Hledat kartičky...">
+                    <p class="text-muted mb-2" style="font-size:0.78rem;" id="cardCount">Načítání...</p>
+                    <h6 class="text-muted text-uppercase fw-bold mb-2" style="font-size:0.68rem;letter-spacing:.06em;">Předmět</h6>
+                    <div id="subjectFilters" class="d-flex flex-column gap-1"></div>
+                </div>
+            </div>
+
+            <!-- Grid -->
+            <div class="col-lg-9">
+                <div class="pt-3">
+                    <!-- Mobile search + filter -->
+                    <div class="d-lg-none mb-3">
+                        <input type="text" class="form-control form-control-sm mb-2" id="searchInputMobile" placeholder="Hledat kartičky...">
+                        <div id="subjectFiltersMobile" class="d-flex flex-wrap gap-1"></div>
+                    </div>
+
+                    <div id="cardGrid" class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAB -->
+    <button class="fab btn btn-primary" id="fabBtn" title="Nová kartička">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="cardModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Nová kartička</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editingId">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Otázka / Titulek</label>
+                        <input type="text" class="form-control" id="cardTitle" placeholder="Jak funguje QuickSort?">
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <label class="form-label fw-semibold">Předmět</label>
+                            <select class="form-select" id="cardSubject">
+                                <option value="">— bez předmětu —</option>
+                                <optgroup label="Teoretické">
+                                    <option value="ZDM">ZDM – Diskrétní matematika</option>
+                                    <option value="MAA">MAA – Matematická analýza</option>
+                                    <option value="LAG">LAG – Lineární algebra</option>
+                                    <option value="OMO">OMO – Objektové modelování</option>
+                                    <option value="DSA">DSA – Datové struktury a alg.</option>
+                                    <option value="PRA">PRA – Pravděpodobnost</option>
+                                    <option value="KAB">KAB – Kryptografie</option>
+                                    <option value="DBS">DBS – Databázové systémy</option>
+                                </optgroup>
+                                <optgroup label="Specializační">
+                                    <option value="ZWA">ZWA – Webové aplikace</option>
+                                    <option value="TS1">TS1 – Testování softwaru</option>
+                                    <option value="PM2">PM2 – Projektové řízení</option>
+                                    <option value="PSI">PSI – Počítačové sítě</option>
+                                    <option value="INS">INS – Informační systémy</option>
+                                    <option value="ISP">ISP – IS a procesy</option>
+                                    <option value="ZDA">ZDA – Datová analýza</option>
+                                    <option value="TPA">TPA – Tech. podnik. aplikací</option>
+                                    <option value="MPR">MPR – Metody pro rozhodování</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label fw-semibold">Tagy <span class="fw-normal text-muted">(čárkou)</span></label>
+                            <input type="text" class="form-control" id="cardTags" placeholder="algoritmy, třídění">
+                        </div>
+                    </div>
+                    <div class="mb-1">
+                        <label class="form-label fw-semibold">Obsah <span class="fw-normal text-muted">(Markdown + HTML boxy)</span></label>
+                        <textarea class="form-control font-monospace" id="cardContent" rows="13"
+                            placeholder="## Otázka&#10;Formulace otázky...&#10;&#10;## Walkthrough&#10;Krok za krokem..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zrušit</button>
+                    <button type="button" class="btn btn-primary" id="saveCardBtn">
+                        <i class="fas fa-save me-1"></i>Uložit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const FIREBASE_URL = 'https://statnice-391c5-default-rtdb.europe-west1.firebasedatabase.app';
+        const THEORETICAL = ['ZDM','MAA','LAG','OMO','DSA','PRA','KAB','DBS'];
+
+        function subjectColor(code) {
+            if (!code) return '#6c757d';
+            return THEORETICAL.includes(code) ? '#0d6efd' : '#198754';
+        }
+
+        function esc(s) {
+            return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        let allCards = [];
+        let activeFilter = 'all';
+        let searchQuery = '';
+
+        const cardModal = new bootstrap.Modal(document.getElementById('cardModal'));
+
+        // ── Theme ──────────────────────────────────────────────────────
+        function applyTheme() {
+            const dark = localStorage.getItem('theme') === 'dark';
+            document.body.classList.toggle('dark-mode', dark);
+            document.getElementById('themeToggle').innerHTML = dark
+                ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        }
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const dark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', dark ? 'dark' : 'light');
+            document.getElementById('themeToggle').innerHTML = dark
+                ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        });
+        applyTheme();
+
+        // ── Firebase ───────────────────────────────────────────────────
+        async function loadCards() {
+            document.getElementById('cardGrid').innerHTML =
+                '<div class="col-12 text-center text-muted py-5"><i class="fas fa-spinner fa-spin fa-lg me-2"></i>Načítání...</div>';
+            try {
+                const res = await fetch(`${FIREBASE_URL}/cards.json`);
+                const data = await res.json();
+                allCards = data ? Object.values(data).sort((a, b) => b.createdAt - a.createdAt) : [];
+            } catch {
+                document.getElementById('cardGrid').innerHTML =
+                    '<div class="col-12"><div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i>Nepodařilo se načíst kartičky. Zkontroluj připojení k internetu.</div></div>';
+                return;
+            }
+            renderFilters();
+            renderGrid();
+        }
+
+        async function apiSaveCard(card) {
+            const res = await fetch(`${FIREBASE_URL}/cards/${card.id}.json`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(card)
+            });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+        }
+
+        // ── Filters ────────────────────────────────────────────────────
+        function renderFilters() {
+            const codes = [...new Set(allCards.map(c => c.subject).filter(Boolean))].sort();
+
+            function buildHtml(mobile) {
+                const allBtn = `<button class="btn btn-sm filter-btn ${activeFilter === 'all' ? 'btn-primary' : 'btn-outline-secondary'} ${mobile ? '' : 'w-100'}" data-filter="all">
+                    <i class="fas fa-th-large me-1"></i>Vše
+                    <span class="float-end ms-2 text-muted" style="font-size:.72rem;">${allCards.length}</span>
+                </button>`;
+                const subjBtns = codes.map(code => {
+                    const color = subjectColor(code);
+                    const active = activeFilter === code;
+                    const count = allCards.filter(c => c.subject === code).length;
+                    return `<button class="btn btn-sm filter-btn ${active ? 'btn-primary' : 'btn-outline-secondary'} ${mobile ? '' : 'w-100'}"
+                        data-filter="${code}"
+                        style="${active ? '' : `border-color:${color}55;color:${color};`}">
+                        <span class="badge me-1" style="background:${color};font-size:.6rem;vertical-align:middle;">${code}</span>
+                        <span class="float-end ms-1 text-muted" style="font-size:.72rem;">${count}</span>
+                    </button>`;
+                }).join('');
+                return allBtn + subjBtns;
+            }
+
+            document.getElementById('subjectFilters').innerHTML = buildHtml(false);
+            document.getElementById('subjectFiltersMobile').innerHTML = buildHtml(true);
+
+            document.querySelectorAll('[data-filter]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    activeFilter = btn.dataset.filter;
+                    renderFilters();
+                    renderGrid();
+                });
+            });
+        }
+
+        // ── Grid ───────────────────────────────────────────────────────
+        function getFiltered() {
+            const q = searchQuery.toLowerCase();
+            return allCards.filter(c => {
+                const matchFilter = activeFilter === 'all' || c.subject === activeFilter;
+                const matchSearch = !q ||
+                    (c.title || '').toLowerCase().includes(q) ||
+                    (c.tags || '').toLowerCase().includes(q) ||
+                    (c.subject || '').toLowerCase().includes(q);
+                return matchFilter && matchSearch;
+            });
+        }
+
+        function renderGrid() {
+            const cards = getFiltered();
+            const count = document.getElementById('cardCount');
+            count.textContent = `${allCards.length} ${allCards.length === 1 ? 'kartička' : allCards.length < 5 ? 'kartičky' : 'kartiček'}`;
+
+            if (!cards.length) {
+                document.getElementById('cardGrid').innerHTML = `<div class="col-12">
+                    <div class="empty-state text-muted">
+                        <i class="fas fa-layer-group"></i>
+                        <h5>${allCards.length === 0 ? 'Zatím žádné kartičky' : 'Žádné výsledky'}</h5>
+                        <p>${allCards.length === 0
+                            ? 'Přidej první kartičku kliknutím na <strong>+</strong> vpravo dole.'
+                            : 'Zkus jiný filtr nebo jiný výraz.'}</p>
+                    </div>
+                </div>`;
+                return;
+            }
+
+            document.getElementById('cardGrid').innerHTML = cards.map(card => {
+                const color = subjectColor(card.subject);
+                const tags = (card.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+                const date = card.createdAt
+                    ? new Date(card.createdAt).toLocaleDateString('cs-CZ', { day: 'numeric', month: 'short', year: 'numeric' })
+                    : '';
+                const raw = (card.content || '').replace(/```[\s\S]*?```/g, '').replace(/#+\s?/g, '').replace(/\*{1,2}/g, '').trim();
+                const preview = raw.substring(0, 110);
+
+                return `<div class="col">
+                    <a href="card.html?id=${esc(card.id)}" class="flash-card card h-100">
+                        <div class="flash-card-top" style="background:${color};"></div>
+                        <div class="card-body pb-2">
+                            ${card.subject
+                                ? `<span class="badge mb-2" style="background:${color};font-size:.68rem;">${esc(card.subject)}</span>`
+                                : ''}
+                            <h6 class="card-title mb-1" style="font-size:.93rem;line-height:1.35;">${esc(card.title || 'Bez názvu')}</h6>
+                            ${preview ? `<p class="card-text text-muted mb-2" style="font-size:.77rem;line-height:1.4;">${esc(preview)}${raw.length > 110 ? '…' : ''}</p>` : ''}
+                            ${tags.length ? `<div>${tags.map(t => `<span class="tag-pill">${esc(t)}</span>`).join('')}</div>` : ''}
+                        </div>
+                        ${date ? `<div class="card-footer border-0 bg-transparent text-muted" style="font-size:.7rem;">${date}</div>` : ''}
+                    </a>
+                </div>`;
+            }).join('');
+        }
+
+        // ── Search ─────────────────────────────────────────────────────
+        ['searchInput', 'searchInputMobile'].forEach(id => {
+            document.getElementById(id)?.addEventListener('input', e => {
+                searchQuery = e.target.value;
+                renderGrid();
+            });
+        });
+
+        // ── New card modal ─────────────────────────────────────────────
+        document.getElementById('fabBtn').addEventListener('click', () => {
+            document.getElementById('editingId').value = '';
+            document.getElementById('modalTitle').textContent = 'Nová kartička';
+            document.getElementById('cardTitle').value = '';
+            document.getElementById('cardSubject').value = '';
+            document.getElementById('cardTags').value = '';
+            document.getElementById('cardContent').value = '';
+            cardModal.show();
+            setTimeout(() => document.getElementById('cardTitle').focus(), 300);
+        });
+
+        document.getElementById('saveCardBtn').addEventListener('click', async () => {
+            const title = document.getElementById('cardTitle').value.trim();
+            if (!title) { document.getElementById('cardTitle').focus(); return; }
+
+            const existingId = document.getElementById('editingId').value;
+            const id = existingId || `card_${Date.now()}`;
+            const card = {
+                id,
+                title,
+                subject: document.getElementById('cardSubject').value,
+                tags: document.getElementById('cardTags').value.trim(),
+                content: document.getElementById('cardContent').value,
+                createdAt: existingId
+                    ? (allCards.find(c => c.id === existingId)?.createdAt || Date.now())
+                    : Date.now(),
+                updatedAt: Date.now()
+            };
+
+            const btn = document.getElementById('saveCardBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Ukládám…';
+
+            try {
+                await apiSaveCard(card);
+                cardModal.hide();
+                await loadCards();
+            } catch {
+                alert('Chyba při ukládání. Zkontroluj připojení.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save me-1"></i>Uložit';
+            }
+        });
+
+        loadCards();
+    </script>
+</body>
+</html>
