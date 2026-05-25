@@ -22,7 +22,7 @@
         { code: 'INS', name: 'Informační systémy',     file: 'ins.html', count: 7  },
         { code: 'ISP', name: 'IS a procesy',           file: 'isp.html', count: 13 },
         { code: 'ZDA', name: 'Datová analýza',         file: 'zda.html', count: 0  },
-        { code: 'TPA', name: 'Tech. podnik. aplikací', file: 'tpa.html', count: 0  },
+        { code: 'TPA', name: 'Tvorba podnikových aplikací', file: 'tpa.html', count: 0  },
         { code: 'MPR', name: 'Metody pro rozhodování', file: 'mpr.html', count: 0  },
     ];
 

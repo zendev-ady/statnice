@@ -22,7 +22,7 @@ Interaktivní studijní prostředí pro přípravu na státní závěrečnou zko
 5. **INS** - Informační systémy
 6. **ISP** - Informační systémy a procesy
 7. **ZDA** - Datová analýza
-8. **TPA** - Technologie podnikových aplikací
+8. **TPA** - Tvorba podnikových aplikací
 9. **MPR** - Metody pro rozhodování
 
 ## Psaní HTML poznámek
