@@ -30,8 +30,9 @@
                         <li><a class="nav-link py-1" href="#topic-3">3. Implementace IS</a></li>
                         <li><a class="nav-link py-1" href="#topic-4">4. Business procesy</a></li>
                         <li><a class="nav-link py-1" href="#topic-5">5. Business analýza</a></li>
-                        <li><a class="nav-link py-1" href="#topic-6">6. Stavový diagram vs. diagram aktivit</a></li>
+                        <li><a class="nav-link py-1" href="#topic-6">6. UML diagramy – přehled a použití</a></li>
                         <li><a class="nav-link py-1" href="#topic-7">7. WBS, Gantt, SWOT</a></li>
+                        <li><a class="nav-link py-1" href="#topic-8">8. Agilní metodiky (Scrum, XP, Kanban)</a></li>
                     </ul>
                 </nav>
             </div>
@@ -377,9 +378,35 @@
 
                 <!-- ==================== TOPIC 6 ==================== -->
                 <section class="topic-section" id="topic-6">
-                    <h3>6. Stavový diagram vs. diagram aktivit</h3>
+                    <h3>6. UML diagramy – přehled a použití</h3>
 
-                    <p>Oba diagramy jsou součástí UML (Unified Modeling Language) a slouží k modelování dynamického chování systému. Liší se však tím, <em>na co se zaměřují</em>.</p>
+                    <div class="insight-box"><strong>Intuice:</strong> UML (Unified Modeling Language) je sada ~14 typů diagramů. Dělí se na dvě osy: <em>co modeluji</em> (strukturu nebo chování) a <em>v jaké fázi projektu</em> (požadavky → analýza → návrh → implementace).</div>
+
+                    <h4>Strukturní diagramy – „jak systém vypadá"</h4>
+                    <p>Zachycují statickou strukturu: třídy, komponenty, nasazení. Používají se hlavně ve fázi <strong>návrhu a implementace</strong>.</p>
+                    <ul>
+                        <li><strong>Class diagram:</strong> Třídy, atributy, metody a vztahy (dědičnost, asociace, agregace). Základ OOP návrhu.</li>
+                        <li><strong>Component diagram:</strong> Větší bloky systému (moduly, služby) a jejich závislosti. Architektonický pohled.</li>
+                        <li><strong>Deployment diagram:</strong> Fyzické nasazení komponent na servery/uzly.</li>
+                    </ul>
+
+                    <h4>Behaviorální diagramy – „jak systém funguje"</h4>
+                    <p>Zachycují dynamické chování. Každý typ odpovídá na jinou otázku a hodí se do jiné fáze:</p>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Diagram</th><th>Otázka</th><th>Fáze</th><th>Příklad použití</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Use case diagram</strong></td><td>Kdo co může dělat se systémem?</td><td>Požadavky</td><td>Zákazník může sledovat objednávku, admin může rušit objednávky</td></tr>
+                            <tr><td><strong>Activity diagram</strong></td><td>V jakém pořadí probíhají kroky?</td><td>Analýza procesů</td><td>Tok zpracování objednávky přes sklad, účetnictví, logistiku</td></tr>
+                            <tr><td><strong>State machine diagram</strong></td><td>Jaké stavy může mít tento objekt?</td><td>Analýza / návrh</td><td>Životní cyklus objednávky: Nová → Zaplacená → Odeslaná</td></tr>
+                            <tr><td><strong>Sequence diagram</strong></td><td>Kdo s kým komunikuje a v jakém pořadí?</td><td>Návrh</td><td>Volání API: klient → controller → service → DB → odpověď zpět</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="warn-box"><strong>Záměna use case vs. activity:</strong> Use case diagram říká <em>co</em> systém dělá pro koho (pohled zvenčí, požadavky). Activity diagram říká <em>jak</em> to probíhá krok za krokem (pohled zevnitř, proces). Oba mohou popisovat stejnou funkcionalitu, ale z jiného úhlu.</div>
+
+                    <hr>
+                    <h4>Detail: Stavový diagram (State Machine Diagram)</h4>
+                    <div class="def-box"><strong>Definice:</strong> Stavový diagram modeluje <strong>životní cyklus jednoho objektu (entity)</strong> – jaké stavy může nabývat a za jakých podmínek přechází mezi nimi. Zaměřuje se na to, <em>v jakém stavu objekt je</em>, nikoliv na tok práce.</div>
 
                     <h4>Stavový diagram (State Machine Diagram)</h4>
                     <div class="def-box"><strong>Definice:</strong> Stavový diagram modeluje <strong>životní cyklus jednoho objektu (entity)</strong> – jaké stavy může nabývat a za jakých podmínek přechází mezi nimi. Zaměřuje se na to, <em>v jakém stavu objekt je</em>, nikoliv na tok práce.</div>
@@ -439,10 +466,12 @@
 
                     <div class="summary-box"><strong>Shrnutí:</strong>
                         <ul>
-                            <li>Stavový diagram: životní cyklus objektu, stavy + přechody triggery/podmínkami</li>
-                            <li>Diagram aktivit: tok procesu/algoritmu, akce + větvení + paralelismus (fork/join) + swimlanes</li>
-                            <li>Klíčová otázka: modeluji <em>stav entity</em> → state diagram; modeluji <em>průběh procesu</em> → activity diagram</li>
-                            <li>Oba jsou UML behavioral diagramy, ale v praxi se používají v různých kontextech</li>
+                            <li><strong>UML = strukturní + behaviorální</strong>; strukturní = class/component/deployment (návrh), behaviorální = use case/activity/state/sequence (analýza → návrh)</li>
+                            <li><strong>Use case diagram</strong> = diagramy požadavků: kdo co smí, pohled zvenčí (fáze analýzy požadavků)</li>
+                            <li><strong>Activity diagram</strong> = procesní diagramy: tok kroků, swimlanes, fork/join, BPMN ekvivalent v UML</li>
+                            <li><strong>State machine diagram</strong> = životní cyklus jednoho objektu: stavy + přechody triggery/podmínkami</li>
+                            <li><strong>Sequence diagram</strong> = interakce: zprávy mezi objekty/komponentami v čase (typicky návrh API)</li>
+                            <li>Klíčová otázka: modeluji <em>požadavky</em> → use case; <em>proces</em> → activity; <em>stav entity</em> → state; <em>komunikaci</em> → sequence</li>
                         </ul>
                     </div>
                 </section>
@@ -555,6 +584,116 @@
                             <li>Gantt: pruhový harmonogram s úlohami, závislostmi, milníky a kritickou cestou; sledování kdy</li>
                             <li>SWOT: S/W (interní) + O/T (externí); použití v iniciaci pro posouzení smysluplnosti projektu a identifikaci rizik</li>
                             <li>Pořadí v projektu: SWOT (rozhodnutí) → WBS (scope) → Gantt (harmonogram)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ==================== TOPIC 8 ==================== -->
+                <section class="topic-section" id="topic-8">
+                    <h3>8. Agilní metodiky – Scrum, XP, Kanban</h3>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Agilní metodiky vznikly jako přímá reakce na selhání vodopádu u projektů s měnícími se požadavky. Klíčový posun: místo „naplánuj vše předem a realizuj podle plánu" platí <em>dodávej po malých funkčních přírůstcích, rychle získej zpětnou vazbu a přizpůsob se</em>. Základ tvoří Agile Manifesto (2001, Beck et al.).</div>
+
+                    <div class="def-box"><strong>Agile Manifesto – 4 hodnoty:</strong>
+                        <ul>
+                            <li>Jednotlivci a interakce <em>před</em> procesy a nástroji</li>
+                            <li>Fungující software <em>před</em> obsáhlou dokumentací</li>
+                            <li>Spolupráce se zákazníkem <em>před</em> vyjednáváním smluv</li>
+                            <li>Reakce na změnu <em>před</em> dodržováním plánu</li>
+                        </ul>
+                        Pravá strana má hodnotu — levá má hodnotu <em>větší</em>.
+                    </div>
+
+                    <h4>Scrum</h4>
+                    <div class="def-box"><strong>Definice:</strong> Scrum je lehký iterativní framework pro vývoj a dodávání komplexních produktů. Práce je organizována do fixních časových iterací — <em>sprintů</em> (1–4 týdny, typicky 2), na jejichž konci vzniká potenciálně dodatelný přírůstek (Increment).</div>
+
+                    <p><strong>3 role:</strong></p>
+                    <ul>
+                        <li><strong>Product Owner (PO)</strong> — maximalizuje hodnotu produktu; vlastní a prioritizuje Product Backlog; jediný, kdo rozhoduje o prioritách</li>
+                        <li><strong>Scrum Master</strong> — servant leader; odstraňuje překážky; facilituje Scrum events; hlídá proces</li>
+                        <li><strong>Developers (Development Team)</strong> — cross-functional, samo-organizující tým (3–9); commituje Sprint Backlog a dodává Increment</li>
+                    </ul>
+
+                    <p><strong>3 artefakty:</strong></p>
+                    <ul>
+                        <li><strong>Product Backlog</strong> — seřazený seznam všech požadavků (user stories, bugů, technických tasků); žijící dokument, PO odpovídá za prioritizaci</li>
+                        <li><strong>Sprint Backlog</strong> — subset Product Backlogu vybraný pro sprint + plán, jak ho tým splní</li>
+                        <li><strong>Increment</strong> — suma všech dokončených položek sprintu; musí splňovat Definition of Done a být potenciálně dodatelný</li>
+                    </ul>
+
+                    <p><strong>5 events (ceremonies):</strong></p>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Event</th><th>Cíl</th><th>Účastníci</th><th>Timebox (2wk)</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Sprint</strong></td><td>Kontejner pro ostatní eventy; fixní délka</td><td>—</td><td>2 týdny</td></tr>
+                            <tr><td><strong>Sprint Planning</strong></td><td>Vybrat cíl sprintu a naplánovat práci</td><td>Celý Scrum team</td><td>max 4 h</td></tr>
+                            <tr><td><strong>Daily Scrum</strong></td><td>Synchronizace, identifikace překážek</td><td>Developers</td><td>15 min</td></tr>
+                            <tr><td><strong>Sprint Review</strong></td><td>Ukázat Increment, získat feedback stakeholderů</td><td>Team + stakeholdeři</td><td>max 2 h</td></tr>
+                            <tr><td><strong>Sprint Retrospective</strong></td><td>Zlepšit způsob práce (proces, nástroje)</td><td>Scrum team</td><td>max 1,5 h</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Startup vyvíjí mobilní aplikaci. PO má Product Backlog se 60 user stories. Na Sprint Planning vybere tým 8 stories pro 2týdenní sprint (Sprint Goal: „uživatel se může registrovat a přihlásit"). Na konci sprintu je demo — zákazník říká: „Skvělé, ale přidejte přihlášení přes Google." PO přidá story do backlogu, prioritizuje na sprint 2. Zákazník vidí fungující software každé 2 týdny a může reagovat.</div>
+
+                    <div class="warn-box"><strong>Pozor — nejčastější antipattern „ScrumBut":</strong> „Děláme Scrum, ale bez retrospektivy / ale PO nemá rozhodovací pravomoc / ale sprint délku měníme za běhu." Bez Definition of Done, bez skutečného PO a bez retro není Scrum — je to jen chaos s burndown chartem.</div>
+
+                    <h4>XP (Extreme Programming)</h4>
+                    <div class="def-box"><strong>Definice:</strong> XP je agilní metodika zaměřená na technické praktiky zajišťující vysokou kvalitu kódu a rychlou adaptaci na změny. Kde Scrum definuje <em>jak řídit projekt</em>, XP definuje <em>jak psát software</em>.</div>
+
+                    <p><strong>Klíčové technické praktiky XP:</strong></p>
+                    <ul>
+                        <li><strong>Test-Driven Development (TDD)</strong> — cyklus Red → Green → Refactor: nejprve napíšu selháváající test, pak minimální kód co ho splní, pak refaktoruji. Výsledek: vždy testovaný kód, design emerguje z testů.</li>
+                        <li><strong>Pair Programming</strong> — dva vývojáři na jednom počítači: driver (píše) + navigator (reviewuje). Okamžité code review, sdílení znalostí, méně bugů.</li>
+                        <li><strong>Continuous Integration (CI)</strong> — kód se integruje a builduje automaticky při každém commitu. Chyby se odhalí okamžitě, ne za 3 týdny.</li>
+                        <li><strong>Refactoring</strong> — průběžné zlepšování designu kódu bez změny chování. Brání hromadění technického dluhu.</li>
+                        <li><strong>Collective Code Ownership</strong> — každý vývojář může upravit libovolnou část kódu. Eliminuje „silos" a single points of failure.</li>
+                        <li><strong>Simple Design (YAGNI)</strong> — „You Ain't Gonna Need It": implementuj jen to, co je teď potřeba. Žádné spekulativní features.</li>
+                        <li><strong>Planning Game</strong> — zákazník popisuje user stories, tým odhaduje, zákazník prioritizuje.</li>
+                    </ul>
+
+                    <div class="ex-box"><strong>Příklad (TDD cyklus):</strong> Vývojář má implementovat funkci výpočtu DPH.<br>
+                    1. <strong>Red:</strong> napíše test <code>assert calculateVAT(100, 0.21) == 21</code> → test selže (funkce neexistuje)<br>
+                    2. <strong>Green:</strong> implementuje <code>calculateVAT(base, rate) { return base * rate; }</code> → test projde<br>
+                    3. <strong>Refactor:</strong> přejmenuje proměnné, extrahuje konstanty → testy stále zelené<br>
+                    Výsledek: 100% testovaný kód, design vychází z požadavků.</div>
+
+                    <h4>Kanban</h4>
+                    <div class="def-box"><strong>Definice:</strong> Kanban je metoda řízení toku práce vizualizací a omezením rozpracovanosti (WIP — Work In Progress). Pochází z Toyota Production System. Na rozdíl od Scrumu <em>nemá fixní iterace, role ani ceremonies</em> — práce plyne kontinuálně.</div>
+
+                    <p><strong>4 základní principy Kanbanu:</strong></p>
+                    <ul>
+                        <li><strong>Vizualizuj tok práce</strong> — Kanban board se sloupci (To Do → In Progress → Testing → Done)</li>
+                        <li><strong>Omezte WIP (Work In Progress limits)</strong> — každý sloupec má max. počet položek. Překročení limitu = nové věci se nespouští, dokud se nedokončí rozdělaná práce. Odhaluje bottlenecky.</li>
+                        <li><strong>Měřte a optimalizujte tok</strong> — klíčové metriky: cycle time (čas od „In Progress" po „Done"), throughput (počet dokončených položek/týden), lead time</li>
+                        <li><strong>Kontinuální zlepšování (Kaizen)</strong> — pravidelná retrospektiva procesu bez nutnosti sprintu</li>
+                    </ul>
+
+                    <div class="ex-box"><strong>Příklad (WIP limit):</strong> IT support tým má Kanban board s limitem „In Progress = 3". Přijde 4. urgentní ticket. Systém zastaví spuštění — tým nejprve musí dokončit jeden z rozdělaných ticketů. Výsledek: méně kontextových přepínání, kratší průměrný cycle time, lépe viditelné přetížení.</div>
+
+                    <div class="insight-box"><strong>Scrum vs. Kanban — kdy co:</strong> Scrum je vhodný pro <em>produktový vývoj</em> s plánovanými přírůstky a pravidelnou spoluprací se zákazníkem. Kanban je vhodný pro <em>provoz, support a servisní týmy</em>, kde práce přichází kontinuálně a nepravidelně, nelze ji plánovat do sprintů.</div>
+
+                    <h4>Srovnání: Tradiční vs. Agilní metodiky</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th></th><th>Waterfall</th><th>RUP</th><th>Scrum</th><th>XP</th><th>Kanban</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Přístup</strong></td><td>Sekvenční</td><td>Iterativní</td><td>Iterativní/Inkrementální</td><td>Iterativní</td><td>Kontinuální tok</td></tr>
+                            <tr><td><strong>Plánování</strong></td><td>Vše předem</td><td>Po fázích</td><td>Sprint planning</td><td>Planning game</td><td>Just-in-time</td></tr>
+                            <tr><td><strong>Zpětná vazba</strong></td><td>Na konci</td><td>Průběžně</td><td>Každý sprint</td><td>Každý sprint/den</td><td>Průběžně</td></tr>
+                            <tr><td><strong>Změna požadavků</strong></td><td>Velmi špatně</td><td>Středně</td><td>Dobře (mezi sprinty)</td><td>Dobře</td><td>Velmi dobře</td></tr>
+                            <tr><td><strong>Technické praktiky</strong></td><td>Není definováno</td><td>Není definováno</td><td>Není definováno</td><td>TDD, CI, PP, Refactoring</td><td>Není definováno</td></tr>
+                            <tr><td><strong>Vhodné pro</strong></td><td>Stabilní požadavky, certifikace</td><td>Velké systémy</td><td>Produktový vývoj</td><td>SW s vysokými nároky na kvalitu</td><td>Podpora, ops, servis</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="warn-box"><strong>Klíčový konceptuální rozdíl:</strong> Tradiční metodiky <em>fixují scope</em> a přizpůsobují čas + náklady. Agilní metodiky <em>fixují čas a kapacitu</em> (sprint, tým) a přizpůsobují scope — dodávají nejvyšší hodnotu v daném čase. To zásadně mění charakter smluv, řízení rizik a očekávání zákazníka.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Agile Manifesto: 4 hodnoty — lidé, fungující SW, zákazník, reakce na změnu</li>
+                            <li>Scrum: iterativní framework — Sprint (1–4 týd.), 3 role (PO/SM/Dev), 3 artefakty (Product Backlog/Sprint Backlog/Increment), 5 events</li>
+                            <li>XP: technické praktiky pro kvalitu — TDD (Red-Green-Refactor), CI, Pair Programming, Collective Ownership, YAGNI</li>
+                            <li>Kanban: vizualizace toku, WIP limity, cycle time; vhodný pro kontinuální operativní práci</li>
+                            <li>Tradiční fixují scope; agilní fixují čas a kapacitu — scope je proměnná</li>
                         </ul>
                     </div>
                 </section>
