@@ -3,10 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MPR - Metody pro rozhodování | SZZ Příprava</title>
+    <title>MPR - Metody pro rozhodování za rizika a vícekriteriální rozhodování | SZZ Příprava</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
+                macros: { N: "\\mathbb{N}", R: "\\mathbb{R}", Z: "\\mathbb{Z}", Q: "\\mathbb{Q}", C: "\\mathbb{C}" }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body class="page-specialization">
     <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
@@ -16,20 +26,384 @@
             <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')"><i class="fas fa-adjust"></i></button>
         </div>
     </nav>
+
     <div class="container">
         <div class="row">
             <div class="col-lg-3 d-none d-lg-block">
                 <nav class="topic-nav pt-4">
                     <h6 class="text-muted text-uppercase fw-bold mb-3">Témata</h6>
-                    <p class="text-muted small fst-italic">Ve výstavbě</p>
+                    <ul class="nav flex-column">
+                        <li><a class="nav-link py-1" href="#topic-1">1. Lineární programování</a></li>
+                        <li><a class="nav-link py-1" href="#topic-2">2. Klasifikace rozhod. situací</a></li>
+                        <li><a class="nav-link py-1" href="#topic-3">3. Rozhodování za rizika</a></li>
+                        <li><a class="nav-link py-1" href="#topic-4">4. Rozhodování za neurčitosti</a></li>
+                        <li><a class="nav-link py-1" href="#topic-5">5. Vícekriteriální rozhodování – úvod</a></li>
+                        <li><a class="nav-link py-1" href="#topic-6">6. Metody stanovení vah</a></li>
+                        <li><a class="nav-link py-1" href="#topic-7">7. Komplexní hodnocení variant</a></li>
+                        <li><a class="nav-link py-1" href="#topic-8">8. Vektorová optimalizace, Pareto</a></li>
+                        <li><a class="nav-link py-1" href="#topic-9">9. Praxe a typické chyby</a></li>
+                        <li><a class="nav-link py-1" href="#topic-10">10. Získávání a verifikace dat</a></li>
+                    </ul>
                 </nav>
             </div>
+
             <div class="col-lg-9">
-                <h1 class="mb-4">Metody pro rozhodování</h1>
-                <div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>Tato stránka je ve výstavbě. Použij /notes mpr pro vygenerování obsahu.</div>
+                <h1 class="mb-4">Metody pro rozhodování za rizika a neurčitosti, vícekriteriální rozhodování</h1>
+
+                <div class="insight-box">
+                    <strong>Velký obrázek:</strong> Předmět má dvě nohy. (1) <em>Rozhodování za rizika a neurčitosti</em> – jedno kritérium, ale nejistá budoucnost (neznáme, který „stav světa" nastane). (2) <em>Vícekriteriální rozhodování</em> – budoucnost je jistá, ale hodnotíme varianty podle více protichůdných kritérií. Obojí staví na lineárním programování jako základním optimalizačním aparátu. U státnice se neptají na výpočetní detaily, ale chtějí, abyste uměli plynule popsat, jaký problém která metoda řeší, jaké má předpoklady a jak k výsledku dojdete.
+                </div>
+
+                <!-- TOPIC 1 -->
+                <section class="topic-section" id="topic-1">
+                    <h3>1. Úvod do lineárního programování (LP)</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> Úloha <strong>lineárního programování</strong> hledá extrém lineární účelové (kriteriální) funkce $z = \mathbf{c}^\top \mathbf{x}$ na množině přípustných řešení popsané soustavou lineárních rovnic a nerovnic a podmínkami nezápornosti:
+                        <div class="formula-block">$$\max\; z=\mathbf{c}^\top\mathbf{x}\quad\text{za podmínek}\quad A\mathbf{x}\le \mathbf{b},\;\; \mathbf{x}\ge \mathbf{0}.$$</div>
+                    </div>
+
+                    <h4>Jak k tomu dojít</h4>
+                    <p>LP je nejrozšířenější obor operačního výzkumu. Vychází z přirozené situace: máme omezené zdroje (kapacity strojů, materiál, peníze) a chceme z nich vytěžit maximum (zisk) nebo splnit cíl s minimem nákladů. Pokud jsou jak cíl, tak omezení <em>lineární</em> funkce proměnných, dostáváme LP. Linearita je silný předpoklad, ale velmi často dostatečně přesný a hlavně výpočetně zvládnutelný.</p>
+
+                    <div class="insight-box"><strong>Geometrická intuice:</strong> Lineární omezení vymezují <em>konvexní mnohostěn</em> (polytop) přípustných řešení. Lineární účelová funkce má svůj extrém vždy ve <strong>vrcholu</strong> tohoto mnohostěnu. Stačí tedy prohledávat vrcholy, ne celé kontinuum bodů.</p></div>
+
+                    <h4>Simplexová metoda a dualita</h4>
+                    <p><strong>Simplexová metoda</strong> (Dantzig) je iterační algoritmus, který startuje v jednom vrcholu a postupně přechází po hranách do sousedního vrcholu, který zlepšuje účelovou funkci, dokud žádné zlepšení není možné – tam je optimum. Ke každé úloze (primární) existuje <strong>duální úloha</strong>: maximalizační úloha o $n$ proměnných a $m$ omezeních má duál minimalizační o $m$ proměnných a $n$ omezeních. Optimální hodnoty obou se rovnají (věta o dualitě) a duální proměnné mají význam <em>stínových cen</em> – kolik by přidala jedna jednotka navíc daného zdroje.</p>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Pekárna vyrábí rohlíky a chleba, omezena množstvím mouky a časem pece. LP najde mix, který maximalizuje zisk. Stínová cena mouky pak řekne, o kolik víc bych vydělal, kdybych měl o kilo mouky víc – tedy nejvyšší cenu, za kterou se vyplatí mouku dokoupit.</div>
+
+                    <p><strong>K čemu to je v MPR:</strong> LP je výpočetní jádro pro <em>vektorovou (vícekriteriální) optimalizaci</em> (téma 8) a logický základ pro chápání „optimální vs. kompromisní" řešení.</p>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>LP = lineární cíl + lineární omezení + nezápornost.</li>
+                            <li>Optimum leží ve vrcholu konvexního mnohostěnu → simplex prochází vrcholy.</li>
+                            <li>Dualita dává stínové ceny zdrojů a kontrolu optima.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 2 -->
+                <section class="topic-section" id="topic-2">
+                    <h3>2. Klasifikace rozhodovacích situací a okolí rozhodovací úlohy</h3>
+
+                    <h4>Prvky rozhodovací úlohy</h4>
+                    <p>Každou rozhodovací úlohu popisují stejné stavební kameny: <strong>varianty</strong> (alternativy $A_i$ – mezi čím se rozhoduji), <strong>stavy světa</strong> ($S_j$ – budoucí situace, které nemohu ovlivnit, např. počasí, poptávka), <strong>důsledky</strong> ($x_{ij}$ – výsledek varianty $i$ při stavu $j$, zapsaný v <em>rozhodovací matici</em>) a <strong>kritéria</strong> hodnocení. „Okolím" úlohy se míní kontext: kdo je rozhodovatel, jaké má cíle, jaké informace má k dispozici a jaká jsou omezení.</p>
+
+                    <h4>Klasifikace podle míry informace</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Typ</th><th>Co známe o budoucnosti</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Za jistoty</strong></td><td>Víme s jistotou, který stav nastane a jaké budou důsledky. Úplná informace.</td></tr>
+                            <tr><td><strong>Za rizika</strong></td><td>Známe možné stavy <em>a jejich pravděpodobnosti</em>.</td></tr>
+                            <tr><td><strong>Za nejistoty / neurčitosti</strong></td><td>Známe možné stavy, ale <em>neznáme pravděpodobnosti</em> (případně neznáme ani stavy).</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Tahle klasifikace určuje, jakou metodu vůbec smím použít. Mám-li pravděpodobnosti (riziko), počítám střední hodnoty. Nemám-li je (neurčitost), musím sáhnout po pravidlech jako Wald nebo Hurwicz, která pravděpodobnosti nepotřebují.</div>
+
+                    <h4>Etapy rozhodovacího procesu</h4>
+                    <p>Identifikace problému → analýza a formulace → tvorba variant → stanovení kritérií → určení důsledků variant → hodnocení a výběr → realizace → kontrola výsledků. Tato struktura je rámec, do kterého se všechny ostatní metody zasazují.</p>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Úloha = varianty × stavy světa → důsledky (rozhodovací matice) + kritéria.</li>
+                            <li>Klíčové dělení: jistota / riziko (známé pravděpodobnosti) / neurčitost (neznámé).</li>
+                            <li>Typ situace předurčuje volbu metody.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 3 -->
+                <section class="topic-section" id="topic-3">
+                    <h3>3. Metody pro rozhodování za rizika</h3>
+
+                    <p><strong>Riziko</strong> znamená, že ke každému stavu světa $S_j$ umím přiřadit pravděpodobnost $p_j$ (přičemž $\sum_j p_j = 1$). To mi umožní stavy „zprůměrovat".</p>
+
+                    <h4>Kritérium střední hodnoty (EMV)</h4>
+                    <div class="def-box"><strong>EMV (Expected Monetary Value):</strong> Pro každou variantu spočítáme očekávaný (střední) výnos a vybereme variantu s největším:
+                        <div class="formula-block">$$E(A_i)=\sum_{j} p_j\, x_{ij}, \qquad A^* = \arg\max_i E(A_i).$$</div>
+                    </div>
+
+                    <h4>Jak k tomu dojít a co z toho plyne</h4>
+                    <p>EMV je vážený průměr důsledků váhami = pravděpodobnostmi. Je správné při <em>opakovaném</em> rozhodování (dlouhodobý průměr). U <em>jednorázových</em> velkých rozhodnutí ale samotné EMV nestačí – ignoruje <strong>rozptyl</strong> (riziko). Proto se EMV doplňuje o míru variability (směrodatná odchylka) nebo o postoj k riziku přes <strong>užitkovou funkci</strong>: rozhodovatel averzní k riziku preferuje jistotu před stejně velkou střední hodnotou s rozptylem.</p>
+
+                    <div class="warn-box"><strong>Pozor – Petrohradský paradox:</strong> Hra s nekonečnou střední hodnotou, za kterou přesto nikdo nezaplatí mnoho. Ukazuje, že lidé nerozhodují podle EMV peněz, ale podle <em>očekávaného užitku</em>. To je důvod existence pojištění (platím víc než EMV škody, abych se zbavil rozptylu).</div>
+
+                    <h4>Rozhodovací stromy</h4>
+                    <p>Když rozhodnutí probíhá ve více etapách (rozhoduji se, pak se odhalí stav, pak se rozhoduji znovu), kreslíme <strong>rozhodovací strom</strong>: čtverečky = rozhodovací uzly (volba je na mně), kolečka = uzly náhody (zde se realizuje pravděpodobnost). Strom řešíme <em>zpětně</em> (backward induction) – od listů ke kořeni počítáme EMV a v každém rozhodovacím uzlu volíme nejlepší větev.</p>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Firma zvažuje, zda postavit velkou nebo malou továrnu při neznámé budoucí poptávce (vysoká 60 %, nízká 40 %). EMV každé varianty = $0{,}6\cdot\text{zisk}_{vys} + 0{,}4\cdot\text{zisk}_{niz}$; vybere se vyšší. Strom navíc umožní zahrnout etapu „nejdřív malá, později rozšířit".</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Za rizika známe pravděpodobnosti → počítáme střední hodnotu (EMV).</li>
+                            <li>EMV samo neřeší riziko (rozptyl) – doplň užitkovou funkcí / odchylkou.</li>
+                            <li>Vícefázová rozhodnutí → rozhodovací strom, řešení zpětnou indukcí.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 4 -->
+                <section class="topic-section" id="topic-4">
+                    <h3>4. Metody pro rozhodování za neurčitosti</h3>
+
+                    <p>Neznáme pravděpodobnosti stavů, takže nemůžeme počítat střední hodnotu. Místo toho použijeme <strong>pravidlo</strong>, které odráží postoj rozhodovatele (optimismus / pesimismus). Pracujeme s rozhodovací maticí výnosů $x_{ij}$ (varianty v řádcích, stavy ve sloupcích).</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Pravidlo</th><th>Princip</th><th>Postoj</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Wald (maximin)</strong></td><td>Pro každou variantu vezmi nejhorší výnos, vyber variantu s největším z těchto minim: $\max_i \min_j x_{ij}$.</td><td>Pesimista (jistota proti nejhoršímu)</td></tr>
+                            <tr><td><strong>Maximax</strong></td><td>Vezmi nejlepší výnos každé varianty, vyber největší: $\max_i \max_j x_{ij}$.</td><td>Optimista</td></tr>
+                            <tr><td><strong>Hurwicz</strong></td><td>Vážený kompromis přes koeficient optimismu $\lambda\in\langle 0,1\rangle$.</td><td>Laditelný</td></tr>
+                            <tr><td><strong>Laplace</strong></td><td>Všem stavům dej stejnou pravděpodobnost a počítej průměr.</td><td>Neutrální</td></tr>
+                            <tr><td><strong>Savage</strong></td><td>Minimalizuj maximální „lítost" (ušlý zisk).</td><td>Averze k lítosti</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="def-box"><strong>Hurwiczovo kritérium:</strong> $\displaystyle H(A_i)=\lambda\max_j x_{ij}+(1-\lambda)\min_j x_{ij}$, vybíráme $\max_i H(A_i)$. Pro $\lambda=1$ je to maximax (optimista), pro $\lambda=0$ Wald (pesimista).</div>
+
+                    <div class="def-box"><strong>Savageovo kritérium (minimax lítosti):</strong> Z matice výnosů sestavíme <strong>matici ztrát/lítosti</strong> $z_{ij}=\max_k x_{kj}-x_{ij}$ (o kolik jsem ve sloupci $j$ zaostal za nejlepší variantou). Pak vybereme variantu s nejmenší maximální lítostí:
+                        <div class="formula-block">$$A^*=\arg\min_i \max_j z_{ij}.$$</div>
+                    </div>
+
+                    <div class="insight-box"><strong>Proč tolik pravidel:</strong> Žádné není „správné" – liší se postojem k riziku. Wald chrání před katastrofou (vhodné, když je nejhorší stav fatální). Savage chrání před pocitem promarněné příležitosti. Hurwicz dovolí naladit míru optimismu. Komise ráda slyší, že volba pravidla je sama o sobě rozhodnutí rozhodovatele.</div>
+
+                    <div class="warn-box"><strong>Pozor:</strong> Savage NEpracuje s původními výnosy, ale s maticí relativních ztrát – častá chyba. A pozor na to, zda matice obsahuje výnosy (pak maximin) nebo náklady (pak minimax).</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Bez pravděpodobností → pravidla podle postoje k riziku.</li>
+                            <li>Wald = jistota proti nejhoršímu; Maximax = optimista; Hurwicz = laditelný $\lambda$.</li>
+                            <li>Laplace = rovné pravděpodobnosti; Savage = minimax lítosti (matice ztrát).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 5 -->
+                <section class="topic-section" id="topic-5">
+                    <h3>5. Vícekriteriální rozhodování – úvod, kritéria, stupnice, normování</h3>
+
+                    <p>Teď se mění typ problému: budoucnost je jistá, ale variantu hodnotíme podle <strong>více kritérií současně</strong>, která jsou zpravidla <em>protichůdná</em> (cena vs. kvalita). Hledáme nejlepší <em>kompromis</em>.</p>
+
+                    <div class="def-box"><strong>Kriteriální matice:</strong> Varianty $A_1,\dots,A_m$ v řádcích, kritéria $f_1,\dots,f_n$ ve sloupcích; prvek $y_{ij}$ = hodnota varianty $i$ podle kritéria $j$.</div>
+
+                    <h4>Tvorba a typy kritérií</h4>
+                    <p>Kritéria mají být <em>úplná</em> (pokryjí podstatné aspekty), <em>neredundantní</em> (nepřekrývají se) a pokud možno <em>nezávislá</em>. Podle směru preference rozlišujeme kritéria <strong>maximalizační</strong> (výnosová – víc je lépe) a <strong>minimalizační</strong> (nákladová – méně je lépe).</p>
+
+                    <h4>Typy stupnic</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Stupnice</th><th>Co umožňuje</th><th>Příklad</th></tr></thead>
+                        <tbody>
+                            <tr><td>Nominální</td><td>jen rozlišení (=, ≠)</td><td>barva, typ paliva</td></tr>
+                            <tr><td>Ordinální</td><td>uspořádání (pořadí)</td><td>známka, pořadí v testu</td></tr>
+                            <tr><td>Kardinální (intervalová/poměrová)</td><td>rozdíly i poměry, číselné operace</td><td>cena, spotřeba, výkon</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Normování (normalizace)</h4>
+                    <div class="insight-box"><strong>Proč normovat:</strong> Kritéria mají různé jednotky a rozsahy (cena v tisících Kč vs. spotřeba v litrech). Nelze je sčítat. Normování převede všechny hodnoty na <em>bezrozměrné</em> a porovnatelné (typicky do $\langle 0,1\rangle$, kde 1 = nejlepší).</div>
+
+                    <p>Běžný přístup pro maximalizační kritérium je normalizace na rozsah:
+                        <div class="formula-block">$$r_{ij}=\frac{y_{ij}-y_j^{\min}}{y_j^{\max}-y_j^{\min}}.$$</div>
+                        Pro minimalizační kritérium se zlomek obrátí (čitatel $y_j^{\max}-y_{ij}$), aby 1 odpovídala nejlepší (nejmenší) hodnotě. Alternativy jsou normalizace dělením maximem nebo (u TOPSIS) vektorová normalizace dělením euklidovskou normou sloupce.</p>
+
+                    <div class="warn-box"><strong>Pozor:</strong> Před agregací je nutné <em>sjednotit směr</em> kritérií (převést minimalizační na maximalizační). Smíchání směrů je klasická chyba vedoucí k nesmyslnému pořadí.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>VKR hodnotí varianty podle více protichůdných kritérií → hledá kompromis.</li>
+                            <li>Stupnice: nominální / ordinální / kardinální – určuje použitelné operace.</li>
+                            <li>Normování sjednotí jednotky i směr a umožní agregaci.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 6 -->
+                <section class="topic-section" id="topic-6">
+                    <h3>6. Zahrnutí preferencí – metody stanovení vah kritérií</h3>
+
+                    <p>Kritéria nejsou stejně důležitá. <strong>Váhy</strong> $v_j$ ($\sum_j v_j=1$, $v_j\ge 0$) vyjadřují preference rozhodovatele. Metody se liší tím, jak málo nebo mnoho informací po rozhodovateli chtějí.</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Metoda</th><th>Vstup od rozhodovatele</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Pořadí (známkovací)</strong></td><td>Seřadí kritéria; váha podle pořadí.</td></tr>
+                            <tr><td><strong>Bodovací</strong></td><td>Každému kritériu přidělí body z dané stupnice; normuje se.</td></tr>
+                            <tr><td><strong>Fullerova metoda (trojúhelník)</strong></td><td>Párové porovnání – u každé dvojice vybere důležitější. Váha = podíl preferencí kritéria na všech porovnáních.</td></tr>
+                            <tr><td><strong>Saatyho metoda</strong></td><td>Párové porovnání s <em>intenzitou</em> (1–9), kardinální informace.</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Fullerův trojúhelník</h4>
+                    <p>Sestaví se schéma všech dvojic kritérií, každá dvojice právě jednou (celkem $\binom{n}{2}$ porovnání). U každé dvojice se zakroužkuje důležitější kritérium. Váha kritéria = počet jeho preferencí děleno celkovým počtem porovnání. Jednoduché, ale dává jen ordinální informaci (kolikrát zvítězilo, ne o kolik).</p>
+
+                    <h4>Saatyho metoda a AHP</h4>
+                    <div class="def-box"><strong>Saatyho matice:</strong> Čtvercová matice $S=(s_{ij})$, kde $s_{ij}$ udává, kolikrát je kritérium $i$ důležitější než $j$ (stupnice 1 = stejně, 9 = absolutně dominantní), přičemž $s_{ji}=1/s_{ij}$ (reciprocita). Váhy se získají jako (normalizovaný) <em>vlastní vektor</em> matice příslušný největšímu vlastnímu číslu, nebo přibližně jako geometrický průměr řádků.</div>
+
+                    <div class="insight-box"><strong>Konzistence:</strong> Saatyho metoda umí změřit, zda rozhodovatel „neodporuje sám sobě" (když A&gt;B a B&gt;C, pak A by mělo dostatečně převyšovat C). Slouží k tomu <strong>index konzistence</strong> (CR); je-li $CR > 0{,}1$, porovnání je nekonzistentní a mělo by se přehodnotit. To je velká výhoda oproti Fullerovi.</div>
+
+                    <p>Saatyho párové porovnání je jádrem metody <strong>AHP (Analytic Hierarchy Process)</strong> od T. L. Saatyho: problém se rozloží do hierarchie (cíl → kritéria → varianty), na každé úrovni se použije párové porovnání a výsledky se syntetizují odshora dolů.</p>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Váhy = preference; součet 1.</li>
+                            <li>Fuller = ordinální párové porovnání (kdo z dvojice).</li>
+                            <li>Saaty = kardinální párové porovnání (o kolik) + kontrola konzistence; základ AHP.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 7 -->
+                <section class="topic-section" id="topic-7">
+                    <h3>7. Komplexní hodnocení alternativ – metody</h3>
+
+                    <p>Máme normovanou kriteriální matici a váhy. Teď je agregujeme do jediného uspořádání variant. Metody dělíme zhruba na <em>agregační</em> (vytvoří souhrnný užitek) a <em>založené na vzdálenosti od ideálu</em>.</p>
+
+                    <h4>WSA – vážený součet (Weighted Sum Approach)</h4>
+                    <div class="def-box"><strong>WSA:</strong> Po normalizaci do $\langle 0,1\rangle$ spočítáme pro každou variantu vážený součet užitků a seřadíme sestupně:
+                        <div class="formula-block">$$U(A_i)=\sum_{j=1}^{n} v_j\, r_{ij}.$$</div>
+                    </div>
+                    <p>Předpokládá kardinální data a <em>lineární</em> užitek. Nejjednodušší a nejnázornější metoda.</p>
+
+                    <h4>TOPSIS – vzdálenost od ideálu</h4>
+                    <div class="def-box"><strong>TOPSIS</strong> (Technique for Order Preference by Similarity to Ideal Solution): vybírá variantu, která je <em>zároveň nejblíže ideální</em> variantě a <em>nejdál bazální</em> (nejhorší) variantě.</div>
+                    <p>Postup: (1) vektorová normalizace a vážení; (2) urči ideální variantu $H$ (po sloupcích nejlepší hodnoty) a bazální $D$ (nejhorší); (3) spočítej euklidovské vzdálenosti $d_i^+$ k $H$ a $d_i^-$ k $D$; (4) relativní ukazatel
+                        <div class="formula-block">$$c_i=\frac{d_i^-}{d_i^+ + d_i^-}\in\langle 0,1\rangle,$$</div>
+                        seřaď sestupně. Hodnota blízká 1 = blízko ideálu.</p>
+
+                    <div class="insight-box"><strong>Proč TOPSIS dává smysl:</strong> Reálný ideál (nejlepší ve všech kritériích zároveň) obvykle <em>neexistuje</em> jako reálná varianta. TOPSIS proto měří, která reálná varianta se k tomuto fiktivnímu ideálu nejvíc blíží a zároveň se nejvíc vzdaluje od nejhoršího – přirozená idea kompromisu.</div>
+
+                    <h4>ELECTRE a další</h4>
+                    <p><strong>ELECTRE</strong> (a příbuzné PROMETHEE) jsou metody založené na <em>relacích převýšení</em> (outranking): pro každou dvojici variant se ptáme, zda existuje dost důkazů, že A je aspoň tak dobrá jako B (souhlas) a žádné silné námitky (nesouhlas). Nevytváří nutně úplné pořadí, ale vyřadí jasně horší varianty. Vhodné, když data jsou ordinální nebo neúplná.</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Metoda</th><th>Princip</th><th>Vstup</th></tr></thead>
+                        <tbody>
+                            <tr><td>WSA</td><td>vážený součet užitků</td><td>kardinální</td></tr>
+                            <tr><td>TOPSIS</td><td>vzdálenost od ideálu/baz.</td><td>kardinální</td></tr>
+                            <tr><td>AHP</td><td>hierarchie + párové porovnání</td><td>párové (kard.)</td></tr>
+                            <tr><td>ELECTRE</td><td>relace převýšení</td><td>i ordinální</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>WSA = nejjednodušší vážený součet (lineární užitek).</li>
+                            <li>TOPSIS = kompromis mezi blízkostí ideálu a vzdáleností od nejhoršího.</li>
+                            <li>AHP = hierarchické párové porovnání; ELECTRE = převýšení, zvládne ordinální data.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 8 -->
+                <section class="topic-section" id="topic-8">
+                    <h3>8. Vektorová lineární optimalizace a Pareto optimalita</h3>
+
+                    <p>Předchozí metody pracovaly s <em>konečným výčtem</em> variant. Vektorová (vícekriteriální) optimalizace řeší případ, kdy je množina variant <strong>nekonečná</strong>, popsaná implicitně omezujícími podmínkami – jako v LP, ale s <em>více účelovými funkcemi</em> najednou.</p>
+
+                    <div class="def-box"><strong>Úloha VLP:</strong> $\;\text{„}\max\text{"}\;(f_1(\mathbf{x}),\dots,f_k(\mathbf{x}))$ za podmínek $\mathbf{x}\in X$, kde $X$ je přípustná množina (např. $A\mathbf{x}\le\mathbf{b}$). „Max" vektoru není jednoznačné – proto potřebujeme pojem dominance.</div>
+
+                    <div class="def-box"><strong>Pareto (eficientní, nedominované) řešení:</strong> $\mathbf{x}^p$ je nedominované, jestliže neexistuje jiné přípustné řešení, které by bylo aspoň tak dobré ve všech kritériích a v aspoň jednom <em>striktně lepší</em>. Množina všech takových řešení = <strong>Paretova fronta</strong>.</div>
+
+                    <div class="insight-box"><strong>Klíčová myšlenka:</strong> U jednoho kritéria existuje jedno optimum. U více protichůdných kritérií <em>žádné</em> řešení obecně není nejlepší ve všech – existuje celá množina kompromisů, mezi nimiž už nelze zlepšit jedno kritérium bez zhoršení jiného. Řešení tedy není „optimální", ale jen <strong>kompromisní</strong>; výběr konkrétního kompromisu vyžaduje preference rozhodovatele.</div>
+
+                    <h4>Jak najít kompromisní řešení (vazba na LP)</h4>
+                    <ul>
+                        <li><strong>Agregace:</strong> kritéria sloučím do jedné funkce, např. $\sum_j v_j f_j(\mathbf{x})$, a řeším klasickým LP. Volbou vah „posouvám" po Paretově frontě.</li>
+                        <li><strong>Převod na omezení (ε-constraint):</strong> optimalizuji jedno kritérium a ostatní svážu nerovnostmi $f_j\ge \varepsilon_j$.</li>
+                        <li><strong>Cílové programování (goal programming):</strong> stanovím cílové hodnoty kritérií a minimalizuji vážené odchylky od nich.</li>
+                    </ul>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Investiční portfolio – maximalizovat výnos a zároveň minimalizovat riziko. Paretova fronta je „efektivní hranice" (Markowitz): každý bod je portfolio, kde vyšší výnos jde koupit jen za vyšší riziko. Který bod zvolím, závisí na mé averzi k riziku (vahách).</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>VLP = LP s více účelovými funkcemi, přípustná množina dána omezeními.</li>
+                            <li>Řešením není jeden bod, ale Paretova množina nedominovaných kompromisů.</li>
+                            <li>Konkrétní kompromis najdu agregací / ε-constraint / cílovým programováním přes LP.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 9 -->
+                <section class="topic-section" id="topic-9">
+                    <h3>9. Praktické aspekty manažerského rozhodování a typické chyby</h3>
+
+                    <h4>Praktické aspekty</h4>
+                    <p>V praxi je formální model jen částí rozhodnutí. Roli hrají časový tlak, neúplná data, více zainteresovaných stran (stakeholderů) s odlišnými preferencemi, politika v organizaci a odpovědnost za výsledek. Metody VKR slouží hlavně k <em>strukturování</em> a <em>transparentnosti</em> diskuse, ne k mechanickému „vyrobení" odpovědi.</p>
+
+                    <h4>Typické chyby a kognitivní zkreslení</h4>
+                    <div class="insight-box"><strong>Proč chybujeme:</strong> Mozek šetří energii a používá <em>heuristiky</em> (mentální zkratky). To vede k systematickým, opakovaným a předvídatelným chybám – <strong>kognitivním zkreslením</strong>. Nejsou to náhodné omyly, ale stabilní tendence.</div>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Zkreslení</th><th>Projev</th></tr></thead>
+                        <tbody>
+                            <tr><td>Konfirmační zkreslení</td><td>Hledám jen data potvrzující můj názor.</td></tr>
+                            <tr><td>Past utopených nákladů</td><td>Pokračuji v prohrané investici, abych nepřiznal ztrátu („už jsme do toho dali tolik").</td></tr>
+                            <tr><td>Kotvení (anchoring)</td><td>Nechám se ovlivnit první uvedenou hodnotou.</td></tr>
+                            <tr><td>Nadměrná sebedůvěra</td><td>Podceňuji nejistotu vlastních odhadů.</td></tr>
+                            <tr><td>Dostupnostní heuristika</td><td>Přeceňuji to, co si snadno vybavím (nedávné/dramatické).</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Typické chyby v aplikaci metod</h4>
+                    <ul>
+                        <li>Špatně zvolená / neúplná nebo redundantní kritéria (dvojí započítání téhož).</li>
+                        <li>Nesjednocený směr nebo špatné normování → zkreslené pořadí.</li>
+                        <li>Mechanická důvěra ve „výsledné číslo" bez analýzy citlivosti.</li>
+                        <li>Manipulace vahami tak, aby vyšla předem chtěná varianta.</li>
+                    </ul>
+
+                    <div class="warn-box"><strong>Obrana:</strong> strukturovaný proces, role „ďáblova advokáta" (oponent), checklisty, týmová diskuse bez okamžitého hodnocení, zpomalení rozhodnutí a hlavně <strong>analýza citlivosti</strong> – testuji, jak se pořadí mění při změně vah a dat.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Metoda dává strukturu a transparentnost, nenahrazuje úsudek.</li>
+                            <li>Kognitivní zkreslení = systematické chyby z heuristik (konfirmace, utopené náklady, kotvení).</li>
+                            <li>Obrana: oponentura, checklisty, analýza citlivosti.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 10 -->
+                <section class="topic-section" id="topic-10">
+                    <h3>10. Získávání a verifikace dat pro rozhodovací modely</h3>
+
+                    <div class="insight-box"><strong>„Garbage in, garbage out":</strong> Sebelepší metoda dá špatný výsledek na špatných datech. Kvalita dat je proto kritická – a často podceňovaná část rozhodovacího procesu.</div>
+
+                    <h4>Data, informace, znalost</h4>
+                    <p>Je třeba odlišovat <strong>data</strong> (surová čísla/fakta), <strong>informace</strong> (data v kontextu) a <strong>znalost</strong> (interpretovaná, použitelná informace). Rozhodovací model potřebuje informace, ne jen data.</p>
+
+                    <h4>Zdroje a typy dat</h4>
+                    <ul>
+                        <li><strong>Objektivní (tvrdá) data:</strong> měření, statistiky, účetnictví – ověřitelná.</li>
+                        <li><strong>Subjektivní (měkká) data:</strong> expertní odhady, preference, párová porovnání – nutná tam, kde tvrdá data nejsou (např. váhy kritérií, pravděpodobnosti za neurčitosti).</li>
+                    </ul>
+
+                    <h4>Verifikace a validace</h4>
+                    <p><strong>Verifikace</strong> = „stavíme model správně?" (technická kontrola: konzistence, jednotky, chyby v zadání). <strong>Validace</strong> = „stavíme správný model?" (odpovídá realitě a účelu?). U subjektivních dat se ověřuje <em>konzistence</em> (např. Saatyho CR &lt; 0,1), u expertních odhadů se používá více expertů a agregace, případně metoda <strong>Delphi</strong> (anonymní opakované kolo odhadů s konvergencí k shodě).</p>
+
+                    <div class="warn-box"><strong>Pozor na nejistotu dat:</strong> Vstupy nejsou přesné. Proto se dělá <strong>analýza citlivosti</strong> – jak moc se výsledek změní při kolísání vstupů. Robustní rozhodnutí je takové, jehož pořadí variant je vůči rozumným změnám dat stabilní.</div>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Při výběru dodavatele dostanu ceny (tvrdá data, snadno ověřitelná) a „spolehlivost / kvalitu servisu" (měkká data – musím získat od více hodnotitelů, ověřit konzistenci a otestovat, zda na nich výsledek příliš nestojí).</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Kvalita rozhodnutí stojí na kvalitě dat (garbage in, garbage out).</li>
+                            <li>Tvrdá vs. měkká data; verifikace (správně postaveno) vs. validace (správný model).</li>
+                            <li>Konzistence (Saaty/CR), Delphi pro experty, analýza citlivosti pro robustnost.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <div class="insight-box mt-5">
+                    <strong>Jak to celé propojit u zkoušky:</strong> Začněte klasifikací (téma 2) – ta určuje, zda jde o riziko (témata 3) nebo neurčitost (4). Pokud je kritérií více, přejděte na VKR: kritéria a normování (5) → váhy (6) → agregace do pořadí (7), a pro spojité úlohy vektorová optimalizace s Paretem (8) postavená na LP (1). Závěr vždy zarámujte praxí: data (10) a chyby/zkreslení (9) jsou to, co dělá rozdíl mezi modelem na papíře a dobrým rozhodnutím.
+                </div>
             </div>
         </div>
     </div>
+
     <script src="subjects-nav.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

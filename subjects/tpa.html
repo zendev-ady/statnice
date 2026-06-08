@@ -7,30 +7,494 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
+                macros: { N: "\\mathbb{N}", R: "\\mathbb{R}", Z: "\\mathbb{Z}", Q: "\\mathbb{Q}", C: "\\mathbb{C}" }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-<body class="page-specialization">
+<body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="fas fa-arrow-left me-2"></i>Dashboard</a>
             <span class="navbar-text mx-auto"><strong>TPA</strong> - Tvorba podnikových aplikací</span>
-            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')"><i class="fas fa-adjust"></i></button>
+            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')">
+                <i class="fas fa-adjust"></i>
+            </button>
         </div>
     </nav>
+
     <div class="container">
         <div class="row">
             <div class="col-lg-3 d-none d-lg-block">
                 <nav class="topic-nav pt-4">
                     <h6 class="text-muted text-uppercase fw-bold mb-3">Témata</h6>
-                    <p class="text-muted small fst-italic">Ve výstavbě</p>
+                    <ul class="nav flex-column">
+                        <li><a class="nav-link py-1" href="#topic-1">1. IT strategie</a></li>
+                        <li><a class="nav-link py-1" href="#topic-2">2. Podniková aplikace</a></li>
+                        <li><a class="nav-link py-1" href="#topic-3">3. Způsoby popisu podnikových aplikací</a></li>
+                        <li><a class="nav-link py-1" href="#topic-4">4. Enterprise architektura</a></li>
+                        <li><a class="nav-link py-1" href="#topic-5">5. Robotizace procesů (RPA)</a></li>
+                        <li><a class="nav-link py-1" href="#topic-6">6. ERP</a></li>
+                        <li><a class="nav-link py-1" href="#topic-7">7. xRM</a></li>
+                        <li><a class="nav-link py-1" href="#topic-8">8. CRM</a></li>
+                    </ul>
                 </nav>
             </div>
+
             <div class="col-lg-9">
                 <h1 class="mb-4">Tvorba podnikových aplikací</h1>
-                <div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>Tato stránka je ve výstavbě. Použij /notes tpa pro vygenerování obsahu.</div>
+
+                <!-- ============================================================ -->
+                <section class="topic-section" id="topic-1">
+                    <h3>1. IT strategie</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> IT strategie (informační strategie) je střednědobý až dlouhodobý plán, který formuluje cíle a předpoklady pro využití informačních systémů a technologií v podniku, a to v souladu s celkovou podnikovou strategií.</div>
+
+                    <h4>Proč IT strategie vzniká</h4>
+                    <p>Každý podnik potřebuje řídit, jak investuje do IT — bez strategie vznikají sila, duplicitní systémy a IT projekty, které neslouží businessu. IT strategie je odpovědí na otázku: <em>„Jak nám IT pomůže dosáhnout podnikových cílů v následujících 3–5 letech?"</em></p>
+
+                    <div class="insight-box"><strong>Intuice:</strong> IT strategie není o technologiích samotných — je o <strong>alignmentu</strong> (sladění) IT s byznysem. Technologie jsou prostředkem, ne cílem. CIO a CEO musí mluvit stejným jazykem.</div>
+
+                    <h4>Jak se IT strategie tvoří</h4>
+                    <ol>
+                        <li><strong>Analýza současného stavu</strong> — inventarizace existujících systémů, procesů, kompetencí (IT audit). Použití SWOT, PEST.</li>
+                        <li><strong>Pochopení podnikové strategie</strong> — co chce podnik dosáhnout? Nové trhy, automatizace, digitalizace?</li>
+                        <li><strong>Definice IT cílů</strong> — konkrétní, měřitelné cíle IT (OKR, KPI). Např. „snížit náklady na zpracování faktury o 40 % zavedením RPA".</li>
+                        <li><strong>Roadmapa</strong> — co se implementuje kdy, v jaké prioritě, za kolik. Zahrnuje investiční plán.</li>
+                        <li><strong>Governance</strong> — kdo schvaluje IT rozhodnutí, jak se měří úspěch (IT governance, ITIL, COBIT).</li>
+                    </ol>
+
+                    <h4>Business-IT Alignment</h4>
+                    <p>Klíčový koncept: IT musí podporovat byznys, nikoli existovat samo pro sebe. Modely alignmentu (Henderson & Venkatraman SAM) popisují čtyři domény: byznys strategie, IT strategie, organizační infrastruktura, IT infrastruktura — a propojení mezi nimi.</p>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Banka chce expanzi na mobilní platby (byznys strategie → IT strategie: zavedení API vrstvy a cloud infrastruktury → IT infrastruktura: nová microservices platforma). Bez alignmentu by IT investovalo do jiných priorit.</div>
+
+                    <div class="warn-box"><strong>Pozor:</strong> IT strategie není totéž co IT plán ani seznam projektů. Strategie říká <em>proč</em> a <em>kam</em>, plán říká <em>jak</em> a <em>kdy</em>. Státnicová komise může ptát na tento rozdíl.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>IT strategie = dlouhodobý plán využití IT v souladu s byznys strategií.</li>
+                            <li>Klíčový princip: alignment — IT slouží businessu, ne naopak.</li>
+                            <li>Tvoří se analýzou stavu, pochopením byznys cílů, definicí IT cílů a roadmapou.</li>
+                            <li>Výsledkem je governance model a měřitelné KPI.</li>
+                            <li>Bez IT strategie: sila, redundance, špatné investice.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ============================================================ -->
+                <section class="topic-section" id="topic-2">
+                    <h3>2. Podniková aplikace</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> Podniková aplikace (enterprise application) je softwarový systém navržený k podpoře podnikových procesů, integraci dat a operací napříč celou organizací nebo její částí. Na rozdíl od osobního softwaru musí zvládat více uživatelů, složité procesy, bezpečnost a integraci.</div>
+
+                    <h4>Co dělá aplikaci „podnikovou"</h4>
+                    <p>Podniková aplikace se od běžného softwaru liší v několika dimenzích:</p>
+                    <ul>
+                        <li><strong>Rozsah:</strong> Pokrývá celý podnik nebo velkou jeho část (finance, HR, výroba, CRM…).</li>
+                        <li><strong>Integrace:</strong> Propojuje data a procesy z různých oddělení do sdílené databáze nebo přes API.</li>
+                        <li><strong>Počet uživatelů:</strong> Desítky až tisíce souběžných uživatelů s různými rolemi a oprávněními.</li>
+                        <li><strong>Životní cyklus:</strong> Nasazení na roky, přizpůsobení (customizace) na míru podniku.</li>
+                        <li><strong>Compliance:</strong> Musí splňovat zákonné požadavky (GDPR, daňové zákony, auditní záznamy).</li>
+                    </ul>
+
+                    <h4>Typy podnikových aplikací</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Typ</th><th>Zaměření</th><th>Příklad</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>ERP</strong></td><td>Plánování zdrojů, finance, výroba, HR</td><td>SAP, Microsoft Dynamics 365, Oracle</td></tr>
+                            <tr><td><strong>CRM</strong></td><td>Vztahy se zákazníky, obchod, marketing</td><td>Salesforce, HubSpot, Dynamics 365 Sales</td></tr>
+                            <tr><td><strong>SCM</strong></td><td>Dodavatelský řetězec</td><td>SAP SCM, Oracle SCM</td></tr>
+                            <tr><td><strong>HRM</strong></td><td>Lidské zdroje</td><td>Workday, SAP SuccessFactors</td></tr>
+                            <tr><td><strong>BI/Analytics</strong></td><td>Reporty, dashboardy, rozhodování</td><td>Power BI, Tableau, SAP Analytics</td></tr>
+                            <tr><td><strong>xRM</strong></td><td>Správa jakýchkoli vztahů (generalizace CRM)</td><td>Microsoft Dynamics jako platforma</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Způsoby pořízení</h4>
+                    <ul>
+                        <li><strong>On-premise</strong> — instalace na vlastní infrastruktuře podniku. Plná kontrola, vysoké TCO.</li>
+                        <li><strong>SaaS (Cloud)</strong> — přístup přes prohlížeč, platba za předplatné. Nižší počáteční investice, závislost na dodavateli.</li>
+                        <li><strong>Hybridní</strong> — kombinace (citlivá data on-premise, ostatní v cloudu).</li>
+                        <li><strong>Vývoj na míru</strong> — vlastní aplikace. Maximální přizpůsobení, ale vysoké náklady na vývoj a údržbu.</li>
+                    </ul>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Výrobní firma nasadí SAP ERP pro finance a sklad, Salesforce CRM pro obchodní tým a Power BI pro vedení. Integrace mezi systémy probíhá přes middleware (ESB). Toto je typická enterprise application landscape.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Podniková aplikace pokrývá celý podnik nebo jeho část, integruje data a procesy.</li>
+                            <li>Klíčové vlastnosti: multi-uživatel, integrace, compliance, dlouhý životní cyklus.</li>
+                            <li>Hlavní typy: ERP, CRM, SCM, HRM, BI, xRM.</li>
+                            <li>Způsoby pořízení: on-premise, SaaS, hybridní, vývoj na míru.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ============================================================ -->
+                <section class="topic-section" id="topic-3">
+                    <h3>3. Způsoby popisu podnikových aplikací</h3>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Podnikovou aplikaci nelze pochopit z jednoho úhlu pohledu. Potřebujeme různé „modely" pro různé publikum: businessu stačí procesní diagramy, architekti potřebují ArchiMate, vývojáři UML. Každý jazyk zachycuje jinou vrstvu reality.</div>
+
+                    <h4>Přehled notací a přístupů</h4>
+
+                    <h4>BPMN — Business Process Model and Notation</h4>
+                    <div class="def-box"><strong>Definice:</strong> BPMN je grafická standardizovaná notace (OMG) pro modelování podnikových procesů. Popisuje <em>tok práce</em> — kdo, co, kdy, v jakém pořadí dělá.</div>
+                    <p>Základní prvky BPMN:</p>
+                    <ul>
+                        <li><strong>Events</strong> (kruhy) — start, konec, mezilehlé události (zpráva, časovač, chyba)</li>
+                        <li><strong>Activities</strong> (zaoblené obdélníky) — úkoly (task) nebo podprocesy (subprocess)</li>
+                        <li><strong>Gateways</strong> (kosočtverce) — větvení: XOR (exkluzivní), AND (paralelní), OR</li>
+                        <li><strong>Lanes a Pools</strong> — kdo za co zodpovídá (organizační jednotky, systémy)</li>
+                        <li><strong>Sequence Flow</strong> — šipky určující pořadí</li>
+                    </ul>
+                    <div class="ex-box"><strong>Příklad:</strong> Proces schvalování faktury: Start → Přijetí faktury (task, účetní lane) → XOR gateway (do 10 000 Kč?) → Ano: Automatické schválení (systém lane) → Konec; Ne: Manažerské schválení → Konec.</div>
+
+                    <h4>UML — Unified Modeling Language</h4>
+                    <p>UML je obecný modelovací jazyk primárně pro softwarové systémy. Pro podnikové aplikace se používají:</p>
+                    <ul>
+                        <li><strong>Use Case diagram</strong> — kdo (actor) co se systémem dělá (use case). Vhodné pro zachycení funkčních požadavků.</li>
+                        <li><strong>Activity diagram</strong> — podobný BPMN, ale méně vhodný pro business analytiky (komplexnější notace).</li>
+                        <li><strong>Sequence diagram</strong> — interakce mezi komponentami v čase (vhodné pro API integrace).</li>
+                        <li><strong>Class/ER diagram</strong> — datový model systému.</li>
+                    </ul>
+
+                    <h4>ArchiMate</h4>
+                    <div class="def-box"><strong>Definice:</strong> ArchiMate je otevřený modelovací jazyk pro enterprise architekturu (The Open Group). Popisuje vztahy mezi byznys, aplikační a technologickou vrstvou organizace.</div>
+                    <p>ArchiMate operuje ve třech vrstvách:</p>
+                    <ul>
+                        <li><strong>Business layer</strong> — procesy, funkce, role, produkty</li>
+                        <li><strong>Application layer</strong> — aplikační komponenty, datové objekty, rozhraní</li>
+                        <li><strong>Technology layer</strong> — infrastruktura, servery, sítě, cloud</li>
+                    </ul>
+                    <p>Na rozdíl od BPMN (detailní tok procesu) dává ArchiMate pohled z výšky na celou architekturu podniku. Nejčastěji kombinován s TOGAF.</p>
+
+                    <h4>DMN — Decision Model and Notation</h4>
+                    <p>Standard pro modelování business pravidel a rozhodování. Používá <em>decision tables</em> — matice podmínek a výsledků. Vhodné pro automatizaci pravidel v procesních enginech (Camunda, Drools).</p>
+                    <div class="ex-box"><strong>Příklad DMN:</strong> Tabulka pro schválení úvěru: vstup = výše úvěru, příjem, rating; výstup = Schválit / Zamítnout / Předat analytikovi.</div>
+
+                    <h4>Srovnání přístupů</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Notace</th><th>Zaměření</th><th>Publikum</th><th>Granularita</th></tr></thead>
+                        <tbody>
+                            <tr><td>BPMN</td><td>Tok procesů</td><td>Business analytici, vývojáři</td><td>Detailní proces</td></tr>
+                            <tr><td>UML</td><td>Softwarový systém</td><td>Architekti, vývojáři</td><td>Technická implementace</td></tr>
+                            <tr><td>ArchiMate</td><td>Enterprise architektura</td><td>EA architekti, vedení</td><td>Celá organizace</td></tr>
+                            <tr><td>DMN</td><td>Rozhodovací pravidla</td><td>Business analytici</td><td>Pravidla a podmínky</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="warn-box"><strong>Pozor:</strong> BPMN a UML Activity Diagram vypadají podobně, ale jsou pro různé účely. BPMN je standardem pro business procesy (srozumitelný managementu), UML Activity je primárně pro techniky. V praxi se BPMN + ArchiMate kombinují: ArchiMate pro architekturu, BPMN pro detailní procesy.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Podnikovou aplikaci popisujeme z více pohledů: procesní, funkční, datový, architektonický.</li>
+                            <li>BPMN — tok procesů, srozumitelný business i IT.</li>
+                            <li>UML — softwarový systém (use case, sequence, class diagram).</li>
+                            <li>ArchiMate — pohled z výšky na celou EA (byznys/aplikace/technologie).</li>
+                            <li>DMN — business pravidla a rozhodovací tabulky.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ============================================================ -->
+                <section class="topic-section" id="topic-4">
+                    <h3>4. Enterprise architektura</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> Enterprise architektura (EA) je strategická praxe a disciplína, která popisuje a řídí strukturu organizace — propojení byznys procesů, informačních systémů, dat a technologické infrastruktury — s cílem dosáhnout podnikových cílů.</div>
+
+                    <h4>Proč EA vznikla</h4>
+                    <p>Velké organizace mají stovky aplikací, systémů a procesů. Bez systematického pohledu vzniká chaos: duplicitní systémy, nekompatibilní data, systémy, které nikdo nezná. EA je nástrojem, jak tomuto chaosu předejít a řídit změnu řízeně.</p>
+
+                    <div class="insight-box"><strong>Intuice:</strong> EA je jako mapa města. Bez mapy stavíte silnice, které nikam nevedou, nebo duplikujete infrastrukturu. EA říká: tady je byznys, tady jsou aplikace, tady je infrastruktura — a tady jsou vztahy mezi nimi.</div>
+
+                    <h4>Vrstvy EA</h4>
+                    <p>EA typicky popisuje čtyři vrstvy (dle TOGAF):</p>
+                    <ul>
+                        <li><strong>Business Architecture</strong> — organizační struktura, procesy, role, byznys cíle.</li>
+                        <li><strong>Data/Information Architecture</strong> — jak jsou data strukturována, sdílena, spravována.</li>
+                        <li><strong>Application Architecture</strong> — portfolio aplikací a jejich vzájemné vztahy a integrace.</li>
+                        <li><strong>Technology Architecture</strong> — hardware, síť, cloud, middleware, platformy.</li>
+                    </ul>
+
+                    <h4>TOGAF</h4>
+                    <div class="def-box"><strong>Definice:</strong> TOGAF (The Open Group Architecture Framework) je metodika pro vývoj a správu EA. Jeho jádrem je ADM (Architecture Development Method) — iterativní cyklus fází od vize po implementaci.</div>
+                    <p>ADM fáze (zjednodušeně):</p>
+                    <ol>
+                        <li>Preliminary — nastavení governance, principy</li>
+                        <li>Phase A: Architecture Vision — byznys cíle, scope</li>
+                        <li>Phases B–D: Business, Data, Application, Technology Architecture</li>
+                        <li>Phase E–F: Opportunities, Migration Planning</li>
+                        <li>Phase G–H: Implementation Governance, Change Management</li>
+                    </ol>
+
+                    <h4>Zachman Framework</h4>
+                    <div class="def-box"><strong>Definice:</strong> Zachman Framework je klasifikační schéma (matice 6×6) pro organizaci architektonických artefaktů. Řádky = perspektivy (Planner, Owner, Designer, Builder, Implementer, Worker), sloupce = otázky (What, How, Where, Who, When, Why).</div>
+                    <p>Zachman není metodika (neříká <em>jak</em> tvořit architekturu), ale ontologie (říká <em>co</em> dokumentovat). Je starší než TOGAF (od 80. let) a slouží jako referenční rámec.</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th></th><th>TOGAF</th><th>Zachman</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Typ</strong></td><td>Metodika (proces)</td><td>Ontologie (klasifikace)</td></tr>
+                            <tr><td><strong>Struktura</strong></td><td>ADM cyklus (fáze)</td><td>Matice 6×6</td></tr>
+                            <tr><td><strong>Zaměření</strong></td><td>Jak architekturu vytvořit</td><td>Co dokumentovat</td></tr>
+                            <tr><td><strong>Výstup</strong></td><td>Architektonické dokumenty a roadmapa</td><td>Artefakty dle perspektivy</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box"><strong>Příklad z praxe:</strong> Banka zavádí digitální transformaci. EA tým pomocí TOGAF zmapuje stávající AS-IS architekturu (200+ aplikací), definuje TO-BE cílový stav (microservices, cloud), identifikuje gapsy a vytvoří migrační plán na 3 roky. Bez EA by projekty probíhaly izolovaně a vzájemně si překážely.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>EA popisuje organizaci ve čtyřech vrstvách: byznys, data, aplikace, technologie.</li>
+                            <li>Cíl: sladění IT s byznysem, řízení komplexity, podpora změn.</li>
+                            <li>TOGAF = metodika s ADM cyklem (jak architekturu tvořit).</li>
+                            <li>Zachman = klasifikační matice artefaktů (co dokumentovat).</li>
+                            <li>Modelovací jazyk EA: ArchiMate.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ============================================================ -->
+                <section class="topic-section" id="topic-5">
+                    <h3>5. Robotizace procesů (RPA)</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> RPA (Robotic Process Automation) je technologie, která využívá softwarové roboty k automatizaci opakujících se, pravidlových digitálních úkolů, které dříve prováděli lidé — jako je kopírování dat mezi systémy, vyplňování formulářů nebo zpracování faktur.</div>
+
+                    <h4>Jak RPA funguje</h4>
+                    <p>RPA robot pracuje na úrovni uživatelského rozhraní (UI) — „vidí" obrazovku, kliká, vyplňuje formuláře, čte data — stejně jako by to dělal člověk, ale bez potřeby API integrace. To je klíčová výhoda: robot se přizpůsobí existujícím systémům bez nutnosti jejich modifikace.</p>
+
+                    <div class="insight-box"><strong>Intuice:</strong> RPA je jako makro v Excelu, ale pro celý desktop. Robot „sedí za počítačem" a dělá přesně to, co by dělal člověk — jen 24/7, bez chyb a mnohem rychleji. Nevyžaduje změny v existujících systémech.</div>
+
+                    <h4>Typy robotů</h4>
+                    <ul>
+                        <li><strong>Attended robots</strong> — spolupracují s člověkem, spouštějí se na pokyn uživatele (call centrum, asistence při zpracování)</li>
+                        <li><strong>Unattended robots</strong> — běží autonomně, plně automatizovaně, typicky v noci nebo ve frontě (zpracování faktur, reporty)</li>
+                        <li><strong>Hybrid</strong> — kombinace obou přístupů</li>
+                    </ul>
+
+                    <h4>Kdy je RPA vhodné</h4>
+                    <p>RPA se hodí pro procesy, které jsou:</p>
+                    <ul>
+                        <li>Opakující se a pravidelné (denní, hodinové)</li>
+                        <li>Pravidlové — jednoznačná pravidla bez složitého úsudku</li>
+                        <li>Digitální — vstup i výstup jsou digitální data</li>
+                        <li>Objemné — mnoho transakcí, kde se automatizace vyplatí</li>
+                    </ul>
+                    <div class="warn-box"><strong>Pozor:</strong> RPA není vhodné pro procesy vyžadující komplexní rozhodování, kreativitu nebo práci s nestrukturovanými daty. Na to se doplňuje AI/ML (Intelligent Automation / Hyperautomation).</div>
+
+                    <h4>Hyperautomation</h4>
+                    <p>Gartner definuje hyperautomation jako kombinaci RPA + AI (OCR, NLP, ML) + procesní platformy. Přechod od „robot kliká" k „robot rozumí dokumentům a rozhoduje se". Příklad: robot přijme fakturu jako sken → OCR extrahuje data → ML ověří správnost → RPA zapíše do ERP.</p>
+
+                    <h4>Platformy</h4>
+                    <p>Hlavní RPA platformy: <strong>UiPath</strong>, <strong>Automation Anywhere</strong>, <strong>Microsoft Power Automate</strong> (Desktop flows), <strong>Blue Prism</strong>.</p>
+
+                    <div class="ex-box"><strong>Příklad z praxe:</strong> Pojišťovna přijímá denně 500 pojistných událostí e-mailem. Robot je otevře, přečte číslo smlouvy, ověří v CRM, zkopíruje data do ERP a vytvoří tickety v servisním systému. Úkon, který trvá 5 minut člověku, robot zvládne za 30 sekund. Úspora: 40 FTE.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>RPA = softwarový robot automatizující opakované UI úkoly bez změny existujících systémů.</li>
+                            <li>Attended (s člověkem) vs. Unattended (autonomní) roboti.</li>
+                            <li>Vhodné pro: opakující se, pravidlové, digitální, objemné procesy.</li>
+                            <li>Hyperautomation = RPA + AI (OCR, NLP, ML) pro komplexnější scénáře.</li>
+                            <li>Platformy: UiPath, Automation Anywhere, Power Automate.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ============================================================ -->
+                <section class="topic-section" id="topic-6">
+                    <h3>6. ERP</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> ERP (Enterprise Resource Planning — plánování podnikových zdrojů) je integrovaný informační systém, který propojuje klíčové podnikové procesy — finance, výrobu, logistiku, HR, nákup, prodej — do jedné platformy se sdílenou databází.</div>
+
+                    <h4>Proč ERP vzniklo</h4>
+                    <p>Historicky mělo každé oddělení svůj software: účetnictví má Excel, sklad má vlastní systém, výroba jiný. Data se musela přenášet ručně, docházelo k chybám a duplicitám. ERP vyřeší tuto fragmentaci — jedno místo pravdy (<em>single source of truth</em>) pro celý podnik.</p>
+
+                    <div class="insight-box"><strong>Intuice:</strong> ERP je jako nervový systém podniku. Každá část organismu (oddělení) je propojena — pohyb na jednom místě (přijetí objednávky) se okamžitě projeví všude (sklad, finance, výroba, expedice).</div>
+
+                    <h4>Typické moduly ERP</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Modul</th><th>Co pokrývá</th></tr></thead>
+                        <tbody>
+                            <tr><td>Finance (FI/CO)</td><td>Účetnictví, controlling, cash flow, konsolidace</td></tr>
+                            <tr><td>Logistika / Sklad (WM/MM)</td><td>Nákup, příjem zboží, skladové hospodářství</td></tr>
+                            <tr><td>Výroba (PP)</td><td>Plánování výroby, kusovníky, kapacitní plánování</td></tr>
+                            <tr><td>Prodej (SD)</td><td>Objednávky, fakturace, ceníky, dodávky</td></tr>
+                            <tr><td>HR (HCM)</td><td>Mzdy, personalistika, docházka, vzdělávání</td></tr>
+                            <tr><td>Projekty (PS)</td><td>Projektové řízení, náklady projektů</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Sdílená databáze jako klíčový princip</h4>
+                    <p>Všechny moduly sdílí jednu databázi. Přijetí objednávky od zákazníka (modul SD) automaticky:</p>
+                    <ul>
+                        <li>Zkontroluje disponibilitu skladu (MM)</li>
+                        <li>Naplánuje výrobu (PP)</li>
+                        <li>Zaúčtuje závazek (FI)</li>
+                        <li>Plánuje expedici (WM)</li>
+                    </ul>
+
+                    <h4>Implementace ERP</h4>
+                    <p>Implementace ERP je náročný projekt (měsíce až roky). Klíčová rozhodnutí:</p>
+                    <ul>
+                        <li><strong>Standardizace vs. customizace:</strong> Přizpůsobit ERP procesům firmy, nebo přizpůsobit procesy firmy ERP? (Best practice: minimalizovat customizace — drahé, komplikuje upgrade)</li>
+                        <li><strong>Big Bang vs. rollout po fázích:</strong> Nasadit vše najednou, nebo postupně po modulech/lokalitách?</li>
+                        <li><strong>Cloud vs. on-premise</strong></li>
+                    </ul>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Výrobní firma nasazuje SAP S/4HANA. Projekt trvá 18 měsíců, stojí miliony. Výsledkem je plná integrace: objednávka od zákazníka → automatické plánování výroby → nákup materiálu → expedice → faktura. Průměrné zkrácení lead time o 20 %.</div>
+
+                    <div class="warn-box"><strong>Pozor:</strong> ERP projekty mají vysokou míru selhání (překročení rozpočtu, času). Nejčastější příčiny: podcenění rozsahu, odpor uživatelů (change management), přílišná customizace, špatná datová migrace.</div>
+
+                    <h4>Hlavní dodavatelé</h4>
+                    <p><strong>SAP</strong> (světová jednička, S/4HANA), <strong>Oracle</strong> (Fusion Cloud ERP), <strong>Microsoft Dynamics 365 F&O</strong>, <strong>Infor</strong>, <strong>Odoo</strong> (open source, SMB).</p>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>ERP = integrovaný systém propojující všechna oddělení podniku přes sdílenou databázi.</li>
+                            <li>Princip: single source of truth — jedna data pro celý podnik.</li>
+                            <li>Moduly: finance, logistika, výroba, prodej, HR, projekty.</li>
+                            <li>Implementace je náročná — minimalizovat customizace, důraz na change management.</li>
+                            <li>Dodavatelé: SAP, Oracle, Microsoft Dynamics 365.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ============================================================ -->
+                <section class="topic-section" id="topic-7">
+                    <h3>7. xRM</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> xRM (eXtended Relationship Management) je koncept generalizace CRM platformy pro správu jakýchkoli vztahů — nejen se zákazníky, ale s partnery, dodavateli, zaměstnanci, granty, majetkem nebo čímkoli, co podnik potřebuje sledovat a řídit.</div>
+
+                    <h4>Od CRM k xRM</h4>
+                    <p>CRM systémy vybudovaly silnou platformu: databáze entit, workflow engine, formuláře, reporty, integrace. Firmy si uvědomily, že tuto platformu lze použít i mimo zákaznické procesy. Vznikl xRM — „x" znamená <em>anything</em> (cokoliv).</p>
+
+                    <div class="insight-box"><strong>Intuice:</strong> xRM je jako prázdné plátno. CRM poskytuje infrastrukturu (databáze, workflow, UI, API) a vy ji „oblečete" do jakéhokoli business kontextu. Místo zákazníků sledujete projekty, budovy, nebo kandidáty na pracovní místo.</div>
+
+                    <h4>Příklady xRM aplikací</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Oblast</th><th>Vztahy, které řídí</th></tr></thead>
+                        <tbody>
+                            <tr><td>Veřejná správa</td><td>Vztahy s občany (místo zákazníků), správa žádostí a dotací</td></tr>
+                            <tr><td>Neziskovky</td><td>Správa grantů, dárců, dobrovolníků</td></tr>
+                            <tr><td>Realitní firmy</td><td>Správa nemovitostí, nájemníků, smluv</td></tr>
+                            <tr><td>HR / Nábor</td><td>Správa kandidátů, pohovorů, nabídek</td></tr>
+                            <tr><td>Field Service</td><td>Správa techniků, servisních zakázek, zařízení</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Microsoft Dynamics jako xRM platforma</h4>
+                    <p>Microsoft Dynamics 365 je nejznámější xRM platforma. Původně CRM systém, dnes platforma pro vývoj line-of-business aplikací. Umožňuje:</p>
+                    <ul>
+                        <li>Definovat vlastní entity (tabulky) a jejich vztahy</li>
+                        <li>Budovat formuláře, pohledy, dashboardy bez kódu (low-code)</li>
+                        <li>Automatizovat workflows (Power Automate)</li>
+                        <li>Integrovat s Microsoft 365, Azure, Power BI</li>
+                    </ul>
+                    <p>Power Platform (Power Apps, Power Automate, Power BI, Copilot Studio) rozšiřuje xRM koncepty i pro citizen developers.</p>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Ministerstvo na Dynamics 365 (xRM) postaví aplikaci pro správu dotačních programů. Entity: Dotace, Žadatel, Projekt, Kontrola. Workflow: Žadatel podá žádost → automatické přidělení referentovi → schvalovací proces → čerpání → kontrola. Přitom využívají stejnou CRM platformu, jen pro jiný byznys kontext.</div>
+
+                    <h4>xRM vs. CRM vs. vlastní vývoj</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th></th><th>CRM</th><th>xRM</th><th>Vlastní vývoj</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Zaměření</strong></td><td>Zákazníci</td><td>Cokoliv</td><td>Cokoliv</td></tr>
+                            <tr><td><strong>Flexibilita</strong></td><td>Střední</td><td>Vysoká</td><td>Maximální</td></tr>
+                            <tr><td><strong>Rychlost</strong></td><td>Rychlé nasazení</td><td>Rychlé (low-code)</td><td>Pomalé</td></tr>
+                            <tr><td><strong>Náklady</strong></td><td>Předplatné</td><td>Předplatné + customizace</td><td>Vysoké</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>xRM = generalizace CRM platformy pro správu jakýchkoli vztahů (nejen zákaznických).</li>
+                            <li>Využívá infrastrukturu CRM: databáze, workflow, UI, integrace.</li>
+                            <li>Příklady: správa grantů, nemovitostí, servisních zakázek, HR procesů.</li>
+                            <li>Nejznámější platforma: Microsoft Dynamics 365 + Power Platform.</li>
+                            <li>Výhoda oproti vlastnímu vývoji: rychlost, nižší náklady, low-code.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ============================================================ -->
+                <section class="topic-section" id="topic-8">
+                    <h3>8. CRM</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> CRM (Customer Relationship Management — řízení vztahů se zákazníky) je strategie, procesy a softwarový systém pro správu interakcí se zákazníky v průběhu celého jejich životního cyklu — od prvního kontaktu přes konverzi až po udržení loajality.</div>
+
+                    <h4>Proč CRM vzniklo</h4>
+                    <p>Zákazníci jsou klíčovým aktivem podniku. Bez systematické správy se obchodní příležitosti ztrácejí, zákazníci dostávají nekonzistentní informace a firma neví, kdo je nejvýnosnější zákazník. CRM řeší tyto problémy centralizací dat o zákaznících a automatizací obchodních procesů.</p>
+
+                    <div class="insight-box"><strong>Intuice:</strong> CRM je paměť podniku o zákaznících. Každý prodejce, zákaznická podpora i marketing vidí celou historii zákazníka — co si koupil, co si stěžoval, co ho zajímá. Zákazník pak dostává personalizovanou péči, i když mluví s jiným člověkem.</div>
+
+                    <h4>Tři pilíře CRM</h4>
+                    <ul>
+                        <li><strong>Operativní CRM</strong> — automatizace každodenních procesů: správa kontaktů, leads, příležitostí, nabídek; helpdesk tickety; e-mailový marketing. Cíl: efektivita.</li>
+                        <li><strong>Analytické CRM</strong> — analýza zákaznických dat pro rozhodování: segmentace, predikce odchodu (churn), CLV (Customer Lifetime Value), prodejní forecasting. Cíl: poznání zákazníka.</li>
+                        <li><strong>Kolaborativní CRM</strong> — sdílení zákaznických informací napříč odděleními (prodej, marketing, podpora) a kanály. Cíl: konzistentní zákaznická zkušenost.</li>
+                    </ul>
+
+                    <h4>Klíčové funkcionality CRM systému</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Oblast</th><th>Funkce</th></tr></thead>
+                        <tbody>
+                            <tr><td>Prodej (Sales)</td><td>Pipeline management, leads, příležitosti, nabídky, forecasting</td></tr>
+                            <tr><td>Marketing</td><td>E-mailové kampaně, segmentace, lead nurturing, marketing automation</td></tr>
+                            <tr><td>Zákaznický servis</td><td>Tickety, SLA, znalostní báze, self-service portal</td></tr>
+                            <tr><td>Analytika</td><td>Dashboardy, reporty, prediktivní analytics, AI asistent</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Životní cyklus zákazníka v CRM</h4>
+                    <p>CRM sleduje zákazníka napříč fázemi:</p>
+                    <ol>
+                        <li><strong>Lead</strong> — potenciální zákazník (anonymní návštěvník, kontakt z veletrhu)</li>
+                        <li><strong>Prospect/Opportunity</strong> — projevil zájem, probíhá obchodní jednání</li>
+                        <li><strong>Customer</strong> — uzavřel smlouvu / uskutečnil nákup</li>
+                        <li><strong>Repeat customer / Loyal</strong> — opakované nákupy, věrnostní program</li>
+                        <li><strong>Advocate</strong> — doporučuje nás dál (referrals, recenze)</li>
+                    </ol>
+
+                    <h4>CRM vs. ERP</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th></th><th>CRM</th><th>ERP</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Zaměření</strong></td><td>Zákazníci, obchod, marketing, servis</td><td>Interní procesy: finance, výroba, sklad, HR</td></tr>
+                            <tr><td><strong>Uživatelé</strong></td><td>Obchodníci, marketéři, podpora</td><td>Účetní, logistika, výroba, HR</td></tr>
+                            <tr><td><strong>Hodnota</strong></td><td>Zvyšování příjmů, péče o zákazníka</td><td>Efektivita, kontrola nákladů</td></tr>
+                            <tr><td><strong>Integrace</strong></td><td>Ideálně propojeno s ERP (objednávky, faktury)</td><td>Ideálně propojeno s CRM</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box"><strong>Příklad z praxe:</strong> Telekomunikační firma používá Salesforce CRM. Zákazník zavolá na podporu — agent okamžitě vidí: typ tarifu, historii hovorů, otevřené tickety, nedávné kampaně. Systém navrhne cross-sell příležitost (upgrade tarifu). Po hovoru automaticky pošle follow-up e-mail a aktualizuje skóre zákazníka pro marketing.</div>
+
+                    <h4>Hlavní CRM platformy</h4>
+                    <p><strong>Salesforce</strong> (světová jednička, cloud-native), <strong>Microsoft Dynamics 365 Sales/Service/Marketing</strong>, <strong>HubSpot</strong> (populární u SMB, freemium model), <strong>SAP CX</strong> (Customer Experience), <strong>Oracle Siebel</strong> (enterprise, legacy).</p>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>CRM = strategie + systém pro správu zákaznických vztahů v celém životním cyklu.</li>
+                            <li>Tři pilíře: operativní (efektivita), analytické (poznání), kolaborativní (konzistence).</li>
+                            <li>Pokrývá: prodej (pipeline), marketing (kampaně), servis (tickety), analytiku.</li>
+                            <li>Rozdíl od ERP: CRM = zákazníci a příjmy; ERP = interní procesy a náklady.</li>
+                            <li>V praxi se CRM a ERP integrují (objednávka z CRM → ERP pro fakturaci a sklad).</li>
+                        </ul>
+                    </div>
+                </section>
+
             </div>
         </div>
     </div>
-    <script src="subjects-nav.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

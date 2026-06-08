@@ -7,30 +7,489 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
+                macros: { N: "\\mathbb{N}", R: "\\mathbb{R}", Z: "\\mathbb{Z}", Q: "\\mathbb{Q}", C: "\\mathbb{C}" }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-<body class="page-specialization">
+<body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="fas fa-arrow-left me-2"></i>Dashboard</a>
             <span class="navbar-text mx-auto"><strong>ZDA</strong> - Datová analýza</span>
-            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')"><i class="fas fa-adjust"></i></button>
+            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')">
+                <i class="fas fa-adjust"></i>
+            </button>
         </div>
     </nav>
+
     <div class="container">
         <div class="row">
             <div class="col-lg-3 d-none d-lg-block">
                 <nav class="topic-nav pt-4">
                     <h6 class="text-muted text-uppercase fw-bold mb-3">Témata</h6>
-                    <p class="text-muted small fst-italic">Ve výstavbě</p>
+                    <ul class="nav flex-column">
+                        <li><a class="nav-link py-1" href="#topic-1">1. Datová analýza</a></li>
+                        <li><a class="nav-link py-1" href="#topic-2">2. Přístupy k analýze dat</a></li>
+                        <li><a class="nav-link py-1" href="#topic-3">3. Statistické metody</a></li>
+                        <li><a class="nav-link py-1" href="#topic-4">4. Vizualizace dat</a></li>
+                        <li><a class="nav-link py-1" href="#topic-5">5. Způsoby vizualizace</a></li>
+                        <li><a class="nav-link py-1" href="#topic-6">6. Datová kvalita</a></li>
+                        <li><a class="nav-link py-1" href="#topic-7">7. Data-driven rozhodování</a></li>
+                    </ul>
                 </nav>
             </div>
+
             <div class="col-lg-9">
-                <h1 class="mb-4">Datová analýza</h1>
-                <div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>Tato stránka je ve výstavbě. Použij /notes zda pro vygenerování obsahu.</div>
+                <h1 class="mb-4">Datová analýza (ZDA)</h1>
+
+                <!-- ==================== TOPIC 1 ==================== -->
+                <section class="topic-section" id="topic-1">
+                    <h3>1. Datová analýza</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> Datová analýza je proces inspekce, čištění, transformace a modelování dat s cílem objevit užitečné informace, vyvodit závěry a podpořit rozhodování.</div>
+
+                    <h4>Proč to vzniklo</h4>
+                    <p>Organizace produkují obrovské množství dat (transakce, senzory, logy, průzkumy), ale surová data sama o sobě nemají hodnotu. Datová analýza je most mezi surovými daty a akcemi — přemění šum na signal.</p>
+
+                    <h4>Životní cyklus datové analýzy</h4>
+                    <ol>
+                        <li><strong>Definice problému</strong> — co chceme zjistit, jaká je business otázka</li>
+                        <li><strong>Sběr dat</strong> — databáze, API, soubory, dotazníky</li>
+                        <li><strong>Čištění dat</strong> — odstranění chyb, duplicit, chybějících hodnot</li>
+                        <li><strong>Explorativní analýza (EDA)</strong> — pochopení distribucí, vzorů, anomálií</li>
+                        <li><strong>Modelování / analýza</strong> — statistické testy, regrese, clustering</li>
+                        <li><strong>Interpretace a vizualizace</strong> — prezentace výsledků srozumitelnou formou</li>
+                        <li><strong>Rozhodnutí a akce</strong> — výsledky analýzy vedou k business rozhodnutí</li>
+                    </ol>
+
+                    <div class="ex-box"><strong>Příklad:</strong> E-shop chce snížit odliv zákazníků (churn). Sesbírá data o nákupech, frekvenci návštěv a stížnostech → vyčistí data → prozkoumá vzory u odcházejících zákazníků → natrénuje prediktivní model → marketing zacílí ohrožené zákazníky speciální nabídkou.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Datová analýza = systematický proces od dat k rozhodnutí</li>
+                            <li>Klíčové kroky: definice → sběr → čištění → EDA → modelování → akce</li>
+                            <li>Bez čištění dat jsou výsledky nespolehlivé ("garbage in, garbage out")</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ==================== TOPIC 2 ==================== -->
+                <section class="topic-section" id="topic-2">
+                    <h3>2. Přístupy k provádění datových analýz</h3>
+
+                    <h4>Osa 1: Explorativní vs. Konfirmativní</h4>
+
+                    <div class="def-box"><strong>EDA (Exploratory Data Analysis):</strong> Induktivní přístup — prozkoumáváme data bez předem dané hypotézy. Cílem je porozumět struktuře dat, odhalit vzory, anomálie a generovat hypotézy.</div>
+
+                    <div class="def-box"><strong>CDA (Confirmatory Data Analysis):</strong> Deduktivní přístup — máme předem formulovanou hypotézu a statisticky ji testujeme (t-test, ANOVA, chi-kvadrát test).</div>
+
+                    <div class="insight-box"><strong>Intuice:</strong> EDA je jako detektiv, který sbírá stopy bez předpokladů. CDA je jako soud, který testuje konkrétní obvinění. V praxi se střídají: EDA generuje hypotézy → CDA je ověřuje.</div>
+
+                    <h4>Osa 2: Typ analýzy podle cíle</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead>
+                            <tr><th>Typ</th><th>Otázka</th><th>Metody</th><th>Příklad</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Deskriptivní</strong></td>
+                                <td>Co se stalo?</td>
+                                <td>Průměry, grafy, reporty</td>
+                                <td>Měsíční tržby podle regionu</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Diagnostická</strong></td>
+                                <td>Proč se to stalo?</td>
+                                <td>Korelace, drill-down</td>
+                                <td>Proč klesly tržby v Q3?</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Prediktivní</strong></td>
+                                <td>Co se stane?</td>
+                                <td>Regrese, ML modely</td>
+                                <td>Predikce poptávky na příští měsíc</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Preskriptivní</strong></td>
+                                <td>Co dělat?</td>
+                                <td>Optimalizace, simulace</td>
+                                <td>Jakou cenu nastavit pro max. zisk?</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box"><strong>Příklad z praxe:</strong> Spotify kombinuje všechny čtyři přístupy: deskriptivně sleduje počty přehrání, diagnosticky zjišťuje proč uživatel přestal platit, prediktivně odhaduje churn riziko, preskriptivně doporučuje akci (slevový kód).</div>
+
+                    <h4>Osa 3: Kvantitativní vs. Kvalitativní</h4>
+                    <p><strong>Kvantitativní</strong> analýza pracuje s číselnými daty a statistickými metodami. <strong>Kvalitativní</strong> analýza interpretuje texty, rozhovory, pozorování — hledá význam, ne čísla. V datové analýze dominuje kvantitativní, ale NLP a textová analýza propojují oba světy.</p>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>EDA = explorace bez hypotézy; CDA = testování hypotézy</li>
+                            <li>4 typy dle cíle: deskriptivní → diagnostická → prediktivní → preskriptivní</li>
+                            <li>Hierarchie: každá vyšší úroveň přidává akční hodnotu, ale vyžaduje lepší data a metody</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ==================== TOPIC 3 ==================== -->
+                <section class="topic-section" id="topic-3">
+                    <h3>3. Statistické metody pro datové analýzy</h3>
+
+                    <h4>3a. Deskriptivní statistika</h4>
+                    <p>Popisuje základní vlastnosti dat bez zobecňování na populaci.</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Kategorie</th><th>Míry</th></tr></thead>
+                        <tbody>
+                            <tr><td>Poloha</td><td>Průměr $\bar{x}$, medián, modus</td></tr>
+                            <tr><td>Rozptyl</td><td>Rozptyl $\sigma^2$, směrodatná odchylka $\sigma$, IQR</td></tr>
+                            <tr><td>Tvar</td><td>Šikmost (skewness), špičatost (kurtosis)</td></tr>
+                            <tr><td>Vztahy</td><td>Korelace (Pearson, Spearman), kovariance</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="warn-box"><strong>Pozor:</strong> Průměr je citlivý na odlehlé hodnoty (outliers) — medián je robustnější. Příklad: průměrná mzda v ČR je zkresleně vysoká kvůli horní vrstvě příjmů; medián lépe vystihuje "typického" zaměstnance.</div>
+
+                    <h4>3b. OLS — Ordinary Least Squares (Regrese)</h4>
+
+                    <div class="def-box"><strong>Definice:</strong> OLS je metoda odhadu parametrů lineárního regresního modelu minimalizací součtu čtverců reziduí (rozdílů mezi pozorovanými a předpovězenými hodnotami).</div>
+
+                    <div class="formula-block">$$\hat{\beta} = \arg\min_\beta \sum_{i=1}^n (y_i - \mathbf{x}_i^\top \beta)^2 = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{y}$$</div>
+
+                    <p>Model: $y_i = \beta_0 + \beta_1 x_{i1} + \ldots + \beta_k x_{ik} + \varepsilon_i$, kde $\varepsilon_i$ je chybový člen.</p>
+
+                    <div class="thm-box"><strong>Gauss-Markovova věta:</strong> Pokud jsou splněny klasické předpoklady (linearita, nezávislost chyb, homoskedasticita, žádná perfektní multikolinearita), pak je OLS odhadce BLUE — Best Linear Unbiased Estimator (nejlepší nestranný lineární odhadce).</div>
+
+                    <h5>Předpoklady OLS</h5>
+                    <ol>
+                        <li><strong>Linearita</strong> — vztah mezi $X$ a $y$ je lineární v parametrech</li>
+                        <li><strong>Exogenita chyb</strong> — $E[\varepsilon | X] = 0$ (chyby nesouvisí s prediktory)</li>
+                        <li><strong>Homoskedasticita</strong> — konstantní rozptyl chyb $\text{Var}(\varepsilon_i) = \sigma^2$</li>
+                        <li><strong>Nekorelovanost chyb</strong> — $\text{Cov}(\varepsilon_i, \varepsilon_j) = 0$ pro $i \neq j$</li>
+                        <li><strong>Absence perfektní multikolinearity</strong> — prediktory nejsou lineárně závislé</li>
+                    </ol>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Chceme vysvětlit výši mzdy: $\text{mzda} = \beta_0 + \beta_1 \cdot \text{vzdělání} + \beta_2 \cdot \text{praxe} + \varepsilon$. OLS odhadne koeficienty $\beta_1, \beta_2$ tak, aby předpovědi co nejlépe seděly pozorovaným datům.</div>
+
+                    <h4>3c. Fixed Effects Model</h4>
+                    <p>Rozšíření panelové regrese pro data, kde máme opakovaná měření stejných jednotek (firem, zemí, osob) v čase.</p>
+
+                    <div class="def-box"><strong>Fixed Effects:</strong> Model kontroluje nepozorovatelné individuální charakteristiky jednotky (fixní efekt $\alpha_i$), které se nemění v čase. Tím eliminuje omitted variable bias z invariantních faktorů.</div>
+
+                    <div class="formula-block">$$y_{it} = \alpha_i + \beta x_{it} + \varepsilon_{it}$$</div>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Chceme zjistit vliv vzdělání na mzdu. Různé osoby mají různou vrozenou schopnost (unobservable). FE model "vymaže" tyto individuální fixní vlastnosti — sledujeme každou osobu v čase a porovnáváme změny uvnitř osoby, ne mezi osobami.</div>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Cukierman (1994) — vliv nezávislosti centrální banky na inflaci. Fixní efekty zemí odstraní vliv trvalých národních specifik (kultura, instituce), čímž izolujeme skutečný efekt nezávislosti CB.</div>
+
+                    <h4>3d. K-means segmentace</h4>
+
+                    <div class="def-box"><strong>K-means:</strong> Algoritmus nehierarchického shlukování (clustering), který rozděluje $n$ datových bodů do $k$ shluků tak, aby minimalizoval součet čtverců vzdáleností bodů od centroidů jejich shluků (within-cluster variance).</div>
+
+                    <h5>Algoritmus — 4 kroky</h5>
+                    <ol>
+                        <li><strong>Inicializace:</strong> Náhodně zvolíme $k$ centroidů (nebo použijeme K-means++ pro lepší start)</li>
+                        <li><strong>Přiřazení:</strong> Každý bod přiřadíme nejbližšímu centroidu (Euklidovská vzdálenost)</li>
+                        <li><strong>Aktualizace:</strong> Přepočítáme centroidy jako průměr všech bodů v daném shluku</li>
+                        <li><strong>Opakování:</strong> Kroky 2–3 opakujeme až do konvergence (přiřazení se nemění)</li>
+                    </ol>
+
+                    <div class="formula-block">$$\text{minimalizujeme} \quad J = \sum_{j=1}^k \sum_{x_i \in C_j} \|x_i - \mu_j\|^2$$</div>
+
+                    <div class="warn-box"><strong>Pozor:</strong> K-means vyžaduje předem zvolené $k$ (počet shluků). Pro výběr $k$ se používá "Elbow method" — sledujeme, jak rychle klesá $J$ s rostoucím $k$. Algoritmus konverguje k lokálnímu minimu, ne nutně globálnímu.</div>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Zákaznická segmentace — věk, frekvence nákupů, průměrná útrata. K-means může najít segmenty jako "mladí příležitostní kupci", "věrní zákazníci střední třídy", "VIP zákazníci s velkými nákupy" → cílený marketing pro každý segment.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Deskriptivní statistika: průměr, medián, rozptyl — základ pro jakoukoliv analýzu</li>
+                            <li>OLS: minimalizace čtverců reziduí → BLUE za Gauss-Markovových podmínek</li>
+                            <li>Fixed Effects: panelová data, eliminace individuálních fixních vlivů</li>
+                            <li>K-means: nehierarchický clustering, $k$ shluků, minimalizace within-cluster variance</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ==================== TOPIC 4 ==================== -->
+                <section class="topic-section" id="topic-4">
+                    <h3>4. Vizualizace dat pro účely datových analýz</h3>
+
+                    <h4>Proč vizualizujeme</h4>
+                    <p>Lidský mozek zpracovává vizuální informace řádově rychleji než číselné tabulky. Vizualizace slouží dvěma odlišným účelům:</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Účel</th><th>Publikum</th><th>Priorita</th><th>Příklad</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Explorativní</strong></td>
+                                <td>Analytik sám</td>
+                                <td>Rychlost, flexibilita</td>
+                                <td>Scatter matrix v Pandas, boxploty v R</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Explanativní</strong></td>
+                                <td>Management, zákazník</td>
+                                <td>Srozumitelnost, přesnost</td>
+                                <td>Dashboard v Power BI, prezentace</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Explorativní vizualizace je jako draft — nevadí, že není hezká, slouží analytikovi. Explanativní je jako finální produkt — musí být přesná, čistá a okamžitě srozumitelná cílovému publiku.</div>
+
+                    <h4>Principy dobré vizualizace (Munzner)</h4>
+                    <ul>
+                        <li><strong>Expresivita</strong> — vizualizace zobrazuje přesně ta data, která chceme (ne více, ne méně)</li>
+                        <li><strong>Efektivita</strong> — zvolený typ grafu přenáší informaci co nejrychleji a nejpřesněji</li>
+                        <li><strong>Minimalizace cognitive load</strong> — každý prvek musí mít účel; data-ink ratio (Tufte)</li>
+                    </ul>
+
+                    <div class="warn-box"><strong>Pozor:</strong> Ořezaná osa Y, 3D koláčové grafy, zkreslené barvy — časté chyby, které klamou (záměrně i nezáměrně). Vždy začínáme osu Y od nuly u sloupcových grafů.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Vizualizace = přemostění mezi daty a porozuměním</li>
+                            <li>Explorativní (pro analytika) vs. explanativní (pro publikum)</li>
+                            <li>Princip: expresivita + efektivita + minimální kognitivní zátěž</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ==================== TOPIC 5 ==================== -->
+                <section class="topic-section" id="topic-5">
+                    <h3>5. Způsoby vizualizace dat</h3>
+
+                    <h4>Výběr správného typu grafu</h4>
+                    <p>Volba grafu závisí na tom, <em>co chceme komunikovat</em> a <em>jaký typ dat máme</em>.</p>
+
+                    <table class="table table-bordered summary-table">
+                        <thead>
+                            <tr><th>Otázka</th><th>Typ grafu</th><th>Kdy použít</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Porovnání kategorií</td>
+                                <td>Sloupcový / Bar chart</td>
+                                <td>Kategorická data, diskrétní hodnoty</td>
+                            </tr>
+                            <tr>
+                                <td>Distribuce jedné proměnné</td>
+                                <td>Histogram</td>
+                                <td>Spojitá numerická data, rozložení</td>
+                            </tr>
+                            <tr>
+                                <td>Vztah dvou proměnných</td>
+                                <td>Scatter plot</td>
+                                <td>Korelace, vzory, outliers</td>
+                            </tr>
+                            <tr>
+                                <td>Vývoj v čase</td>
+                                <td>Čárový graf / Line chart</td>
+                                <td>Časové řady, trendy</td>
+                            </tr>
+                            <tr>
+                                <td>Části celku</td>
+                                <td>Koláčový / Pie chart</td>
+                                <td>Max. 5–6 kategorií, % podíly</td>
+                            </tr>
+                            <tr>
+                                <td>Distribuce + odlehlé hodnoty</td>
+                                <td>Box plot</td>
+                                <td>Srovnání skupin, Q1/Q3/medián/IQR</td>
+                            </tr>
+                            <tr>
+                                <td>Korelační matice</td>
+                                <td>Heatmapa</td>
+                                <td>Velký počet proměnných najednou</td>
+                            </tr>
+                            <tr>
+                                <td>Geografická data</td>
+                                <td>Mapa (choropleth)</td>
+                                <td>Prostorové vzory, regionální data</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box"><strong>Příklad — Bar vs. Histogram:</strong>
+                        <ul>
+                            <li><strong>Bar chart:</strong> Tržby podle produktové kategorie (elektronika, oblečení, potraviny) — kategorie jsou diskrétní, neseřazené</li>
+                            <li><strong>Histogram:</strong> Rozložení věku zákazníků — věk je spojitá numerická proměnná dělená do intervalů (bins)</li>
+                        </ul>
+                    </div>
+
+                    <h4>Dashboardy a reporting</h4>
+                    <p>Dashboard = přehledná sestava KPI metrik a grafů na jedné obrazovce, aktualizovaná v reálném čase nebo periodicky. Klíčové principy:</p>
+                    <ul>
+                        <li>Hierarchie informací — nejdůležitější metriky nahoře (F-pattern čtení)</li>
+                        <li>Konzistentní barevné schéma — barvy nesou sémantiku (červená = problém, zelená = OK)</li>
+                        <li>Interaktivita — filtrování, drill-down do detailů</li>
+                    </ul>
+
+                    <div class="ex-box"><strong>Nástroje:</strong> Power BI, Tableau, Looker (komerční), Metabase (open-source), matplotlib/seaborn/plotly (Python), ggplot2 (R).</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Typ grafu = funkce datového typu + komunikačního cíle</li>
+                            <li>Bar (kategorie) → Histogram (distribuce) → Scatter (vztah) → Line (čas)</li>
+                            <li>Dashboard: přehled KPI, hierarchie, konzistence, interaktivita</li>
+                            <li>Koláčový graf jen pro malý počet kategorií, jinak bar chart</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ==================== TOPIC 6 ==================== -->
+                <section class="topic-section" id="topic-6">
+                    <h3>6. Datová kvalita</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> Datová kvalita je míra vhodnosti dat pro zamýšlené použití — zda data věrně, úplně a konzistentně reprezentují realitu, kterou mají popisovat.</div>
+
+                    <h4>Dimenze datové kvality (Wang & Strong, 1996)</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Dimenze</th><th>Otázka</th><th>Příklad problému</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Přesnost (Accuracy)</strong></td>
+                                <td>Odpovídají data realitě?</td>
+                                <td>Zákazník má v systému chybnou adresu</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Úplnost (Completeness)</strong></td>
+                                <td>Jsou všechna data přítomna?</td>
+                                <td>Chybějící hodnoty ve sloupci "telefon"</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Konzistence (Consistency)</strong></td>
+                                <td>Jsou data v různých systémech shodná?</td>
+                                <td>Různé datum narození v CRM a HR systému</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Aktuálnost (Timeliness)</strong></td>
+                                <td>Jsou data dostatečně čerstvá?</td>
+                                <td>Ceník aktualizovaný před rokem</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Validita (Validity)</strong></td>
+                                <td>Odpovídají data definovanému formátu?</td>
+                                <td>PSČ "abcde" místo čísla</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Jedinečnost (Uniqueness)</strong></td>
+                                <td>Nejsou duplicitní záznamy?</td>
+                                <td>Zákazník dvakrát v databázi</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Problémy datové kvality a jejich řešení</h4>
+
+                    <div class="ex-box"><strong>Chybějící hodnoty (Missing values):</strong>
+                        <ul>
+                            <li><strong>MCAR</strong> (Missing Completely At Random) — náhodně chybí, lze imputovat průměrem/mediánem</li>
+                            <li><strong>MAR</strong> (Missing At Random) — chybí závisle na jiných proměnných → regresní imputace</li>
+                            <li><strong>MNAR</strong> (Missing Not At Random) — chybí ze systémového důvodu → vážný problém, nutno řešit u zdroje</li>
+                        </ul>
+                    </div>
+
+                    <div class="ex-box"><strong>Outliers (odlehlé hodnoty):</strong> Zákazník s nákupem 1 000 000 Kč — skutečná anomálie nebo chyba zadávání? Detekce: Z-score ($|z| > 3$), IQR metoda ($< Q1 - 1.5 \cdot IQR$ nebo $> Q3 + 1.5 \cdot IQR$), vizuální inspekcí boxplotem.</div>
+
+                    <h4>Data pipeline a datová kvalita</h4>
+                    <p>V produkčních systémech (DWH, ETL procesy) se kvalita hlídá automaticky:</p>
+                    <ul>
+                        <li><strong>Datové validace</strong> při ingestu (constraint checks, schema validation)</li>
+                        <li><strong>Monitoring</strong> — alerting při neočekávaném poklesu počtu záznamů nebo změně distribuce</li>
+                        <li><strong>Data lineage</strong> — sledování původu dat (co se stalo s daty na každém kroku)</li>
+                    </ul>
+
+                    <div class="insight-box"><strong>Intuice:</strong> "Garbage in, garbage out" — sebedokonalejší analytická metoda nedá smysluplné výsledky ze špatných dat. Investice do datové kvality je investice do spolehlivosti veškerých analýz.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>6 klíčových dimenzí: přesnost, úplnost, konzistence, aktuálnost, validita, jedinečnost</li>
+                            <li>Chybějící hodnoty: MCAR/MAR/MNAR — různý dopad a různá řešení</li>
+                            <li>Outliers: detekovat, identifikovat příčinu, pak teprve rozhodnout o odstranění</li>
+                            <li>V praxi: automatické validace a monitoring v ETL pipelines</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ==================== TOPIC 7 ==================== -->
+                <section class="topic-section" id="topic-7">
+                    <h3>7. Data-driven rozhodování</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> Data-driven decision making (DDDM) je přístup, při kterém jsou strategická a operativní rozhodnutí podložena analýzou dat a měřitelnými důkazy, nikoli výhradně intuicí nebo zkušeností.</div>
+
+                    <h4>Proč data-driven přístup</h4>
+                    <p>Tradiční rozhodování spoléhá na zkušenosti manažerů — funguje v stabilním prostředí, ale selhává při:</p>
+                    <ul>
+                        <li>Velkém množství proměnných (příliš složité pro lidský úsudek)</li>
+                        <li>Rychlých změnách trhu (intuice zaostává za daty)</li>
+                        <li>Kognitivních zkreslení (confirmation bias, availability bias)</li>
+                    </ul>
+
+                    <div class="ex-box"><strong>Příklad — A/B testování:</strong> E-shop testuje dvě verze landing page (A a B) na náhodně rozdělených návštěvnících. Po 2 týdnech data ukáží, která verze má vyšší konverzní poměr → rozhodnutí je datově podloženo, ne intuitivní.</div>
+
+                    <h4>KPI a metriky</h4>
+                    <p>DDDM vyžaduje definici měřitelných ukazatelů výkonnosti (KPI — Key Performance Indicators):</p>
+                    <ul>
+                        <li><strong>Lagging indicators</strong> — měří minulé výsledky (tržby, zisk)</li>
+                        <li><strong>Leading indicators</strong> — predikují budoucí výkonnost (počet leads, NPS)</li>
+                    </ul>
+
+                    <div class="insight-box"><strong>Intuice: Data-informed vs. Data-driven:</strong>
+                        <ul>
+                            <li><strong>Data-driven:</strong> Rozhodnutí vychází téměř výhradně z dat; riziko přehlédnutí kontextu, který data nezachytila</li>
+                            <li><strong>Data-informed:</strong> Data jsou klíčový vstup, ale kombinují se s expertním úsudkem a kontextuálním porozuměním — pragmatičtější přístup v praxi</li>
+                        </ul>
+                    </div>
+
+                    <h4>Proces DDDM</h4>
+                    <ol>
+                        <li><strong>Definuj otázku</strong> — co chceme rozhodnout, jaká data potřebujeme</li>
+                        <li><strong>Sesbírej relevantní data</strong> — z existujících zdrojů nebo cíleným sběrem</li>
+                        <li><strong>Analyzuj</strong> — statistické metody, dashboardy, modely</li>
+                        <li><strong>Interpretuj výsledky</strong> — v kontextu businessu, ne jen číselně</li>
+                        <li><strong>Rozhodni a implementuj</strong></li>
+                        <li><strong>Měř dopady</strong> — uzavři smyčku, ověř hypotézu</li>
+                    </ol>
+
+                    <div class="ex-box"><strong>Příklady z praxe:</strong>
+                        <ul>
+                            <li><strong>Netflix:</strong> Doporučovací algoritmus → 80 % sledování pochází z doporučení, ne z vyhledávání</li>
+                            <li><strong>Amazon:</strong> Dynamické ceny — cena produktu se mění tisíckrát denně na základě dat o poptávce a konkurenci</li>
+                            <li><strong>Uber:</strong> Surge pricing — datově řízená cena dle lokální nabídky a poptávky řidičů</li>
+                        </ul>
+                    </div>
+
+                    <div class="warn-box"><strong>Pozor na:</strong>
+                        <ul>
+                            <li><strong>Korelace ≠ kauzalita</strong> — data ukazují vztah, ne nutně příčinu. Příklad: v létě roste prodej zmrzliny i utopení; zmrzlina neutopení nezpůsobuje (třetí proměnná: horko)</li>
+                            <li><strong>Survivorship bias</strong> — analyzujeme jen data, která máme (vítěze), ignorujeme selektované ztráty</li>
+                            <li><strong>Goodhartův zákon</strong> — jakmile se metrika stane cílem, přestává být dobrou metrikou (např. call centrum měřené počtem hovorů místo spokojeností)</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>DDDM = rozhodování podložené daty, ne pouze intuicí</li>
+                            <li>Vyžaduje jasné KPI, kvalitní data a analytické kompetence</li>
+                            <li>Data-informed je realističtější než čistě data-driven — kontext vždy záleží</li>
+                            <li>Klíčová past: korelace ≠ kauzalita; Goodhartův zákon; survivorship bias</li>
+                        </ul>
+                    </div>
+                </section>
+
             </div>
         </div>
     </div>
-    <script src="subjects-nav.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -390,7 +390,7 @@
                     <p class="text-muted" id="subjectCode"></p>
                 </div>
                 <div class="d-flex gap-2 align-items-center">
-                    <a href="#" id="notesLink" class="btn btn-primary" target="_blank">
+                    <a href="#" id="notesLink" class="btn btn-primary">
                         <i class="fas fa-book-open me-2"></i>Poznámky
                     </a>
                     <span class="badge bg-secondary" id="subjectProgress"></span>
@@ -670,10 +670,15 @@
                     code: 'PM2',
                     name: 'Projektové řízení',
                     topics: [
-                        'Řízení softwarových projektů – fáze SW projektu, životní cyklus',
-                        'Klasické a agilní metodiky vývoje software',
-                        'Sestavení a sledování projektového plánu',
-                        'Metody odhadování pracnosti'
+                        'Terminologie a přístupy',
+                        'Životní cyklus, vodopádový model',
+                        'WBS, harmonogram projektu',
+                        'Řízení rizik',
+                        'Odhadování pracnosti',
+                        'Agilní metody, SCRUM',
+                        'Metriky kvality SW',
+                        'Statické testování, revize',
+                        'Testovací strategie'
                     ]
                 },
                 {
@@ -741,17 +746,45 @@
                 {
                     code: 'ZDA',
                     name: 'Datová analýza',
-                    topics: []
+                    topics: [
+                        'Datová analýza — co to je, životní cyklus (definice → sběr → čištění → EDA → modelování → akce)',
+                        'Přístupy k analýze dat — EDA vs. CDA, deskriptivní / diagnostická / prediktivní / preskriptivní analýza',
+                        'Statistické metody — deskriptivní statistika, OLS regrese (Gauss-Markov, BLUE), Fixed Effects model, K-means clustering',
+                        'Vizualizace dat — účel, explorativní vs. explanativní, principy (expresivita, efektivita, data-ink ratio)',
+                        'Způsoby vizualizace — typy grafů (bar, histogram, scatter, line, boxplot, heatmapa), dashboardy',
+                        'Datová kvalita — dimenze (přesnost, úplnost, konzistence, aktuálnost, validita, jedinečnost), chybějící hodnoty, outliers',
+                        'Data-driven rozhodování — DDDM, KPI, A/B testování, data-informed vs. data-driven, pasti (korelace ≠ kauzalita, Goodhartův zákon)'
+                    ]
                 },
                 {
                     code: 'TPA',
                     name: 'Tvorba podnikových aplikací',
-                    topics: []
+                    topics: [
+                        'IT strategie — definice, business-IT alignment, tvorba (analýza → cíle → roadmapa → governance)',
+                        'Podniková aplikace — co ji dělá podnikovou, typy (ERP, CRM, SCM, HRM, BI, xRM), způsoby pořízení',
+                        'Způsoby popisu podnikových aplikací — BPMN (tok procesů), UML (use case, sequence), ArchiMate (EA vrstvy), DMN (rozhodovací tabulky)',
+                        'Enterprise architektura — 4 vrstvy, TOGAF (ADM cyklus) vs. Zachman (klasifikační matice 6×6)',
+                        'Robotizace procesů (RPA) — jak funguje, attended vs. unattended, kdy použít, hyperautomation, platformy',
+                        'ERP — sdílená databáze, moduly, single source of truth, implementace, dodavatelé',
+                        'xRM — generalizace CRM pro správu čehokoli, Dynamics 365 jako platforma, příklady použití',
+                        'CRM — 3 pilíře (operativní/analytické/kolaborativní), životní cyklus zákazníka, CRM vs. ERP'
+                    ]
                 },
                 {
                     code: 'MPR',
                     name: 'Metody pro rozhodování',
-                    topics: []
+                    topics: [
+                        'Lineární programování — formulace úlohy, simplex metoda, grafické řešení',
+                        'Klasifikace rozhodovacích situací — typy okolí (jistota, riziko, neurčitost), strukturované vs. nestrukturované úlohy',
+                        'Rozhodování za rizika — pravděpodobnostní přístupy, rozhodovací stromy, EMV, expected utility',
+                        'Rozhodování za neurčitosti — kritéria (Wald/maximin, maximax, Hurwicz, Laplace, Savage/minimax regret)',
+                        'Vícekriteriální rozhodování – úvod — tvorba kritérií, typy stupnic, normování hodnot',
+                        'Metody stanovení vah — pořadová metoda, bodová, párové porovnání, AHP (Saatyho matice)',
+                        'Komplexní hodnocení variant — WSA, TOPSIS, ELECTRE; dominance a eficience',
+                        'Vektorová optimalizace a Pareto — Pareto optimalita, Pareto fronta, vazba na lineární programování',
+                        'Praxe a typické chyby — chyby při aplikaci metod, citlivostní analýza, praktické aspekty',
+                        'Získávání a verifikace dat — zdroje dat pro modely, konzistence preferencí, verifikace vstupů'
+                    ]
                 }
             ]
         };
@@ -882,8 +915,8 @@
                     <div class="list-group-item list-group-item-action subject-item d-flex justify-content-between align-items-center" data-code="${subject.code}">
                         <span class="subject-name" style="flex: 1; cursor: pointer;">${subject.name}</span>
                         <div class="d-flex gap-2 align-items-center">
-                            <a href="subjects/${subject.code.toLowerCase()}.html" class="btn btn-sm btn-outline-primary" 
-                               onclick="event.stopPropagation()" target="_blank" title="Otevřít poznámky">
+                            <a href="subjects/${subject.code.toLowerCase()}.html" class="btn btn-sm btn-outline-primary"
+                               onclick="event.stopPropagation()" title="Otevřít poznámky">
                                 <i class="fas fa-book-open"></i>
                             </a>
                             <span class="subject-badge badge bg-primary">${completed}/${total}</span>
@@ -903,8 +936,8 @@
                     <div class="list-group-item list-group-item-action subject-item d-flex justify-content-between align-items-center" data-code="${subject.code}">
                         <span class="subject-name" style="flex: 1; cursor: pointer;">${subject.name}</span>
                         <div class="d-flex gap-2 align-items-center">
-                            <a href="subjects/${subject.code.toLowerCase()}.html" class="btn btn-sm btn-outline-success" 
-                               onclick="event.stopPropagation()" target="_blank" title="Otevřít poznámky">
+                            <a href="subjects/${subject.code.toLowerCase()}.html" class="btn btn-sm btn-outline-success"
+                               onclick="event.stopPropagation()" title="Otevřít poznámky">
                                 <i class="fas fa-book-open"></i>
                             </a>
                             <span class="subject-badge badge bg-success">${completed}/${total}</span>

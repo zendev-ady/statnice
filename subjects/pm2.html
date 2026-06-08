@@ -7,30 +7,598 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
+                macros: { N: "\\mathbb{N}", R: "\\mathbb{R}", Z: "\\mathbb{Z}", Q: "\\mathbb{Q}", C: "\\mathbb{C}" }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-<body class="page-specialization">
+<body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="fas fa-arrow-left me-2"></i>Dashboard</a>
             <span class="navbar-text mx-auto"><strong>PM2</strong> - Projektové řízení</span>
-            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')"><i class="fas fa-adjust"></i></button>
+            <button class="btn btn-link text-white" onclick="document.body.classList.toggle('dark-mode')">
+                <i class="fas fa-adjust"></i>
+            </button>
         </div>
     </nav>
+
     <div class="container">
         <div class="row">
             <div class="col-lg-3 d-none d-lg-block">
                 <nav class="topic-nav pt-4">
                     <h6 class="text-muted text-uppercase fw-bold mb-3">Témata</h6>
-                    <p class="text-muted small fst-italic">Ve výstavbě</p>
+                    <ul class="nav flex-column">
+                        <li><a class="nav-link py-1" href="#topic-1">1. Terminologie a přístupy</a></li>
+                        <li><a class="nav-link py-1" href="#topic-2">2. Životní cyklus, vodopádový model</a></li>
+                        <li><a class="nav-link py-1" href="#topic-3">3. WBS, harmonogram projektu</a></li>
+                        <li><a class="nav-link py-1" href="#topic-4">4. Řízení rizik</a></li>
+                        <li><a class="nav-link py-1" href="#topic-5">5. Odhadování pracnosti</a></li>
+                        <li><a class="nav-link py-1" href="#topic-6">6. Agilní metody, SCRUM</a></li>
+                        <li><a class="nav-link py-1" href="#topic-7">7. Metriky kvality SW</a></li>
+                        <li><a class="nav-link py-1" href="#topic-8">8. Statické testování, revize</a></li>
+                        <li><a class="nav-link py-1" href="#topic-9">9. Testovací strategie</a></li>
+                    </ul>
                 </nav>
             </div>
+
             <div class="col-lg-9">
-                <h1 class="mb-4">Projektové řízení</h1>
-                <div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>Tato stránka je ve výstavbě. Použij /notes pm2 pro vygenerování obsahu.</div>
+                <h1 class="mb-4">Projektové řízení SW (PM2)</h1>
+
+                <!-- TOPIC 1 -->
+                <section class="topic-section" id="topic-1">
+                    <h3>1. Úvod, základní terminologie a přístupy</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> <strong>Projekt</strong> je časově ohraničené úsilí s cílem vytvořit unikátní produkt, službu nebo výsledek. Odlišuje se od rutinních operací tím, že má jasný začátek, konec a definovaný výstup.</div>
+
+                    <h4>Projektový trojúhelník (Iron Triangle)</h4>
+                    <p>Každý projekt je omezen třemi vzájemně provázanými parametry:</p>
+                    <ul>
+                        <li><strong>Scope (rozsah)</strong> — co projekt doručí, jaké funkce a vlastnosti</li>
+                        <li><strong>Time (čas)</strong> — do kdy projekt musí být hotov</li>
+                        <li><strong>Cost (náklady)</strong> — kolik zdrojů (peněz, lidí) je k dispozici</li>
+                    </ul>
+                    <div class="insight-box"><strong>Intuice:</strong> Trojúhelník vyjadřuje základní kompromis: pokud chceš víc funkcí (scope), musíš buď zaplatit víc, nebo čekat déle. Klíčovým čtvrtým prvkem je <strong>kvalita</strong>, která leží uvnitř trojúhelníku — zmenšíš-li trojúhelník příliš, kvalita trpí.</div>
+
+                    <h4>Znalostní oblasti projektového řízení (PMI/PMBOK)</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Oblast</th><th>Obsahuje</th></tr></thead>
+                        <tbody>
+                            <tr><td>Integration</td><td>koordinace všech procesů dohromady</td></tr>
+                            <tr><td>Scope</td><td>co je a není součástí projektu</td></tr>
+                            <tr><td>Time</td><td>plánování harmonogramu</td></tr>
+                            <tr><td>Cost</td><td>odhady, rozpočet, kontrola nákladů</td></tr>
+                            <tr><td>Quality</td><td>standardy, metriky, revize</td></tr>
+                            <tr><td>Human Resource</td><td>tým, role, odpovědnosti</td></tr>
+                            <tr><td>Communications</td><td>stakeholdeři, reporty, eskalace</td></tr>
+                            <tr><td>Risk</td><td>identifikace a řízení rizik</td></tr>
+                            <tr><td>Procurement</td><td>nákup, subdodavatelé</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Projekt vs. produkt</h4>
+                    <p><strong>Projekt</strong> je dočasný (má konec), <strong>produkt</strong> existuje dlouhodobě a má vlastní životní cyklus (vývoj → provoz → ukončení). Projektový manažer řídí projekt, product owner/manager řídí produkt.</p>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Vývoj nové verze e-shopu je projekt (6 měsíců, definované funkce, jasný rozpočet). Samotný e-shop pak žije dál jako produkt — provozuje se, aktualizuje, vylepšuje.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Projekt = dočasné úsilí s jedinečným výstupem</li>
+                            <li>Trojúhelník: scope–time–cost jsou vzájemně provázané — změna jednoho ovlivní ostatní</li>
+                            <li>PMBOK definuje 9 znalostních oblastí pokrývajících všechny aspekty řízení projektu</li>
+                            <li>Projekt skončí; produkt žije dál — to je zásadní rozdíl</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 2 -->
+                <section class="topic-section" id="topic-2">
+                    <h3>2. Životní cyklus SW díla, tradiční řízení, vodopádový model</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> <strong>Životní cyklus vývoje softwaru (SDLC)</strong> je strukturovaný proces popisující fáze, kterými prochází software od první myšlenky po vyřazení z provozu.</div>
+
+                    <h4>Fáze SDLC</h4>
+                    <p>Bez ohledu na metodiku se vždy vyskytují tyto aktivity (jen v různém pořadí a rozsahu):</p>
+                    <ul>
+                        <li><strong>Analýza požadavků</strong> — co systém musí dělat</li>
+                        <li><strong>Návrh (design)</strong> — architektura, datový model, UI</li>
+                        <li><strong>Implementace</strong> — kódování</li>
+                        <li><strong>Testování</strong> — ověření správnosti</li>
+                        <li><strong>Nasazení (deployment)</strong> — předání uživatelům</li>
+                        <li><strong>Údržba</strong> — opravy, rozšíření, provoz</li>
+                    </ul>
+
+                    <h4>Vodopádový model</h4>
+                    <div class="insight-box"><strong>Intuice:</strong> Vodopád vznikl přenesením principů stavebního inženýrství do SW. Logika je prostá: dům také nejdřív navrhuješ na papíře, pak stavíš základy, pak zdi — nemůžeš to dělat naopak. Problém je, že software není dům.</div>
+
+                    <p>Klíčový princip: <strong>každá fáze musí být kompletně dokončena a uzavřena, než začne následující</strong>. Zpětné kroky jsou formálně zapovězeny (nebo velmi drahé).</p>
+
+                    <div class="ex-box"><strong>Příklad průběhu:</strong> Analýza (3 měsíce) → Design (2 měsíce) → Implementace (6 měsíců) → Testování (2 měsíce) → Nasazení. Zákazník vidí fungující software teprve po 13 měsících.</div>
+
+                    <h4>Výhody a nevýhody vodopádu</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Výhody</th><th>Nevýhody</th></tr></thead>
+                        <tbody>
+                            <tr><td>Jasná struktura, snadno sledovatelný postup</td><td>Zákazník vidí výsledek až na konci</td></tr>
+                            <tr><td>Dobré pro projekty s pevnými, neměnnými požadavky</td><td>Změny požadavků jsou velmi drahé</td></tr>
+                            <tr><td>Snadná koordinace v externích dodávkách (fixní cena)</td><td>Chyby z analýzy se projeví až v testování</td></tr>
+                            <tr><td>Obsáhlá dokumentace</td><td>Neflexibilní vůči realitě vývoje SW</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Spirálový model (Boehm)</h4>
+                    <p>Kombinuje vodopád s iterativním přístupem. Každá spirála = mini-projekt s analýzou rizik. Vhodný pro velké, rizikové projekty kde není jasné zadání od začátku.</p>
+
+                    <h4>V-model</h4>
+                    <p>Rozšíření vodopádu, kde každé fázi vývoje odpovídá fáze testování. Analýza požadavků → Akceptační testy; Design → Systémové testy; Implementace → Unit testy. Testovací plány vznikají souběžně s vývojem.</p>
+
+                    <figure class="text-center my-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e2/Waterfall_model.svg" class="img-fluid rounded shadow-sm" style="max-height:320px;" alt="Vodopádový model">
+                        <figcaption class="text-muted small mt-1">Vodopádový model — sekvenční fáze, každá uzavřena před další (Wikimedia Commons)</figcaption>
+                    </figure>
+
+                    <div class="warn-box"><strong>Pozor:</strong> Vodopád není zastaralý a stále má své místo — typicky ve vládních zakázkách, zdravotnictví, leteckém průmyslu kde jsou požadavky fixní, auditovatelnost je povinná a změny musí být schváleny regulátorem.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>SDLC = analýza → design → implementace → testování → nasazení → údržba</li>
+                            <li>Vodopád: sekvenční, každá fáze se uzavře před další; vhodný pro stabilní požadavky</li>
+                            <li>Hlavní slabina: zákazník feedback dostane pozdě, změny jsou drahé</li>
+                            <li>V-model a spirálový model jsou přímé reakce na slabiny vodopádu</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 3 -->
+                <section class="topic-section" id="topic-3">
+                    <h3>3. Projektový plán, Work Breakdown Structure, harmonogram</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> <strong>Work Breakdown Structure (WBS)</strong> je hierarchický rozklad projektu na menší, zvládnutelné části — od celkového cíle přes dílčí výsledky (deliverables) až po konkrétní pracovní balíčky (work packages).</div>
+
+                    <h4>Proč WBS?</h4>
+                    <div class="insight-box"><strong>Intuice:</strong> WBS řeší základní problém: "jak sníst slona?" — po kouscích. Dokud nemáš projekt rozložený na konkrétní úkoly, nemůžeš odhadnout čas, přiřadit odpovědnost ani plánovat závislosti. WBS je základ, ze kterého vyrůstá harmonogram, rozpočet i řízení rizik.</div>
+
+                    <p>Stavba WBS probíhá <strong>shora dolů</strong>: začínáme od celkového výstupu projektu a postupně ho dekomponujeme, dokud nedosáhneme úrovně, kde je práce zvládnutelná a měřitelná (work package).</p>
+
+                    <div class="ex-box"><strong>Příklad WBS pro e-shop:</strong>
+                        <ul>
+                            <li>E-shop (celý projekt)
+                                <ul>
+                                    <li>Frontend
+                                        <ul>
+                                            <li>Design UI/UX</li>
+                                            <li>Implementace produktové stránky</li>
+                                            <li>Implementace košíku</li>
+                                        </ul>
+                                    </li>
+                                    <li>Backend
+                                        <ul>
+                                            <li>REST API pro produkty</li>
+                                            <li>Platební brána</li>
+                                        </ul>
+                                    </li>
+                                    <li>Infrastruktura a nasazení</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h4>Od WBS k harmonogramu</h4>
+                    <p>Proces: WBS → identifikace aktivit → závislosti mezi aktivitami → odhad dob trvání → <strong>kritická cesta</strong> → přiřazení zdrojů → Ganttův diagram.</p>
+
+                    <div class="def-box"><strong>Definice:</strong> <strong>Kritická cesta (CPM — Critical Path Method)</strong> je nejdelší sekvence vzájemně závislých úkolů v projektu. Zpoždění jakéhokoli úkolu na kritické cestě zpozdí celý projekt.</div>
+
+                    <h4>Ganttův diagram</h4>
+                    <p>Nejpoužívanější vizualizace harmonogramu: na ose X je čas, na ose Y jsou úkoly. Úsečky znázorňují trvání, šipky závislosti. Výhoda: okamžitě vidíš, co běží paralelně, co je na sobě závislé a jaký je aktuální stav.</p>
+
+                    <h4>PERT (Program Evaluation and Review Technique)</h4>
+                    <p>Metoda pro odhad doby trvání při nejistotě. Pro každý úkol se odhadují tři hodnoty: optimistická (O), nejpravděpodobnější (M) a pesimistická (P).</p>
+                    <div class="formula-block">$$t_{PERT} = \frac{O + 4M + P}{6}$$</div>
+                    <p>Váha středního odhadu je 4x větší — reflektuje, že krajní scénáře jsou méně pravděpodobné.</p>
+
+                    <figure class="text-center my-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/WbsConstruction.png/660px-WbsConstruction.png" class="img-fluid rounded shadow-sm" alt="WBS diagram">
+                        <figcaption class="text-muted small mt-1">WBS stavebního projektu — hierarchický rozklad od celku po pracovní balíčky (Wikimedia Commons)</figcaption>
+                    </figure>
+
+                    <h4>Milníky a baseline</h4>
+                    <p><strong>Milník</strong> je bod v čase (nula délky trvání) označující dokončení klíčové fáze nebo dodávky. <strong>Baseline</strong> je schválená verze harmonogramu vůči které se měří odchylky.</p>
+
+                    <div class="warn-box"><strong>Pozor:</strong> "Přidáme lidi a to dožene zpoždění" — Brooksův zákon říká opak. Přidání lidí uprostřed projektu ho zpomalí (onboarding, komunikační overhead). Platí zejména pro úkoly, které nelze paralelizovat.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>WBS = hierarchický rozklad projektu; základ pro plánování všeho ostatního</li>
+                            <li>Kritická cesta = nejdelší posloupnost závislých úkolů; její zpoždění = zpoždění projektu</li>
+                            <li>Gantt = vizualizace harmonogramu v čase; PERT = odhad při nejistotě</li>
+                            <li>Brooksův zákon: přidání lidí do zpožděného projektu ho dále zpozdí</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 4 -->
+                <section class="topic-section" id="topic-4">
+                    <h3>4. Řízení rizik — identifikace, hodnocení, mitigační strategie</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> <strong>Riziko</strong> je nejistá událost nebo podmínka, která — pokud nastane — má pozitivní nebo negativní dopad na projekt. Řízení rizik je systematický proces identifikace, hodnocení a reakce na tato rizika.</div>
+
+                    <h4>Proč řídit rizika?</h4>
+                    <div class="insight-box"><strong>Intuice:</strong> Každý projekt čelí nejistotám. Bez aktivního řízení rizik reagujeme na problémy až když nastanou — tehdy je ale jejich řešení nejdražší. Cílem je problémy předvídat a připravit se na ně, dokud je to levné.</div>
+
+                    <h4>Proces řízení rizik</h4>
+                    <p><strong>1. Identifikace</strong> — hledáme, co by se mohlo pokazit. Techniky: brainstorming týmu, checklisty (typická SW rizika), SWOT analýza, interview se stakeholdery. Výstup: <strong>registr rizik</strong>.</p>
+                    <p><strong>2. Kvalitativní analýza</strong> — pro každé riziko odhadujeme:</p>
+                    <ul>
+                        <li><strong>Pravděpodobnost</strong> — jak moc je pravděpodobné, že nastane (1–4 nebo %)</li>
+                        <li><strong>Dopad</strong> — jak závažné by byly následky (1–4 nebo low/med/high)</li>
+                    </ul>
+                    <div class="formula-block">$$\text{Exposure} = \text{Pravděpodobnost} \times \text{Dopad}$$</div>
+
+                    <h4>Mapa rizik</h4>
+                    <p>Rizika zobrazujeme v matici pravděpodobnost × dopad. Červená zóna (vysoká P × vysoký D) = nutně řešit, zelená zóna = akceptovat.</p>
+
+                    <h4>Mitigační strategie (4T)</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Strategie</th><th>Popis</th><th>Příklad</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Transfer</strong> (přesun)</td><td>Přenesení rizika na třetí stranu</td><td>Pojištění, SLA s dodavatelem</td></tr>
+                            <tr><td><strong>Tolerate/Accept</strong> (akceptace)</td><td>Vědomě přijmeme riziko, sledujeme ho</td><td>Nízká P × nízký D — není efektivní investovat do mitigace</td></tr>
+                            <tr><td><strong>Treat/Mitigate</strong> (zmírnění)</td><td>Snížíme pravděpodobnost nebo dopad</td><td>Code review snižuje pravděpodobnost bugů</td></tr>
+                            <tr><td><strong>Terminate/Avoid</strong> (vyhnutí)</td><td>Změníme plán tak, aby riziko nevzniklo</td><td>Zvolíme jinou technologii, která riziko eliminuje</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="def-box"><strong>Definice:</strong> <strong>Contingency plan</strong> (záložní plán) je předem připravená reakce na riziko, které nastalo. Na rozdíl od mitigace, která riziku předchází, contingency řeší situaci po dopadu.</div>
+
+                    <figure class="text-center my-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Risk_and_Control_Impact_Assessment.JPG/500px-Risk_and_Control_Impact_Assessment.JPG" class="img-fluid rounded shadow-sm" style="max-height:300px;" alt="Mapa rizik">
+                        <figcaption class="text-muted small mt-1">Mapa rizik (pravděpodobnost × dopad) — červená zóna = nutně řešit (Wikimedia Commons)</figcaption>
+                    </figure>
+
+                    <h4>Typická SW rizika</h4>
+                    <ul>
+                        <li>Nejasné nebo měnící se požadavky</li>
+                        <li>Odchod klíčového člena týmu</li>
+                        <li>Podhodnocené odhady pracnosti</li>
+                        <li>Integrace s externím systémem selže</li>
+                        <li>Technologická závislost (end-of-life knihovna)</li>
+                        <li>Bezpečnostní zranitelnosti</li>
+                    </ul>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Riziko = nejistota s potenciálním dopadem; řízení = identifikace → analýza → reakce → sledování</li>
+                            <li>Exposure = pravděpodobnost × dopad; mapa rizik pomáhá prioritizovat</li>
+                            <li>4T: Transfer, Tolerate, Treat, Terminate — každá situace vyžaduje jinou strategii</li>
+                            <li>Registr rizik je živý dokument, průběžně aktualizovaný</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 5 -->
+                <section class="topic-section" id="topic-5">
+                    <h3>5. Odhadování pracnosti — techniky a možná zkreslení</h3>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Odhady pracnosti jsou paradox: musíme říct, kolik bude stát věc, kterou jsme ještě nikdy nedělali. Každá technika je kompromis mezi přesností a nákladností samotného odhadu.</div>
+
+                    <h4>Proč odhady selhávají?</h4>
+                    <ul>
+                        <li><strong>Hofstadterův zákon:</strong> "Vždy to trvá déle, než čekáš — i když to víš."</li>
+                        <li><strong>Optimistické zkreslení:</strong> Přirozeně podceňujeme neznámé, přeceňujeme svou produktivitu.</li>
+                        <li><strong>Cone of uncertainty:</strong> Na začátku projektu je chyba odhadu ±4×; zmenšuje se jak přibývá znalost.</li>
+                        <li><strong>90% syndrom:</strong> Práce se zdá "skoro hotová" dlouhou dobu — posledních 10% trvá 50% času.</li>
+                    </ul>
+
+                    <h4>Techniky odhadování</h4>
+
+                    <p><strong>1. Expert Judgment (expertní odhad)</strong> — zkušený člověk odhadne na základě podobných dřívějších projektů. Rychlé, ale subjektivní.</p>
+
+                    <p><strong>2. Analogický odhad</strong> — porovnáme s historickými daty podobných projektů. "Minulá verze trvala X, tato je 20% složitější → 1,2X."</p>
+
+                    <p><strong>3. Function Point Analysis (FPA)</strong> — počítáme funkční body: vstupy, výstupy, dotazy, soubory, rozhraní. Nezávislé na programovacím jazyce. Poté konvertujeme FP → LOC (Lines of Code) podle jazyka.</p>
+                    <div class="ex-box"><strong>Příklad:</strong> Java: ~50 LOC/FP, Python: ~20 LOC/FP. 100 FP v Javě = 5000 LOC, v Pythonu = 2000 LOC — proto je FP jazyk-nezávislé.</div>
+
+                    <p><strong>4. COCOMO (Constructive Cost Model)</strong> — algoritmický model Barryho Bohema. Vstup: velikost v LOC nebo FP, výstup: odhad člověkoměsíců.</p>
+                    <div class="formula-block">$$E = a \cdot (KLOC)^b \cdot \prod EAF_i$$</div>
+                    <p>kde $a, b$ jsou konstanty dle typu projektu (organic/semi-detached/embedded) a $EAF_i$ jsou cost drivers (složitost, zkušenost týmu, HW omezení…). COCOMO II je modernější verze pracující s FP a objektovými body.</p>
+
+                    <p><strong>5. Planning Poker (Scrum)</strong> — agilní technika: každý člen týmu tajně zvolí kartičku (Fibonacci: 1, 2, 3, 5, 8, 13…) vyjadřující relativní složitost (story points). Odhalí se najednou — pokud je velká shoda, skóre se přijme; při neshodě se diskutuje a opakuje.</p>
+                    <div class="ex-box"><strong>Příklad:</strong> User story "Přihlášení přes Google OAuth": tester dá 3, backend senior 2, junior 8. Diskuse odhalí, že junior neznal OAuth knihovnu — po vysvětlení všichni dají 3.</div>
+
+                    <p><strong>6. Three-Point Estimate / PERT</strong> — viz téma 3: $t = (O + 4M + P) / 6$. Vhodné pro úkoly s velkou nejistotou.</p>
+
+                    <h4>Wideband Delphi</h4>
+                    <p>Iterativní expertní odhad: skupina expertů odhaduje anonymně, facilitátor agreguje výsledky, diskutují se odchylky, proces se opakuje dokud nedosáhneme konsenzu. Redukuje vliv dominantního hlasu.</p>
+
+                    <div class="warn-box"><strong>Pozor na zkreslení:</strong>
+                        <ul>
+                            <li><strong>Anchoring:</strong> první číslo, které padne, ovlivní všechny ostatní — proto Planning Poker odkrývá karty najednou</li>
+                            <li><strong>Scope creep:</strong> funkce, které "přibydou" bez odhadu, způsobí překročení kapacity</li>
+                            <li><strong>Student syndrome:</strong> lidé začínají na plný výkon až těsně před deadlinem</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Odhady jsou vždy nepřesné — cone of uncertainty, Hofstadterův zákon</li>
+                            <li>FPA: funkční body — nezávislé na jazyce; COCOMO: matematický model z LOC → člověkoměsíce</li>
+                            <li>Planning Poker: agilní, relativní, bojuje s anchoring efektem</li>
+                            <li>Nejlepší praxe: kombinovat techniky + kalibrovat na historická data vlastního týmu</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 6 -->
+                <section class="topic-section" id="topic-6">
+                    <h3>6. Agilní metody, SCRUM v praxi</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> <strong>Agilní metodiky</strong> jsou skupinou přístupů k vývoji SW postavených na iterativním doručování, zpětné vazbě zákazníka a schopnosti reagovat na změny. Principy jsou zakotveny v <em>Agile Manifesto</em> (2001).</div>
+
+                    <h4>Agile Manifesto — 4 hodnoty</h4>
+                    <ul>
+                        <li>Jedinci a interakce <em>nad</em> procesy a nástroje</li>
+                        <li>Funkční software <em>nad</em> obsáhlou dokumentaci</li>
+                        <li>Spolupráce se zákazníkem <em>nad</em> vyjednávání smluv</li>
+                        <li>Reakce na změnu <em>nad</em> dodržování plánu</li>
+                    </ul>
+                    <div class="warn-box"><strong>Pozor:</strong> Manifest neříká "dokumentace je špatná" — říká, že funkční software má přednost. Dokumentace je stále cenná, jen není cílem sama o sobě.</div>
+
+                    <h4>SCRUM — rámec, ne metodika</h4>
+                    <div class="insight-box"><strong>Intuice:</strong> SCRUM je jako ragby (odtud název) — tým pracuje jako jeden celek, ne každý sám za sebe. Klíčové je pravidelné rytmické opakování (sprint) a transparentnost.</div>
+
+                    <h4>Role v SCRUMu</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Role</th><th>Odpovídá za</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Product Owner</strong></td><td>Co budeme dělat — spravuje a prioritizuje Product Backlog, reprezentuje zákazníka/byznys</td></tr>
+                            <tr><td><strong>Scrum Master</strong></td><td>Jak pracujeme — odstraňuje překážky (impediments), hlídá SCRUM proces, facilituje ceremonie</td></tr>
+                            <tr><td><strong>Development Team</strong></td><td>Kdo to udělá — cross-funkční, self-organizující, 3–9 lidí, zodpovídá za doručení Increment</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Artefakty</h4>
+                    <ul>
+                        <li><strong>Product Backlog</strong> — seřazený seznam všeho, co chceme dodat (user stories, bugs, technický dluh). Spravuje Product Owner.</li>
+                        <li><strong>Sprint Backlog</strong> — podmnožina Product Backlogu vybraná na aktuální sprint + plán jak to dodat.</li>
+                        <li><strong>Increment</strong> — funkční, potenciálně shippovatelný software na konci každého sprintu.</li>
+                    </ul>
+
+                    <h4>Ceremonie (Scrum Events)</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Ceremonie</th><th>Kdy</th><th>Účel</th></tr></thead>
+                        <tbody>
+                            <tr><td>Sprint Planning</td><td>Začátek sprintu</td><td>Výběr backlog items, definice cíle sprintu, plánování práce</td></tr>
+                            <tr><td>Daily Scrum (Stand-up)</td><td>Každý den, max 15 min</td><td>Sync: co jsem udělal, co udělám, co mi brání</td></tr>
+                            <tr><td>Sprint Review</td><td>Konec sprintu</td><td>Demo increment zákazníkovi/stakeholderům, sběr zpětné vazby</td></tr>
+                            <tr><td>Sprint Retrospective</td><td>Po Review</td><td>Zlepšení procesu: co šlo dobře, co zlepšit, konkrétní akční body</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Sprint</h4>
+                    <p>Fixní timebox — typicky 1–4 týdny. Sprint nelze prodlužovat. Pokud zjistíme, že cíl sprintu je nerelevantní, Product Owner může sprint zrušit (vzácné). <strong>Definition of Done</strong> jasně definuje, co znamená "hotovo" — typicky: kód napsán, review proběhlo, testy prošly, dokumentace aktualizována.</p>
+
+                    <figure class="text-center my-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Scrum_process.svg/700px-Scrum_process.svg.png" class="img-fluid rounded shadow-sm" alt="Scrum proces">
+                        <figcaption class="text-muted small mt-1">SCRUM proces — Product Backlog → Sprint Planning → Sprint → Review → Retrospective (Wikimedia Commons)</figcaption>
+                    </figure>
+
+                    <figure class="text-center my-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/SampleBurndownChart.svg/500px-SampleBurndownChart.svg.png" class="img-fluid rounded shadow-sm" style="max-height:280px;" alt="Burndown chart">
+                        <figcaption class="text-muted small mt-1">Burndown chart — zbývající práce v průběhu sprintu; ideální linie vs. skutečnost (Wikimedia Commons)</figcaption>
+                    </figure>
+
+                    <h4>SCRUM vs. Kanban</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th></th><th>SCRUM</th><th>Kanban</th></tr></thead>
+                        <tbody>
+                            <tr><td>Iterace</td><td>Fixní sprinty (1–4 týdny)</td><td>Kontinuální tok</td></tr>
+                            <tr><td>Role</td><td>PO, SM, Dev Team</td><td>Žádné definované</td></tr>
+                            <tr><td>Změny</td><td>Minimální během sprintu</td><td>Kdykoli</td></tr>
+                            <tr><td>Vhodné pro</td><td>Produktový vývoj, features</td><td>Ops, support, maintenance</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box"><strong>Příklad z praxe:</strong> Tým vyvíjí mobilní aplikaci. Sprint = 2 týdny. Sprint Planning: vyberou 8 user stories. Daily: každý den 15min sync. Po 2 týdnech demo zákazníkovi — zákazník vidí, že přihlašování přes Facebook nechce, chce Google. Toto se přidá do backlogu a prioritizuje. Bez agilního přístupu bychom to zjistili až za 6 měsíců.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Agile Manifesto: 4 hodnoty, 12 principů — vše o rychlé zpětné vazbě a adaptaci</li>
+                            <li>SCRUM: 3 role (PO, SM, Dev), 3 artefakty (Product/Sprint Backlog, Increment), 4 ceremonie</li>
+                            <li>Sprint = fixní iterace; na konci vždy fungující software + zpětná vazba</li>
+                            <li>Kanban = kontinuální tok bez sprintů; vhodný pro maintenance a operativu</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 7 -->
+                <section class="topic-section" id="topic-7">
+                    <h3>7. Metriky pro sledování a zajištění kvality SW</h3>
+
+                    <div class="insight-box"><strong>Intuice:</strong> "Co nelze měřit, nelze řídit." Metriky jsou objektivní signály o stavu kódu a procesu. Ale žádná metrika není dokonalá — každá se dá optimalizovat způsobem, který nezlepší skutečnou kvalitu (Goodhartův zákon).</div>
+
+                    <h4>Procesní metriky (jak pracujeme)</h4>
+                    <ul>
+                        <li><strong>Velocity</strong> (agilní) — počet story points dokončených za sprint; ukazuje výkonnost týmu, pomáhá plánovat budoucí sprinty</li>
+                        <li><strong>Lead time</strong> — čas od zadání požadavku do doručení zákazníkovi</li>
+                        <li><strong>Cycle time</strong> — čas od zahájení práce na úkolu po jeho dokončení</li>
+                        <li><strong>Burndown chart</strong> — zbývající práce v čase během sprintu</li>
+                    </ul>
+
+                    <h4>Produktové metriky (jak vypadá kód)</h4>
+
+                    <p><strong>Cyklomatická složitost (McCabe)</strong> — počet lineárně nezávislých cest kódem. Čím více větvení (if, while, case), tím vyšší složitost.</p>
+                    <div class="formula-block">$$CC = E - N + 2P$$</div>
+                    <p>kde $E$ = počet hran grafu, $N$ = počet uzlů, $P$ = počet komponent (typicky 1). Interpretace: CC &lt; 6 je OK, 6–15 sporné, &gt;15 špatné. CC také říká, kolik testů potřebuješ pro 100% pokrytí větví.</p>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Funkce s jedním if-else má CC = 2 (dvě cesty). Funkce s 5 větvemi má CC = 6. Funkce s CC = 25 je velmi složitá — kandidát na refaktoring.</div>
+
+                    <p><strong>Code Coverage</strong> — procento kódu pokrytého automatickými testy. Typy: line coverage, branch coverage, condition coverage. 100% coverage není nutně cíl — testy mohou existovat bez assertů.</p>
+
+                    <p><strong>Defect Density</strong> — počet nalezených chyb na jednotku velikosti kódu (např. na 1000 LOC).</p>
+                    <div class="formula-block">$$DD = \frac{\text{Počet defektů}}{\text{Velikost} [\text{KLOC}]}$$</div>
+                    <p>Pomáhá identifikovat nejproblematičtější moduly — vysoká defect density v konkrétním souboru = technický dluh nebo špatná architektura.</p>
+
+                    <p><strong>MTBF / MTTR</strong> (Mean Time Between Failures / Mean Time To Repair) — metriky spolehlivosti produkčního systému.</p>
+
+                    <h4>Technický dluh</h4>
+                    <p>Metafora pro kompromisy přijaté při vývoji (rychle, ale ne správně). Jako finanční dluh — naroste-li moc, splácení (refaktoring) pohltí většinu kapacity. Měří se pomocí nástrojů jako SonarQube.</p>
+
+                    <h4>Kombinace metrik</h4>
+                    <div class="thm-box"><strong>Věta (NASA studie):</strong> Nejefektivnější predikce chybových modulů je kombinace velikosti (LOC) a cyklomatické složitosti — ani jedna metrika sama o sobě není dostatečně přesná.</div>
+
+                    <div class="warn-box"><strong>Pozor:</strong> Goodhartův zákon — pokud se metrika stane cílem, přestane být dobrý ukazatel. Vývojáři optimalizující CC mohou kód naopak zkomplikovat (přidají funkce s CC=1). Metriky jsou vstupy do rozhodnutí, ne náhrada za úsudek.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Procesní metriky: velocity, cycle time, burndown — sledují produktivitu týmu</li>
+                            <li>Cyklomatická složitost: měří větvení kódu; CC &gt; 15 signalizuje problémy</li>
+                            <li>Code coverage: jak moc je kód pokryt testy; 100% není vždy cíl</li>
+                            <li>Defect density: identifikuje problematické moduly; kombinace metrik je nejlepší</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 8 -->
+                <section class="topic-section" id="topic-8">
+                    <h3>8. Statické testování a revize dokumentace</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> <strong>Statické testování</strong> je ověřování kvality SW artefaktů (kód, dokumentace, požadavky) bez jejich spuštění. Hledáme problémy čtením, analýzou a formálními revizemi.</div>
+
+                    <h4>Proč statické testování?</h4>
+                    <div class="insight-box"><strong>Intuice:</strong> Chyba nalezená v požadavcích stojí 1 kč. Stejná chyba nalezená v produkci stojí 100 kč (oprava + výpadek + ztracená data). Statické techniky zachytí problémy co nejdříve — před implementací.</div>
+
+                    <h4>Typy statického testování</h4>
+
+                    <p><strong>1. Neformální revize</strong> — nezávazné, bez procesu. Kolega se podívá na kód nebo dokument a dá zpětnou vazbu. Levné, ale nesystematické.</p>
+
+                    <p><strong>2. Walkthrough (průchod)</strong> — autor prezentuje artefakt skupině. Cílem je vzdělání a nalezení problémů. Autor vede diskusi. Formálnější než neformální revize, ale stále bez přesně definovaného procesu.</p>
+
+                    <p><strong>3. Technická revize (Technical Review)</strong> — setkání odborníků bez autora nebo s autorem v podřízené roli. Každý přinese seznam problémů. Výstupem je konsolidovaný seznam nalezených problémů — rozhodnutí se přijímají na schůzce.</p>
+
+                    <p><strong>4. Inspekce (Fagan Inspection)</strong> — nejvíce formální a nejefektivnější technika. Definoval ji Michael Fagan v IBM v 70. letech.</p>
+
+                    <h4>Faganova inspekce — fáze</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Fáze</th><th>Obsah</th></tr></thead>
+                        <tbody>
+                            <tr><td>Planning</td><td>Výběr inspektorů, přidělení rolí, příprava materiálů</td></tr>
+                            <tr><td>Overview</td><td>Autor vysvětlí kontext — inspektoři získají celkový obrázek</td></tr>
+                            <tr><td>Preparation</td><td>Každý inspektor samostatně prochází artefakt, zaznamenává problémy</td></tr>
+                            <tr><td>Meeting (Inspection)</td><td>Společné procházení, moderátor řídí, zaznamenávají se defekty — ne opravy</td></tr>
+                            <tr><td>Rework</td><td>Autor opravuje nalezené defekty</td></tr>
+                            <tr><td>Follow-up</td><td>Moderátor ověří, že byly defekty správně opraveny</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="warn-box"><strong>Pozor:</strong> Při inspekci se diskutují defekty, ne jejich řešení — řešení je na autorovi. Inspekce není "kdo má pravdu", ale "co je problém". Mísení diskuse o opravách prodlužuje meeting a snižuje jeho efektivitu.</div>
+
+                    <h4>Statická analýza kódu (nástroje)</h4>
+                    <p>Automatizovaná forma statického testování. Nástroje: <strong>SonarQube</strong>, <strong>ESLint</strong>, <strong>Checkstyle</strong>, <strong>PMD</strong>. Hledají: potenciální NPE, mrtvý kód, porušení coding standards, bezpečnostní zranitelnosti, duplicitní kód.</p>
+
+                    <h4>Revize dokumentace požadavků</h4>
+                    <p>Kontrolujeme: kompletnost (všechny případy pokryty?), konzistenci (jsou požadavky mezi sebou v souladu?), testovatelnost (lze ověřit splnění?), jednoznačnost (je každý požadavek jasný bez výkladu?).</p>
+
+                    <div class="ex-box"><strong>Příklad:</strong> Požadavek "Systém musí být rychlý" je špatný — netestovatelný a nejednoznačný. Správně: "Systém musí odpovídat na 95% dotazů do 200ms při 100 souběžných uživatelích."</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Statické testování = bez spuštění; zachytí chyby v požadavcích, designu, kódu</li>
+                            <li>Typy: neformální revize → walkthrough → technická revize → inspekce (Fagan) — rostoucí formalita i efektivita</li>
+                            <li>Faganova inspekce: 6 fází; inspektoři hledají defekty, ne řešení</li>
+                            <li>Automatická statická analýza (SonarQube) doplňuje manuální revize</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 9 -->
+                <section class="topic-section" id="topic-9">
+                    <h3>9. Testovací strategie pro SW projekt</h3>
+
+                    <div class="def-box"><strong>Definice:</strong> <strong>Testovací strategie</strong> je vysokoúrovňový plán přístupu k testování v projektu — definuje typy testů, jejich rozsah, odpovědnosti, prostředí a kritéria ukončení testování.</div>
+
+                    <h4>Testovací pyramida</h4>
+                    <div class="insight-box"><strong>Intuice:</strong> Testovací pyramida (Mike Cohn) říká: mnoho rychlých unit testů dole, méně integračních uprostřed, nejméně E2E testů nahoře. Čím výš v pyramidě, tím pomalejší, krehčí a dražší testy. Typická chyba: "obrácená pyramida" — málo unit testů, vše E2E.</div>
+
+                    <figure class="text-center my-3">
+                        <img src="https://martinfowler.com/articles/practical-test-pyramid/testPyramid.png" class="img-fluid rounded shadow-sm" style="max-height:320px;" alt="Testovací pyramida">
+                        <figcaption class="text-muted small mt-1">Testovací pyramida — mnoho rychlých unit testů, méně integračních, nejméně E2E (martinfowler.com)</figcaption>
+                    </figure>
+
+                    <h4>Úrovně testování</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Úroveň</th><th>Co testuje</th><th>Kdo</th><th>Kdy</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Unit testy</strong></td><td>Jednotlivé funkce/metody izolovaně (s mocky)</td><td>Vývojáři</td><td>Průběžně při vývoji</td></tr>
+                            <tr><td><strong>Integrační testy</strong></td><td>Spolupráce více komponent (DB, API, services)</td><td>Vývojáři / QA</td><td>Po implementaci komponent</td></tr>
+                            <tr><td><strong>Systémové testy</strong></td><td>Celý systém vůči požadavkům (black-box)</td><td>QA</td><td>Před předáním zákazníkovi</td></tr>
+                            <tr><td><strong>Akceptační testy (UAT)</strong></td><td>Systém v reálném prostředí zákazníkem</td><td>Zákazník</td><td>Těsně před nasazením</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>White-box vs. Black-box testování</h4>
+                    <ul>
+                        <li><strong>White-box</strong>: tester zná vnitřní strukturu kódu; testy pokrývají specifické cesty (unit testy, code coverage)</li>
+                        <li><strong>Black-box</strong>: tester nezná implementaci; testuje chování dle specifikace; techniky: ekvivalenční třídy, hraniční hodnoty, rozhodovací tabulky</li>
+                        <li><strong>Grey-box</strong>: kombinace — znáš architekturu, ale ne detaily implementace; typicky integrační testy</li>
+                    </ul>
+
+                    <h4>TDD — Test-Driven Development</h4>
+                    <p>Vývojová technika (ne testovací!): <strong>Red → Green → Refactor</strong>:</p>
+                    <ol>
+                        <li><strong>Red</strong>: napiš neúspěšný test pro novou funkcionalitu</li>
+                        <li><strong>Green</strong>: napiš minimální kód, aby test prošel</li>
+                        <li><strong>Refactor</strong>: vyčisti kód, zachovej zelené testy</li>
+                    </ol>
+                    <div class="ex-box"><strong>Výhody TDD:</strong> Nutí přemýšlet o rozhraní před implementací; výsledkem je testovatelný kód; testy slouží jako dokumentace chování; rychlá zpětná vazba. <strong>Nevýhody:</strong> Pomalejší start, těžko aplikovatelný na UI a legacy kód.</div>
+
+                    <h4>BDD — Behavior-Driven Development</h4>
+                    <p>Rozšíření TDD zaměřené na komunikaci: testy jsou psány v přirozeném jazyce (Gherkin) jako <strong>Given–When–Then</strong> scénáře. Umožňuje i netechnikům rozumět testům.</p>
+                    <div class="ex-box"><strong>Příklad BDD scénáře:</strong><br>
+                        <code>Given</code> uživatel je přihlášen<br>
+                        <code>When</code> klikne na "Přidat do košíku"<br>
+                        <code>Then</code> počet položek v košíku se zvýší o 1
+                    </div>
+                    <p>Nástroje: Cucumber (Java/Ruby), Behave (Python), SpecFlow (.NET).</p>
+
+                    <h4>Regresní testování</h4>
+                    <p>Opakované spouštění existujících testů po změně kódu, aby se ověřilo, že nic nového nerozbil. Automatizace je klíčová — ruční regresní testování celého systému před každým vydáním je neúnosné.</p>
+
+                    <h4>Testovací prostředí</h4>
+                    <ul>
+                        <li><strong>Dev</strong>: lokální prostředí vývojáře</li>
+                        <li><strong>CI/CD</strong>: automaticky spouštěné testy při commitu</li>
+                        <li><strong>Staging</strong>: produkci podobné prostředí, UAT a výkonnostní testy</li>
+                        <li><strong>Production</strong>: monitoring, smoke testy po nasazení</li>
+                    </ul>
+
+                    <h4>Výkonnostní a bezpečnostní testování</h4>
+                    <ul>
+                        <li><strong>Load testing</strong>: chování systému pod očekávanou zátěží</li>
+                        <li><strong>Stress testing</strong>: kde je hranice selhání (co se stane při přetížení?)</li>
+                        <li><strong>Penetrační testování</strong>: hledání bezpečnostních zranitelností (statické: SAST, dynamické: DAST)</li>
+                    </ul>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Testovací pyramida: mnoho unit testů, méně integračních, nejméně E2E</li>
+                            <li>Unit → Integrační → Systémové → Akceptační: každá úroveň testuje jinou vrstvu</li>
+                            <li>TDD: Red-Green-Refactor — píšeme test před kódem; nutí přemýšlet o rozhraní</li>
+                            <li>BDD: Given-When-Then; srozumitelné pro zákazníka, propojení byznys a technik</li>
+                            <li>Regresní testování + CI/CD = základní záchranná síť každého profesionálního týmu</li>
+                        </ul>
+                    </div>
+                </section>
+
             </div>
         </div>
     </div>
-    <script src="subjects-nav.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
