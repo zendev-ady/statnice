@@ -48,6 +48,7 @@
                         <li><a class="nav-link py-1" href="#topic-11">11. Kvalitativní vs. kvantitativní analýza</a></li>
                         <li><a class="nav-link py-1" href="#topic-12">12. Simulace procesů</a></li>
                         <li><a class="nav-link py-1" href="#topic-13">13. Devil's Quadrangle</a></li>
+                        <li><a class="nav-link py-1" href="#topic-14">14. Agilní metodiky (Scrum, XP, Kanban)</a></li>
                     </ul>
                 </nav>
             </div>
@@ -760,6 +761,107 @@
                             <li>Změna v jedné dimenzi vždy ovlivní ostatní — kompromis je nevyhnutelný</li>
                             <li>Použití: change request management, MVP rozhodnutí, Go-Live gate</li>
                             <li>Snížení kvality = odložený náklad (technický dluh)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- TOPIC 14 -->
+                <section class="topic-section" id="topic-14">
+                    <h3>14. Agilní metodiky – Scrum, XP, Kanban</h3>
+
+                    <div class="insight-box"><strong>Intuice:</strong> Agilní metodiky vznikly jako reakce na selhání tradičního vodopádu u projektů s měnícími se požadavky. Místo „definuj vše předem a pak realizuj" platí: <em>dodávej po malých kouscích, rychle se uč a přizpůsobuj</em>. Základ je Agile Manifesto (2001).</div>
+
+                    <div class="def-box"><strong>Agile Manifesto (4 hodnoty):</strong>
+                        <ul>
+                            <li>Jednotlivci a interakce <em>před</em> procesy a nástroji</li>
+                            <li>Fungující software <em>před</em> obsáhlou dokumentací</li>
+                            <li>Spolupráce se zákazníkem <em>před</em> vyjednáváním smluv</li>
+                            <li>Reakce na změnu <em>před</em> dodržováním plánu</li>
+                        </ul>
+                    </div>
+
+                    <h4>Scrum</h4>
+                    <div class="def-box"><strong>Definice:</strong> Scrum je iterativní a inkrementální agilní framework pro řízení vývoje SW. Práce je rozdělena do fixních iterací — <em>sprintů</em> (typicky 2 týdny), na jejichž konci vzniká potenciálně dodatelný přírůstek produktu.</div>
+
+                    <p><strong>Klíčové role:</strong></p>
+                    <ul>
+                        <li><strong>Product Owner (PO)</strong> — vlastní Product Backlog; prioritizuje, co se vyvíjí; zastupuje zákazníka</li>
+                        <li><strong>Scrum Master</strong> — facilitátor procesu; odstraňuje překážky (impediments); hlídá dodržování Scrumu</li>
+                        <li><strong>Development Team</strong> — cross-functional, samo-organizující se tým (3–9 lidí); dodává increment</li>
+                    </ul>
+
+                    <p><strong>Klíčové artefakty:</strong></p>
+                    <ul>
+                        <li><strong>Product Backlog</strong> — seřazený seznam všech požadavků (user stories, bugs, tasky); spravuje PO</li>
+                        <li><strong>Sprint Backlog</strong> — subset Product Backlogu, který tým commituje pro daný sprint</li>
+                        <li><strong>Increment</strong> — součet všech dokončených položek sprintu; musí splňovat Definition of Done</li>
+                    </ul>
+
+                    <p><strong>Klíčové události (ceremonies):</strong></p>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th>Událost</th><th>Kdo</th><th>Cíl</th><th>Trvání (2wk sprint)</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Sprint Planning</strong></td><td>Celý Scrum team</td><td>Vybrat a naplánovat práci pro sprint</td><td>max 4 h</td></tr>
+                            <tr><td><strong>Daily Scrum</strong></td><td>Dev team</td><td>Synchronizace, identifikace překážek</td><td>15 min</td></tr>
+                            <tr><td><strong>Sprint Review</strong></td><td>Team + stakeholdeři</td><td>Ukázat increment, získat feedback</td><td>max 2 h</td></tr>
+                            <tr><td><strong>Sprint Retrospective</strong></td><td>Scrum team</td><td>Zlepšit proces (jak pracujeme)</td><td>max 1,5 h</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ex-box"><strong>Příklad:</strong> E-commerce platforma. Product Backlog má 80 user stories. PO prioritizuje: první sprint (2 týdny) = registrace uživatele + zobrazení katalogu. Na konci sprintu je demo zákazníkovi. Feedback: „Přidejte filtrování." PO přidá do backlogu, prioritizuje na sprint 2. Zákazník vidí pokrok každé 2 týdny.</div>
+
+                    <div class="warn-box"><strong>Pozor:</strong> Scrum nefunguje bez skutečného Product Ownera (s rozhodovací pravomocí) a bez Definition of Done. Nejčastější antipattern: „ScrumBut" — „Děláme Scrum, ale bez retro / bez daily / se dvěma PO..."</div>
+
+                    <h4>XP (Extreme Programming)</h4>
+                    <div class="def-box"><strong>Definice:</strong> XP je agilní metodika zaměřená na technické excelence vývoje SW. Na rozdíl od Scrumu definuje konkrétní <em>technické praktiky</em>, ne jen proces.</div>
+
+                    <p><strong>Klíčové praktiky XP:</strong></p>
+                    <ul>
+                        <li><strong>Pair Programming</strong> — dva vývojáři pracují na jednom počítači; jeden píše (driver), druhý reviewuje (navigator)</li>
+                        <li><strong>Test-Driven Development (TDD)</strong> — nejprve napíšu test (červený), pak kód (zelený), pak refaktor</li>
+                        <li><strong>Continuous Integration (CI)</strong> — kód se integruje a builduje několikrát denně; okamžitá zpětná vazba</li>
+                        <li><strong>Refactoring</strong> — průběžné zlepšování struktury kódu bez změny chování</li>
+                        <li><strong>Collective Code Ownership</strong> — každý může upravit libovolnou část kódu</li>
+                        <li><strong>Simple Design</strong> — implementuj jen to, co je nyní potřeba (YAGNI)</li>
+                        <li><strong>Planning Game</strong> — user stories odhaduje tým, PO prioritizuje</li>
+                    </ul>
+
+                    <div class="ex-box"><strong>Příklad (TDD):</strong> Vývojář má implementovat funkci „sečti dvě čísla". Nejprve napíše test: <code>assert add(2,3) == 5</code> → test selže (červená). Pak implementuje <code>add(a,b)</code> → test projde (zelená). Pak refaktoruje. Tento cyklus (Red-Green-Refactor) zajistí, že kód je vždy testovaný.</div>
+
+                    <h4>Kanban</h4>
+                    <div class="def-box"><strong>Definice:</strong> Kanban je vizuální metoda řízení toku práce pocházející z Toyota Production System. Na rozdíl od Scrumu nemá fixní iterace ani role — práce plyne kontinuálně přes Kanban board.</div>
+
+                    <p><strong>Principy Kanbanu:</strong></p>
+                    <ul>
+                        <li><strong>Vizualizace toku práce</strong> — Kanban board se sloupci (Backlog → In Progress → Done)</li>
+                        <li><strong>WIP limity (Work In Progress limits)</strong> — omezení počtu položek v jedné fázi; brání přetížení a odhaluje bottlenecky</li>
+                        <li><strong>Měření průtoku</strong> — cycle time, throughput; cíl: zrychlit tok a snížit lead time</li>
+                        <li><strong>Continuous delivery</strong> — položky se nasazují, jakmile jsou hotové; žádné sprinty</li>
+                    </ul>
+
+                    <div class="ex-box"><strong>Příklad (WIP limit):</strong> Tým má Kanban board s limitem „In Progress = 3". Vývojář chce začít 4. úkol, ale board ho zastaví. Místo toho pomůže dokončit jeden z rozdělaných úkolů → méně kontextových přepínání, rychlejší průtok.</div>
+
+                    <h4>Srovnání: Scrum vs. XP vs. Kanban vs. Waterfall</h4>
+                    <table class="table table-bordered summary-table">
+                        <thead><tr><th></th><th>Waterfall</th><th>Scrum</th><th>XP</th><th>Kanban</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Iterace</strong></td><td>Žádné (fáze)</td><td>Sprinty (1–4 týd.)</td><td>Iterace (1–2 týd.)</td><td>Kontinuální tok</td></tr>
+                            <tr><td><strong>Plánování</strong></td><td>Předem vše</td><td>Sprint planning</td><td>Planning game</td><td>Just-in-time</td></tr>
+                            <tr><td><strong>Změna požad.</strong></td><td>Špatně</td><td>Dobře (mezi sprinty)</td><td>Dobře</td><td>Velmi dobře</td></tr>
+                            <tr><td><strong>Technické praktiky</strong></td><td>Ne</td><td>Ne (jen process)</td><td>Ano (TDD, CI, PP)</td><td>Ne</td></tr>
+                            <tr><td><strong>Vhodnost</strong></td><td>Stabilní požadavky</td><td>Produktový vývoj</td><td>SW s vysokou kvalitou</td><td>Podpora, ops, servis</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box"><strong>Klíčový rozdíl: Tradiční vs. Agilní:</strong> Tradiční metodiky <em>definují rozsah</em> a přizpůsobují čas a náklady. Agilní metodiky <em>fixují čas a tým</em> (sprint, kapacita) a přizpůsobují rozsah — dodávají nejvyšší hodnotu v daném čase. To zásadně mění povahu smluv, řízení rizik a vztahu se zákazníkem.</div>
+
+                    <div class="summary-box"><strong>Shrnutí:</strong>
+                        <ul>
+                            <li>Scrum: iterativní framework s rolemi (PO, SM, Dev team) a ceremonies (planning, daily, review, retro)</li>
+                            <li>XP: technické praktiky pro vysokou kvalitu kódu — TDD, CI, Pair Programming, Refactoring</li>
+                            <li>Kanban: vizuální tok práce s WIP limity; bez fixních sprintů; vhodný pro kontinuální provoz</li>
+                            <li>Klíčový rozdíl od Waterfalu: agilní metodiky fixují čas a kapacitu, scope je proměnná</li>
+                            <li>Agile Manifesto: 4 hodnoty — lidi, fungující SW, zákazník, reakce na změnu</li>
                         </ul>
                     </div>
                 </section>
